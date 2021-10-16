@@ -1,5 +1,5 @@
 FROM python:3.9
-
+WORKDIR /application_source
 COPY . .
 
 # set environment variables
