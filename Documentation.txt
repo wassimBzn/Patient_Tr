@@ -1,0 +1,18 @@
+Documentation
+
+How to firt install the environement
+
+1-  Go to the path folder
+2-  docker-compose up
+3-  docker ps
+4-  get the docker container id of the database container
+5-  docker exec -it ID_DB_Container /bin/bash
+6-  get the IP address of the container
+7-  hostname -I
+8-  change the Ip of the host in the setting file
+9-  docker exec -it ID_WEB_Container /bin/bash
+10- python manage.py migrate
+11- python manage.py createsuperuser
+12- follow the steps of creating a super user
+
+
