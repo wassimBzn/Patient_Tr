@@ -15,12 +15,12 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Form Elements</h5>
+                            <h5 class="m-b-10">Add Patient</h5>
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-                            <li class="breadcrumb-item"><a href="javascript:">Form Componants</a></li>
-                            <li class="breadcrumb-item"><a href="javascript:">Form Elements</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">Patient management</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">Add Patient</a></li>
                         </ul>
                     </div>
                 </div>
@@ -34,12 +34,12 @@
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-header">
-                                <h5>Basic Componant</h5>
+                                <h5>Add Patient</h5>
                             </div>
                             <div class="card-body">
-                                <h5>Form controls</h5>
+                                <h5>Informations Generales</h5>
                                 <hr>
-                                <div class="row">
+                                <!--<div class="row">
                                     <div class="col-md-6">
                                         <form>
                                             <div class="form-group">
@@ -57,14 +57,46 @@
                                             </div>
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </form>
-                                    </div>
+                                    </div>-->
                                     <div class="col-md-6">
                                         <form>
                                             <div class="form-group">
-                                                <label>Text</label>
-                                                <input type="text" class="form-control" placeholder="Text">
+                                                <label>Nom</label>
+                                                <input type="text" class="form-control" placeholder="Nom">
                                             </div>
                                             <div class="form-group">
+                                                <label>Prénom</label>
+                                                <input type="text" class="form-control" placeholder="Prénom">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Date de naissance</label>
+                                                <input type="text" class="form-control" placeholder="Date de naissance">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Lieu de naissance</label>
+                                                <input type="text" class="form-control" placeholder="Lieu de naissance">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Profession</label>
+                                                <input type="text" class="form-control" placeholder="Profession">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Adresse</label>
+                                                <input type="text" class="form-control" placeholder="Adresse">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Pièce d'identité</label>
+                                                <input type="text" class="form-control" placeholder="Pièce d'identité">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Statut matrimonial</label>
+                                                <input type="text" class="form-control" placeholder="Statut matrimonial">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Téléphone GSM</label>
+                                                <input type="text" class="form-control" placeholder="Téléphone GSM">
+                                            </div>
+                                           <!-- <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Example select</label>
                                                 <select class="form-control" id="exampleFormControlSelect1">
                                                     <option>1</option>
@@ -74,13 +106,12 @@
                                                     <option>5</option>
                                                 </select>
                                             </div>
-                                            <div class="form-group">
-                                                <label for="exampleFormControlTextarea1">Example textarea</label>
-                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                            </div>
-                                        </form>
+                                            -->
+
+
                                     </div>
                                 </div>
+                            <!--
                                 <h5 class="mt-5">Sizing</h5>
                                 <hr>
                                 <div class="row">
@@ -88,16 +119,10 @@
                                         <input class="mb-3 form-control form-control-lg" type="text" placeholder=".form-control-lg">
                                         <input class="mb-3 form-control" type="text" placeholder="Default input">
                                         <input class="mb-3 form-control form-control-sm" type="text" placeholder=".form-control-sm">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <select class="mb-3 form-control form-control-lg">
-                                            <option>Large select</option>
-                                        </select>
-                                        <select class="mb-3 form-control">
-                                            <option>Default select</option>
-                                        </select>
-                                    </div>
+                                    </div>-->
+
                                 </div>
+                            <!--
                                 <h5 class="mt-5">Inline</h5>
                                 <hr>
                                 <form class="form-inline">
@@ -151,17 +176,91 @@
                                         <label for="customRange3">Example range</label>
                                         <input type="range" class="custom-range" min="0" max="5" step="0.5" id="customRange3">
                                     </div>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
                         <!-- Input group -->
+
                         <div class="card">
                             <div class="card-header">
-                                <h5>Input Group</h5>
+                                <h5>Habitude</h5>
                             </div>
+
                             <div class="card-body">
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea1">Tabagisme (PA) Alcoolisme Allergies connue</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>ANTECEDENTES</h5>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea1">Antécédents</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea1">Médication en cours</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea1">Plaintes</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea1">Reste de l'éxamen</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                </div>
+
+                                <div class="form-group form-check">
+                                    <label for="exampleFormControlTextarea1">Examen Phisique</label>  <br>
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" for="exampleCheck1"> T </label><br>
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" for="exampleCheck1"> PA </label><br>
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" for="exampleCheck1"> Slo </label><br>
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" for="exampleCheck1"> RC </label><br>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea1">Explorations</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea1">Traitement</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                </div>
+                               <div class="form-group">
+                                    <label for="exampleFormControlTextarea1">Evolution</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Sauvegarder</button>
+
+                            </div>
+                        </div>
+                </form>
+
+
+
+
+
+
+
+
+
+
+
+                <!--
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
+                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1">@</span>
                                     </div>
                                     <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
@@ -171,7 +270,9 @@
                                     <div class="input-group-append">
                                         <span class="input-group-text" id="basic-addon2">@example.com</span>
                                     </div>
+
                                 </div>
+
                                 <label for="basic-url">Your vanity URL</label>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
@@ -187,6 +288,15 @@
                                     <div class="input-group-append">
                                         <span class="input-group-text">.00</span>
                                     </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="mb-3 form-control form-control-lg">
+                                         <option>Large select</option>
+                                     </select>
+
+                                    <select class="mb-3 form-control">
+                                        <option>Default select</option>
+                                    </select>
                                 </div>
                                 <h5 class="mt-5">Sizing</h5>
                                 <hr>
@@ -308,7 +418,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- [ Main Content ] end -->
+                  [ Main Content ] end -->
             </div>
         </div>
     </div>
