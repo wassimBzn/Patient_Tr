@@ -6,14 +6,16 @@ Copyright (c) 2019 - present AppSeed.us
 from django import template
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
 from django.template import loader
 from django.urls import reverse
+from apps.app.models import *
+from apps.app.forms import AddPatientForm
 
 
 @login_required(login_url="/login/")
 def index(request):
     context = {'segment': 'index'}
-
     html_template = loader.get_template('index.html')
     return HttpResponse(html_template.render(context, request))
 
@@ -42,3 +44,53 @@ def pages(request):
     except:
         html_template = loader.get_template('page-500.html')
         return HttpResponse(html_template.render(context, request))
+
+
+
+def add_patient(request):
+    msg = None
+    success = False
+    if request.method == "POST":
+        form = AddPatientForm(request.POST or None)
+        if form.is_valid():
+            nom = form.cleaned_data.get("nom")
+            prenom = form.cleaned_data.get("prenom")
+            date_de_naissance = form.cleaned_data.get("date_de_naissance")
+            lieu_de_naissance = form.cleaned_data.get("lieu_de_naissance")
+            profession = form.cleaned_data.get("profession")
+            adresse = form.cleaned_data.get("adresse")
+            cin = form.cleaned_data.get("cin")
+            statut_matrimonial = form.cleaned_data.get("statut_matrimonial")
+            telephone = form.cleaned_data.get("telephone")
+            habitude = form.cleaned_data.get("habitude")
+            antecedentes = form.cleaned_data.get("antecedentes")
+            medication_en_cours = form.cleaned_data.get("medication_en_cours")
+            plaintes = form.cleaned_data.get("plaintes")
+            reste_de_examen = form.cleaned_data.get("reste_de_examen")
+            T = form.cleaned_data.get("T")
+            PA = form.cleaned_data.get("PA")
+            Slo = form.cleaned_data.get("Slo")
+            RC = form.cleaned_data.get("RC")
+            explorations = form.cleaned_data.get("explorations")
+            traitement = form.cleaned_data.get("traitement")
+            evolution = form.cleaned_data.get("evolution")
+            new_patient=Patient(nom,prenom,date_de_naissance,lieu_de_naissance,profession,adresse,cin,statut_matrimonial,telephone,habitude,antecedentes,medication_en_cours,plaintes,reste_de_examen,T,PA,Slo,RC,explorations,traitement,evolution)
+
+
+            try:
+                new_patient.save()
+                msg = 'Patient created !'
+                success = True
+                return render(request, "./add_patient.html", {"form": form, "msg": msg, "success": success})
+
+            except:
+                msg = 'Patient has not been created !'
+                success = False
+                print("An exception occurred")
+            # return redirect("/login/")
+        else:
+            msg = 'Form is not valid'
+    else:
+        form = AddPatientForm()
+
+    return render(request, "./add_patient.html", {"form": form, "msg": msg, "success": success})
