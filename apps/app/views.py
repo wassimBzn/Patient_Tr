@@ -62,7 +62,7 @@ def add_patient(request):
             cin = form.cleaned_data.get("cin")
             statut_matrimonial = form.cleaned_data.get("statut_matrimonial")
             telephone = form.cleaned_data.get("telephone")
-            habitude = form.cleaned_data.get("habitude")
+            tabagisme = form.cleaned_data.get("tabagisme")
             antecedentes = form.cleaned_data.get("antecedentes")
             medication_en_cours = form.cleaned_data.get("medication_en_cours")
             plaintes = form.cleaned_data.get("plaintes")
@@ -74,19 +74,20 @@ def add_patient(request):
             explorations = form.cleaned_data.get("explorations")
             traitement = form.cleaned_data.get("traitement")
             evolution = form.cleaned_data.get("evolution")
-            new_patient=Patient(nom,prenom,date_de_naissance,lieu_de_naissance,profession,adresse,cin,statut_matrimonial,telephone,habitude,antecedentes,medication_en_cours,plaintes,reste_de_examen,T,PA,Slo,RC,explorations,traitement,evolution)
-
-
             try:
-                new_patient.save()
-                msg = 'Patient created !'
-                success = True
+                patient = Patient.objects.get(cin=cin)
+                msg = 'Patient Already exists!'
+                success = False
                 return render(request, "./add_patient.html", {"form": form, "msg": msg, "success": success})
 
             except:
-                msg = 'Patient has not been created !'
-                success = False
+                new_patient=Patient(nom,prenom,date_de_naissance,lieu_de_naissance,profession,adresse,cin,statut_matrimonial,telephone,tabagisme,antecedentes,medication_en_cours,plaintes,reste_de_examen,T,PA,Slo,RC,explorations,traitement,evolution)
+                new_patient.save()
+                msg = 'Patient has been successfully created !'
+                success = True
                 print("An exception occurred")
+                form = AddPatientForm()
+                return render(request, "./add_patient.html", {"form": form, "msg": msg, "success": success})
             # return redirect("/login/")
         else:
             msg = 'Form is not valid'

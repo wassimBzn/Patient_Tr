@@ -78,10 +78,10 @@ class AddPatientForm(forms.Form):
             }
         ))
 
-    habitude = forms.CharField(
+    tabagisme = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "id": "habitude",
+                "id": "tabagisme",
                 "class": "form-control"
             }
         ))
@@ -118,7 +118,7 @@ class AddPatientForm(forms.Form):
             }
         ))
 
-    T = forms.BooleanField(
+    T = forms.BooleanField(required=False,
         widget=forms.CheckboxInput(
             attrs={
                 "id": "T",
@@ -126,7 +126,7 @@ class AddPatientForm(forms.Form):
             }
         ))
 
-    PA = forms.BooleanField(
+    PA = forms.BooleanField(required=False,
         widget=forms.CheckboxInput(
             attrs={
                 "id": "PA",
@@ -134,7 +134,7 @@ class AddPatientForm(forms.Form):
             }
         ))
 
-    Slo = forms.BooleanField(
+    Slo = forms.BooleanField(required=False,
         widget=forms.CheckboxInput(
             attrs={
                 "id": "Slo",
@@ -142,7 +142,7 @@ class AddPatientForm(forms.Form):
             }
         ))
 
-    RC = forms.BooleanField(
+    RC = forms.BooleanField(required=False,
         widget=forms.CheckboxInput(
             attrs={
                 "id": "RC",

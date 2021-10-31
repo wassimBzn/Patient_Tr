@@ -45,6 +45,11 @@
                                     <div class="card-body">
 
                                         <h5>Informations Generales</h5>
+                                        {% if success %}
+                                            <div style="text-align: center;color:#1c7430"><label>{{ msg }}</label></div>
+                                        {% else %}
+                                             <div style="text-align: center;color:#c82333"><label>{{ msg }}</label></div>
+                                         {% endif %}
                                         <hr>
                                         <div class="col-md-6">
 
@@ -96,13 +101,13 @@
                         <div class="card">
                             <div class="card-header">
                                 <h5>Habitude</h5>
-                                {{ form.habitude }}
+
                             </div>
 
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="habitude">Tabagisme (PA) Alcoolisme Allergies connue</label>
-                                    {{ form.telephone }}
+                                    <label for="tabagisme">Tabagisme (PA) Alcoolisme Allergies connue</label>
+                                    {{ form.tabagisme }}
                                 </div>
                             </div>
                         </div>
