@@ -14,10 +14,13 @@ from apps.app.forms import AddPatientForm
 
 
 @login_required(login_url="/login/")
+
 def index(request):
-    context = {'segment': 'index'}
+    patients=Patient.objects.all()
+    msg=''
+    success=''
     html_template = loader.get_template('index.html')
-    return HttpResponse(html_template.render(context, request))
+    return render(request, "./index.html", {"patients": patients, "msg": msg, "success": success})
 
 
 @login_required(login_url="/login/")
@@ -46,6 +49,28 @@ def pages(request):
         return HttpResponse(html_template.render(context, request))
 
 
+def  updade_patient(request, pk):
+    msg = None
+    success = False
+    form = AddPatientForm()
+
+    return render(request, "./update_patient.html", {"form": form, "msg": msg, "success": success})
+
+def  delete_patient(request, pk):
+    msg = None
+    success = False
+    html_template = loader.get_template('index.html')
+    patient=Patient.objects.get(cin=pk)
+
+    try:
+        patient.delete()
+        msg = "patient{} has been successfully deleted"
+        success = False
+    except:
+        msg = "patient {} has not been deleted! ".format(patient.nom)
+        success = False
+    context={}
+    return HttpResponseRedirect("/")
 
 def add_patient(request):
     msg = None
