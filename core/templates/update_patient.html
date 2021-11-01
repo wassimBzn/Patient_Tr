@@ -31,7 +31,7 @@
             <div class="main-body">
                 <div class="page-wrapper">
                     <!-- [ Main Content ] start -->
-                    <form role="form" method="POST" action="/add_patient/">
+                    <form role="form" method="POST" action="/update_patient/{{ patient.cin }}/">
                         {% csrf_token %}
                         <div class="row">
 
@@ -39,7 +39,7 @@
 
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Ajout d'un patient</h5>
+                                        <h5>Modification d'un patient</h5>
                                     </div>
 
                                     <div class="card-body">

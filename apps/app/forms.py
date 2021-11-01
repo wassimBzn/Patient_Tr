@@ -11,6 +11,7 @@ class AddPatientForm(forms.Form):
                 "id": "nom",
                 "class": "form-control"
             }
+
         ))
 
     prenom = forms.CharField(
