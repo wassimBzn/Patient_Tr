@@ -11,6 +11,7 @@ from django.template import loader
 from django.urls import reverse
 from apps.app.models import *
 from apps.app.forms import AddPatientForm
+from apps.app.filters import PatientFilter
 
 
 @login_required(login_url="/login/")
@@ -20,7 +21,9 @@ def index(request):
     msg=''
     success=''
     html_template = loader.get_template('index.html')
-    return render(request, "./index.html", {"patients": patients, "msg": msg, "success": success})
+    MyFilter= PatientFilter(request.GET,queryset=patients)
+    patients= MyFilter.qs
+    return render(request, "./index.html", {"MyFilter": MyFilter, "patients": patients, "msg": msg, "success": success})
 
 
 @login_required(login_url="/login/")

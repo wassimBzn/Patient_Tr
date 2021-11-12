@@ -15,7 +15,9 @@
             <div class="main-body">
                 <div class="page-wrapper">
                     <!-- [ Main Content ] start -->
+
                     <div class="row">
+
                         <!--[ daily sales section ] start-->
                         <!--  <div class="col-md-6 col-xl-4">
                               <div class="card daily-sales">
@@ -81,15 +83,24 @@
 
                         <div class="col-xl-8 col-md-6">
                             <div class="card Recent-Users">
+
                                 <div class="card-header">
+
                                     <h5>Recent Users</h5>
                                 </div>
                                 <!-- Modal -->
 
                                 <div class="card-block px-0 py-3">
                                     <div class="table-responsive">
+                                        <form method="get">
+                                            {{ MyFilter.form }}
+                                            <button type="submit" class="label theme-bg text-white f-12" class="labe2 theme-bg2 text-white">Submit</button>
+
+                                        </form>
                                         <table class="table table-hover">
+
                                             <tbody>
+
                                             {% for patient in patients %}
                                                 <tr class="unread">
                                                     <td><img class="rounded-circle" style="width:40px;" src="/static/assets/images/user/avatar-1.jpg" alt="activity-user"></td>
@@ -116,7 +127,6 @@
                                                                 <div class="modal-footer">
 
                                                                     <a href="" data-toggle="modal"  data-target="#myModal" class="label theme-bg2 text-white">No</a>
-                                                                    <a href="/delete_patient/{{ patient.cin }}" class="label theme-bg text-white f-12">Yes</a>
 
                                                                 </div>
                                                             </div>
