@@ -39,6 +39,7 @@ services:
       - .:/application_source
     depends_on:
       - db
+
   nginx:
     container_name: nginx
     restart: always
