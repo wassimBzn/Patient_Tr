@@ -1,0 +1,5 @@
+docker exec -it appseed_app /bin/bash
+docker exec -it patient_tr_db_1 /bin/bash
+python manage.py createsuperuser
+root
+root@root.com
