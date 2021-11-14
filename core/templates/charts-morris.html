@@ -40,7 +40,7 @@
                     <div class="col-xl-6">
                         <div class="card">
                             <div class="card-header">
-                                <h5>Bar [ Simple ] Chart</h5>
+                                <h5>Examen Phisique par patient</h5>
 
                             </div>
                             <div class="card-block">
@@ -101,7 +101,7 @@
                     <div class="col-xl-6" >
                         <div class="card">
                             <div class="card-header">
-                                <h5>Donut Chart</h5>
+                                <h5>Examen Phisique par patient</h5>
                             </div>
                             <div class="card-block">
                                 <div id="morris-donut-chart" style="height:300px"></div>
@@ -132,28 +132,28 @@
                     data: [
                         {
                             y: 'T',
-                            b:  {{ T_Number }}+0.01,
+                            b:  {{ T_Number }},
                         },
                         {
                             y: 'PA',
-                            b:  {{ PA_Number }}+0.01,
+                            b:  {{ PA_Number }},
                         },
                         {
                             y: 'SLO',
-                            b:  {{ SLO_Number }}+0.01,
+                            b:  {{ SLO_Number }},
                         },
                         {
                             y: 'RC',
-                            b:  {{ RC_Number }}+0.01,
+                            b:  {{ RC_Number }},
                         }
                     ],
                     xkey: 'y',
                     barSizeRatio: 0.70,
-                    barGap: 3,
+                    barGap: 1,
                     resize: true,
                     responsive:true,
                     ykeys: ['a', 'b', 'c'],
-                    labels: ['Bar 1', 'Bar 2', 'Bar 3'],
+                    labels: ['Bar 1', 'Nombre des patients', 'Bar 3'],
                     barColors: ["0-#1de9b6-#1dc4e9", "0-#899FD4-#A389D4", "#04a9f5"]
                 });
                 // [ bar-simple ] chart end

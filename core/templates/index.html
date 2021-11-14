@@ -81,7 +81,7 @@
                          <!--[ year  sales section ] end-->
                         <!--[ Recent Users ] start-->
 
-                        <div class="col-xl-8 col-md-6">
+                        <div class="col-xl-9 col-md-6   ">
                             <div class="card Recent-Users">
 
                                 <div class="card-header">
@@ -93,8 +93,17 @@
                                 <div class="card-block px-0 py-3">
                                     <div class="table-responsive">
                                         <form method="get">
-                                            {{ MyFilter.form }}
-                                            <button type="submit" class="label theme-bg text-white f-12" class="labe2 theme-bg2 text-white">Submit</button>
+                                            <div class="col-md-6">
+                                                <label>Filter By</label>
+                                                <div class="form-group">
+                                                    <label>Nom</label>
+                                                    {{ MyFilter.form.nom }}
+                                                    <label>Date de naissance</label>
+                                                    {{ MyFilter.form.date_de_naissance }}
+                                                    <button type="submit" class="label theme-bg text-white f-12" class="labe2 theme-bg2 text-white">Submit</button>
+                                                </div>
+                                            </div>
+
 
                                         </form>
                                         <table class="table table-hover">
