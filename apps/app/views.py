@@ -25,6 +25,26 @@ def index(request):
     patients= MyFilter.qs
     return render(request, "./index.html", {"MyFilter": MyFilter, "patients": patients, "msg": msg, "success": success})
 
+def charts_patient(request):
+    context = {}
+    patients=Patient.objects.all()
+    msg=''
+    success=''
+    html_template = loader.get_template('charts-morris.html')
+    T_Number=Patient.objects.filter(T=True).count()
+    PA_Number=Patient.objects.filter(PA=True).count()
+    SLO_Number=Patient.objects.filter(Slo=True).count()
+    RC_Number=Patient.objects.filter(RC=True).count()
+    context['T_Number'] = T_Number
+    context['PA_Number'] = PA_Number
+    context['SLO_Number'] = SLO_Number
+    context['RC_Number'] = RC_Number
+    context['Patients_Number'] = patients.count()
+    context['patients'] = patients
+    context['msg'] = msg
+    context['success'] = success
+    return render(request, "./charts-morris.html", context)
+
 
 @login_required(login_url="/login/")
 def pages(request):
