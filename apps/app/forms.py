@@ -23,7 +23,7 @@ class AddPatientForm(forms.Form):
         ))
 
     date_de_naissance = forms.DateField(
-        widget=SelectDateWidget(
+        widget=SelectDateWidget(years=range(1900, 2023),
             empty_label=("Choose Year", "Choose Month", "Choose Day"),
             attrs={
                 "id": "date_de_naissance",
