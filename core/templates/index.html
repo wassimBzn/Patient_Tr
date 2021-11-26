@@ -95,11 +95,15 @@
                                         <form method="get">
                                             <div class="col-md-6">
                                                 <label>Filter By</label>
-                                                <div class="form-group">
+                                                <div class="form-group" style="display: inline;" >
                                                     <label>Nom</label>
                                                     {{ MyFilter.form.nom }}
+                                                    <label>Prénom</label>
+                                                    {{ MyFilter.form.prenom }}
                                                     <label>Date de naissance</label>
                                                     {{ MyFilter.form.date_de_naissance }}
+                                                    <label>CIN</label>
+                                                    {{ MyFilter.form.cin }}
                                                     <button type="submit" class="label theme-bg text-white f-12" class="labe2 theme-bg2 text-white">Submit</button>
                                                 </div>
                                             </div>
@@ -131,11 +135,12 @@
 
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <p>Do you really want to delete this patient? </p>
+                                                                    <p>Do you really want to delete thisthis patient? </p>
                                                                 </div>
                                                                 <div class="modal-footer">
 
                                                                     <a href="" data-toggle="modal"  data-target="#myModal" class="label theme-bg2 text-white">No</a>
+                                                                    <a href="/delete_patient/{{ patient.cin }}" class="label theme-bg text-white f-12">Yes</a>
 
                                                                 </div>
                                                             </div>
