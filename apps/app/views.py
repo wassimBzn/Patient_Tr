@@ -14,9 +14,15 @@ from apps.app.models import *
 from apps.app.forms import AddPatientForm
 from apps.app.filters import PatientFilter
 import xlwt
-
+from django.views.generic import ListView
+from django.core.paginator import Paginator
+from django.shortcuts import render
 
 @login_required(login_url="/login/")
+
+class ContactListView(ListView):
+    paginate_by = 2
+    model = Patient
 
 def Export_excel(request):
     columns = ['nom', 'prenom', 'date_de_naissance', 'lieu_de_naissance', 'profession', 'adresse', 'cin',
@@ -50,7 +56,11 @@ def index(request):
     html_template = loader.get_template('index.html')
     MyFilter = PatientFilter(request.GET, queryset=patients)
     patients = MyFilter.qs
-    return render(request, "./index.html", {"MyFilter": MyFilter, "patients": patients, "msg": msg, "success": success})
+    paginator = Paginator(patients, 2) # Show 25 contacts per page.
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, "./index.html", {'page_obj': page_obj, "MyFilter": MyFilter, "patients": patients, "msg": msg, "success": success})
 
 
 def charts_patient(request):
