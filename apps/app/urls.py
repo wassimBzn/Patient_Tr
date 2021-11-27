@@ -12,6 +12,7 @@ urlpatterns = [
     path('update_patient/<str:pk>/',update_patient,name='update_patient'),
     path('delete_patient/<str:pk>/',delete_patient,name='delete_patient'),
     path('charts_patient/',charts_patient,name='charts_patient'),
+    path('Export_excel/',Export_excel,name='Export_excel'),
 
     # Matches any html file
    # re_path(r'^.*\.*', pages, name='pages'),
