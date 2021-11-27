@@ -21,7 +21,7 @@
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
                                 <li class="breadcrumb-item"><a href="javascript:">Gestion des patients</a></li>
-                                <li class="breadcrumb-item"><a href="javascript:">Modification d'un patient</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:">Plus de détail sur le patient patient</a></li>
                             </ul>
                         </div>
                     </div>
@@ -39,65 +39,61 @@
 
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Modification d'un patient</h5>
+                                        <h5>les infos du patient</h5>
                                     </div>
 
-                                    <div class="card-body">
+                                   <h6><div class="card-body">
 
                                         <h5>Informations Generales</h5>
-                                        {% if success %}
-                                            <div style="text-align: center;color:#1c7430"><label>{{ msg }}</label></div>
-                                        {% else %}
-                                             <div style="text-align: center;color:#c82333"><label>{{ msg }}</label></div>
-                                         {% endif %}
-                                        <hr>
+                                        <br><br><br>
                                         <div class="col-md-6">
 
                                             <div class="form-group">
-                                                <label>Nom</label>
-                                                {{ form.nom }}
+                                                <b><label>Nom: <br></label></b>
+                                                <label>{{ patient.nom }}</label>
                                             </div>
                                             <div class="form-group">
-                                                <label>Prénom</label>
-                                                {{ form.prenom }}
+                                                <b><label>Prénom: <br></label></b>
+                                                <label>{{ patient.prenom }}</label>
                                             </div>
                                             <div class="form-group">
-                                                <label>Date de naissance</label>
-                                                {{ form.date_de_naissance }}
+                                                <b><label>Date de naissance: <br></label></b>
+                                                <label>{{ patient.date_de_naissance }}</label>
 
                                             </div>
                                             <div class="form-group">
-                                                <label>Lieu de naissance</label>
-                                                {{ form.lieu_de_naissance }}
+                                                <b><label>Lieu de naissance: <br></label></b>
+                                                <label>{{ patient.lieu_de_naissance }}</label>
                                             </div>
                                             <div class="form-group">
-                                                <label>Profession</label>
-                                                {{ form.profession }}
+                                                <b><label>Profession: <br></label></b>
+                                                <label>{{ patient.profession }}</label>
                                             </div>
                                             <div class="form-group">
-                                                <label>Adresse</label>
-                                                {{ form.adresse }}
+                                                <b><label>Adresse: <br></label></b>
+                                                <label>{{ patient.adresse }}</label>
                                             </div>
                                             <div class="form-group">
-                                                <label>Pièce d'identité</label>
-                                                {{ form.cin }}
+                                                <b><label>Pièce d'identité: <br></label></b>
+                                                <label>{{ patient.cin }}</label>
                                             </div>
                                             <div class="form-group">
-                                                <label>Statut matrimonial</label>
-                                                {{ form.statut_matrimonial }}
+                                                <b><label>Statut matrimonial: <br></label></b>
+                                                <label>{{ patient.statut_matrimonial }}</label>
                                             </div>
                                             <div class="form-group">
-                                                <label>Téléphone GSM</label>
-                                                {{ form.telephone }}
+                                                <b><label>Téléphone GSM: <br></label></b>
+                                                <label>{{ patient.telephone }}</label>
                                             </div>
 
                                         </div>
-                                    </div>
+
+                                    </div></h6>
                                 </div>
                             </div>
                         </div>
                         <!-- Input group -->
-
+                        <h6>
                         <div class="card">
                             <div class="card-header">
                                 <h5>Habitude</h5>
@@ -106,8 +102,8 @@
 
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="tabagisme">Tabagisme (PA) Alcoolisme Allergies connue</label>
-                                    {{ form.tabagisme }}
+                                    <b> <label for="tabagisme">Tabagisme (PA) Alcoolisme Allergies connue: <br> </label></b>
+                                    <label>{{ patient.tabagisme }}</label>
                                 </div>
                             </div>
                         </div>
@@ -118,52 +114,53 @@
 
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="antecedentes">Antécédents</label>
-                                    {{ form.antecedentes }}
+                                    <b> <label for="antecedentes">Antécédents: <br> </label></b>
+                                    <label>{{ patient.antecedentes }}</label>
                                 </div>
                                 <div class="form-group">
-                                    <label for="medication_en_cours">Médication en cours</label>
-                                    {{ form.medication_en_cours }}
+                                    <b> <label for="medication_en_cours">Médication en cours: <br> </label></b>
+                                    <label>{{ patient.medication_en_cours }}</label>
                                 </div>
                                 <div class="form-group">
-                                    <label for="plaintes">Plaintes</label>
-                                    {{ form.plaintes }}
+                                    <b> <label for="plaintes">Plaintes: <br> </label></b>
+                                    <label>{{ patient.plaintes }}</label>
                                 </div>
 
 
                                 <div class="form-group">
-                                    <label for="reste_de_examen">Reste de l'éxamen</label>
-                                    {{ form.reste_de_examen }}
+                                    <b> <label for="reste_de_examen">Reste de l'éxamen: <br> </label></b>
+                                    <label>{{ patient.reste_de_examen }}</label>
                                 </div>
 
                                 <div class="form-group form-check" id="examen_phisique">
-                                    <label for="Examen_Phisique">Examen Phisique</label>  <br>
-                                    {{ form.T }}
-                                    <label class="form-check-label" for="T"> T </label><br>
-                                    {{ form.PA }}
-                                    <label class="form-check-label" for="PA"> PA </label><br>
-                                    {{ form.Slo }}
+                                    <b> <label for="Examen_Phisique">Examen Phisique: <br> </label></b>  <br>
 
-                                    <label class="form-check-label" for="Slo"> Slo </label><br>
-                                    {{ form.RC }}
-                                    <label class="form-check-label" for="RC"> RC </label><br>
+                                    <b> <label class="form-check-label" for="T"> T :  </label></b>
+                                    <label>{{ patient.T }}</label>
+                                    <br> <b> <label class="form-check-label" for="PA"> PA :   </label></b>
+                                    <label>{{ patient.PA }}</label>
+                                    <br> <b> <label class="form-check-label" for="Slo"> Slo : <br> </label></b>
+                                    <label>{{ patient.Slo }}</label>
+                                    <br> <b><label class="form-check-label" for="RC"> RC : <br> </label> </b>
+                                    <label>{{ patient.RC }}</label>
                                 </div>
                                 <div class="form-group">
-                                    <label for="explorations">Explorations</label>
-                                    {{ form.explorations }}
+                                    <b> <label for="explorations">Explorations: <br> </label></b>
+                                    <label>{{ patient.explorations }}</label>
                                 </div>
                                 <div class="form-group">
-                                    <label for="traitement">Traitement</label>
-                                    {{ form.traitement }}
+                                    <b> <label for="traitement">Traitement: <br> </label></b>
+                                    <label>{{ patient.traitement }}</label>
                                 </div>
                                 <div class="form-group">
-                                    <label for="evolution">Evolution</label>
-                                    {{ form.evolution }}
+                                    <b> <label for="evolution">Evolution: <br> </label></b>
+                                    <label>{{ patient.evolution }}</label>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                                <a href="/" class="label theme-bg text-white f-12" style="margin-left: 50%">back to main menu</a> <br><br>
 
                             </div>
                         </div>
+                        </h6>
                     </form>
                 </div>
 

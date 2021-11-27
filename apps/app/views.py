@@ -116,6 +116,16 @@ def delete_patient(request, pk):
     context = {}
     return HttpResponseRedirect("/")
 
+def view_patient(request, pk):
+    msg = 'Success'
+    try:
+        patient = Patient.objects.get(cin=pk)
+    except:
+        msg = 'Patient does not exists!'
+        success = False
+        return HttpResponseRedirect("/")
+
+    return render(request, "./view_patient.html", {"msg": msg, "patient": patient})
 
 def update_patient(request, pk):
     msg = None
