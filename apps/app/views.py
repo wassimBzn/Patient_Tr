@@ -53,10 +53,9 @@ def index(request):
     patients = Patient.objects.all()
     msg = ''
     success = ''
-    html_template = loader.get_template('index.html')
     MyFilter = PatientFilter(request.GET, queryset=patients)
     patients = MyFilter.qs
-    paginator = Paginator(patients, 2) # Show 25 contacts per page.
+    paginator = Paginator(patients, 20)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
