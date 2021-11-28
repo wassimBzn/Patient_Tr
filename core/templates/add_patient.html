@@ -1,0 +1,179 @@
+
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Forms {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="page-header-title">
+                                <h5 class="m-b-10">Ajout <patient></patient></h5>
+                            </div>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                                <li class="breadcrumb-item"><a href="javascript:">Gestion des patients</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:">Ajout d'un patient</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <form role="form" method="POST" action="/add_patient/">
+                        {% csrf_token %}
+                        <div class="row">
+
+                            <div class="col-sm-12">
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Ajout d'un patient</h5>
+                                    </div>
+
+                                    <div class="card-body">
+
+                                        <h5>Informations Generales</h5>
+                                        {% if success %}
+                                            <div style="text-align: center;color:#1c7430"><label>{{ msg }}</label></div>
+                                        {% else %}
+                                             <div style="text-align: center;color:#c82333"><label>{{ msg }}</label></div>
+                                         {% endif %}
+                                        <hr>
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label>Nom</label>
+                                                {{ form.nom }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Prénom</label>
+                                                {{ form.prenom }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Date de naissance</label>
+                                                {{ form.date_de_naissance }}
+
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Lieu de naissance</label>
+                                                {{ form.lieu_de_naissance }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Profession</label>
+                                                {{ form.profession }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Adresse</label>
+                                                {{ form.adresse }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Pièce d'identité</label>
+                                                {{ form.cin }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Statut matrimonial</label>
+                                                {{ form.statut_matrimonial }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Téléphone GSM</label>
+                                                {{ form.telephone }}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Input group -->
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Habitude</h5>
+
+                            </div>
+
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="tabagisme">Tabagisme (PA) Alcoolisme Allergies connue</label>
+                                    {{ form.tabagisme }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>ANTECEDENTES</h5>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="antecedentes">Antécédents</label>
+                                    {{ form.antecedentes }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="medication_en_cours">Médication en cours</label>
+                                    {{ form.medication_en_cours }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="plaintes">Plaintes</label>
+                                    {{ form.plaintes }}
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="reste_de_examen">Reste de l'éxamen</label>
+                                    {{ form.reste_de_examen }}
+                                </div>
+
+                                <div class="form-group form-check" id="examen_phisique">
+                                    <label for="Examen_Phisique">Examen Phisique</label>  <br>
+                                    {{ form.T }}
+                                    <label class="form-check-label" for="T"> T </label><br>
+                                    {{ form.PA }}
+                                    <label class="form-check-label" for="PA"> PA </label><br>
+                                    {{ form.Slo }}
+
+                                    <label class="form-check-label" for="Slo"> Slo </label><br>
+                                    {{ form.RC }}
+                                    <label class="form-check-label" for="RC"> RC </label><br>
+                                </div>
+                                <div class="form-group">
+                                    <label for="explorations">Explorations</label>
+                                    {{ form.explorations }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="traitement">Traitement</label>
+                                    {{ form.traitement }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="evolution">Evolution</label>
+                                    {{ form.evolution }}
+                                </div>
+                                <button type="submit" class="btn btn-primary">Sauvegarder</button>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

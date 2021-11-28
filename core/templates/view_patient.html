@@ -1,0 +1,176 @@
+
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Forms {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="page-header-title">
+                                <h5 class="m-b-10">Ajout <patient></patient></h5>
+                            </div>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                                <li class="breadcrumb-item"><a href="javascript:">Gestion des patients</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:">Plus de détail sur le patient patient</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <form role="form" method="POST" action="/update_patient/{{ patient.cin }}/">
+                        {% csrf_token %}
+                        <div class="row">
+
+                            <div class="col-sm-12">
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>les infos du patient</h5>
+                                    </div>
+
+                                   <h6><div class="card-body">
+
+                                        <h5>Informations Generales</h5>
+                                        <br><br><br>
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <b><label>Nom: <br></label></b>
+                                                <label>{{ patient.nom }}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <b><label>Prénom: <br></label></b>
+                                                <label>{{ patient.prenom }}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <b><label>Date de naissance: <br></label></b>
+                                                <label>{{ patient.date_de_naissance }}</label>
+
+                                            </div>
+                                            <div class="form-group">
+                                                <b><label>Lieu de naissance: <br></label></b>
+                                                <label>{{ patient.lieu_de_naissance }}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <b><label>Profession: <br></label></b>
+                                                <label>{{ patient.profession }}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <b><label>Adresse: <br></label></b>
+                                                <label>{{ patient.adresse }}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <b><label>Pièce d'identité: <br></label></b>
+                                                <label>{{ patient.cin }}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <b><label>Statut matrimonial: <br></label></b>
+                                                <label>{{ patient.statut_matrimonial }}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <b><label>Téléphone GSM: <br></label></b>
+                                                <label>{{ patient.telephone }}</label>
+                                            </div>
+
+                                        </div>
+
+                                    </div></h6>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Input group -->
+                        <h6>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Habitude</h5>
+
+                            </div>
+
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <b> <label for="tabagisme">Tabagisme (PA) Alcoolisme Allergies connue: <br> </label></b>
+                                    <label>{{ patient.tabagisme }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>ANTECEDENTES</h5>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <b> <label for="antecedentes">Antécédents: <br> </label></b>
+                                    <label>{{ patient.antecedentes }}</label>
+                                </div>
+                                <div class="form-group">
+                                    <b> <label for="medication_en_cours">Médication en cours: <br> </label></b>
+                                    <label>{{ patient.medication_en_cours }}</label>
+                                </div>
+                                <div class="form-group">
+                                    <b> <label for="plaintes">Plaintes: <br> </label></b>
+                                    <label>{{ patient.plaintes }}</label>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <b> <label for="reste_de_examen">Reste de l'éxamen: <br> </label></b>
+                                    <label>{{ patient.reste_de_examen }}</label>
+                                </div>
+
+                                <div class="form-group form-check" id="examen_phisique">
+                                    <b> <label for="Examen_Phisique">Examen Phisique: <br> </label></b>  <br>
+
+                                    <b> <label class="form-check-label" for="T"> T :  </label></b>
+                                    <label>{{ patient.T }}</label>
+                                    <br> <b> <label class="form-check-label" for="PA"> PA :   </label></b>
+                                    <label>{{ patient.PA }}</label>
+                                    <br> <b> <label class="form-check-label" for="Slo"> Slo : <br> </label></b>
+                                    <label>{{ patient.Slo }}</label>
+                                    <br> <b><label class="form-check-label" for="RC"> RC : <br> </label> </b>
+                                    <label>{{ patient.RC }}</label>
+                                </div>
+                                <div class="form-group">
+                                    <b> <label for="explorations">Explorations: <br> </label></b>
+                                    <label>{{ patient.explorations }}</label>
+                                </div>
+                                <div class="form-group">
+                                    <b> <label for="traitement">Traitement: <br> </label></b>
+                                    <label>{{ patient.traitement }}</label>
+                                </div>
+                                <div class="form-group">
+                                    <b> <label for="evolution">Evolution: <br> </label></b>
+                                    <label>{{ patient.evolution }}</label>
+                                </div>
+                                <a href="/" class="label theme-bg text-white f-12" style="margin-left: 50%">back to main menu</a> <br><br>
+
+                            </div>
+                        </div>
+                        </h6>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

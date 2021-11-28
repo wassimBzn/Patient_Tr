@@ -1,5 +1,5 @@
-FROM python:3.9
-
+FROM python:latest
+WORKDIR /application_source
 COPY . .
 
 # set environment variables
@@ -8,10 +8,9 @@ ENV PYTHONUNBUFFERED 1
 
 # install python dependencies
 RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 # running migrations
-RUN python manage.py migrate
 
 # gunicorn
 CMD ["gunicorn", "--config", "gunicorn-cfg.py", "core.wsgi"]
