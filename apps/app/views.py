@@ -155,10 +155,12 @@ def update_patient(request, pk):
             antecedentes = form.cleaned_data.get("antecedentes")
             medication_en_cours = form.cleaned_data.get("medication_en_cours")
             plaintes = form.cleaned_data.get("plaintes")
-            reste_de_examen = form.cleaned_data.get("reste_de_examen")
-            T = form.cleaned_data.get("T")
+            reste_de_examen_clinique = form.cleaned_data.get("reste_de_examen_clinique")
+            Temperatue = form.cleaned_data.get("T")
             PA = form.cleaned_data.get("PA")
-            Slo = form.cleaned_data.get("Slo")
+            SRO = form.cleaned_data.get("Slo")
+            Poids = form.cleaned_data.get("Poids")
+            Taille = form.cleaned_data.get("Taille")
             RC = form.cleaned_data.get("RC")
             explorations = form.cleaned_data.get("explorations")
             traitement = form.cleaned_data.get("traitement")
@@ -178,11 +180,13 @@ def update_patient(request, pk):
                 patient.antecedentes = antecedentes
                 patient.medication_en_cours = medication_en_cours
                 patient.plaintes = plaintes
-                patient.reste_de_examen = reste_de_examen
-                patient.T = T
-                patient.PA = PA
-                patient.Slo = Slo
-                patient.RC = RC
+                reste_de_examen_clinique.reste_de_examen_clinique =reste_de_examen_clinique
+                Temperatue.Temperatue =Temperatue
+                PA.PA =PA
+                SRO.SRO =SRO
+                Poids.Poids =Poids
+                Taille.Taille =Taille
+                RC.RC =RC
                 patient.explorations = explorations
                 patient.traitement = traitement
                 patient.evolution = evolution
@@ -214,10 +218,12 @@ def update_patient(request, pk):
                                        'antecedentes': patient.antecedentes,
                                        'medication_en_cours': patient.medication_en_cours,
                                        'plaintes': patient.plaintes,
-                                       'reste_de_examen': patient.reste_de_examen,
-                                       'T': patient.T,
+                                       'reste_de_examen_clinique': patient.reste_de_examen_clinique,
+                                       'Temperatue': patient.Temperatue,
                                        'PA': patient.PA,
-                                       'Slo': patient.Slo,
+                                       'SRO': patient.SRO,
+                                       'Poids':patient.Poids,
+                                       'Taille':patient.Taille,
                                        'RC': patient.RC,
                                        'explorations': patient.explorations,
                                        'traitement': patient.traitement,
@@ -247,10 +253,12 @@ def add_patient(request):
             antecedentes = form.cleaned_data.get("antecedentes")
             medication_en_cours = form.cleaned_data.get("medication_en_cours")
             plaintes = form.cleaned_data.get("plaintes")
-            reste_de_examen = form.cleaned_data.get("reste_de_examen")
-            T = form.cleaned_data.get("T")
+            reste_de_examen_clinique = form.cleaned_data.get("reste_de_examen_clinique")
+            Temperature = form.cleaned_data.get("Temperature")
             PA = form.cleaned_data.get("PA")
-            Slo = form.cleaned_data.get("Slo")
+            SRO = form.cleaned_data.get("SRO")
+            Poids = form.cleaned_data.get("Poids")
+            Taille = form.cleaned_data.get("Taille")
             RC = form.cleaned_data.get("RC")
             explorations = form.cleaned_data.get("explorations")
             traitement = form.cleaned_data.get("traitement")
@@ -264,7 +272,7 @@ def add_patient(request):
             except:
                 new_patient = Patient(nom, prenom, date_de_naissance, lieu_de_naissance, profession, adresse, cin,
                                       statut_matrimonial, telephone, tabagisme, antecedentes, medication_en_cours,
-                                      plaintes, reste_de_examen, T, PA, Slo, RC, explorations, traitement, evolution)
+                                      plaintes, reste_de_examen_clinique, Temperature, PA, SRO,Poids,Taille, RC, explorations, traitement, evolution)
                 new_patient.save()
                 msg = 'Patient has been successfully created !'
                 success = True

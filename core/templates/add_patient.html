@@ -129,26 +129,40 @@
                                     <label for="plaintes">Plaintes</label>
                                     {{ form.plaintes }}
                                 </div>
-
-
-                                <div class="form-group">
-                                    <label for="reste_de_examen">Reste de l'éxamen</label>
-                                    {{ form.reste_de_examen }}
-                                </div>
-
-                                <div class="form-group form-check" id="examen_phisique">
+                                <div id="examen_phisique">
                                     <label for="Examen_Phisique">Examen Phisique</label>  <br>
-                                    {{ form.T }}
-                                    <label class="form-check-label" for="T"> T </label><br>
-                                    {{ form.PA }}
-                                    <label class="form-check-label" for="PA"> PA </label><br>
-                                    {{ form.Slo }}
 
-                                    <label class="form-check-label" for="Slo"> Slo </label><br>
-                                    {{ form.RC }}
-                                    <label class="form-check-label" for="RC"> RC </label><br>
+                                    <div class="form-group">
+                                        <label> Temperature </label>
+                                        {{ form.Temperature }}
+                                    </div>
+                                    <div class="form-group">
+                                        <label> PA </label>
+                                        {{ form.PA }}
+                                    </div>
+                                    <div class="form-group">
+                                        <label> SRO </label>
+                                        {{ form.SRO }}
+                                    </div>
+                                    <div class="form-group">
+                                        <label> Poids </label>
+                                        {{ form.Poids }}
+                                    </div>
+                                    <div class="form-group">
+                                        <label> Taille </label>
+                                        {{ form.Taille }}
+                                    </div>
+                                    <div class="form-group">
+                                        <label> RC </label>
+                                        {{ form.RC }}
+                                    </div>
                                 </div>
+
                                 <div class="form-group">
+                                    <label for="reste_de_examen">Reste de l'éxamen clinique</label>
+                                    {{ form.reste_de_examen_clinique }}
+                                </div>
+                                <div class="form-group" >
                                     <label for="explorations">Explorations</label>
                                     {{ form.explorations }}
                                 </div>

@@ -3,6 +3,10 @@ from django.forms import SelectDateWidget
 
 from apps.app.models import *
 
+GENDER_CHOICES =(
+    ("Male", "Masculine"),
+    ("Female", "Feminine"),
+)
 
 class AddPatientForm(forms.Form):
     nom = forms.CharField(
@@ -63,6 +67,16 @@ class AddPatientForm(forms.Form):
             }
         ))
 
+    sexe = forms.MultipleChoiceField(
+        required=False,
+        widget=forms.CheckboxSelectMultiple(
+            attrs={
+                "id": "statut_matrimonial",
+                "class": "form-control"
+            }
+        ),
+        choices=GENDER_CHOICES,
+    )
     statut_matrimonial = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -111,43 +125,59 @@ class AddPatientForm(forms.Form):
             }
         ))
 
-    reste_de_examen = forms.CharField(
-        widget=forms.TextInput(
+
+    Temperature = forms.FloatField(required=False,
+        widget=forms.NumberInput(
             attrs={
-                "id": "reste_de_examen",
+                "id": "Temperature",
                 "class": "form-control"
             }
         ))
 
-    T = forms.BooleanField(required=False,
-        widget=forms.CheckboxInput(
-            attrs={
-                "id": "T",
-                "class": "form-check-input"
-            }
-        ))
-
-    PA = forms.BooleanField(required=False,
-        widget=forms.CheckboxInput(
+    PA = forms.FloatField(required=False,
+        widget=forms.NumberInput(
             attrs={
                 "id": "PA",
-                "class": "form-check-input"
+                "class": "form-control"
             }
         ))
 
-    Slo = forms.BooleanField(required=False,
-        widget=forms.CheckboxInput(
+    Poids = forms.FloatField(required=False,
+        widget=forms.NumberInput(
             attrs={
-                "id": "Slo",
-                "class": "form-check-input"
+                "id": "Poids",
+                "class": "form-control"
             }
         ))
 
-    RC = forms.BooleanField(required=False,
-        widget=forms.CheckboxInput(
+
+    Taille = forms.FloatField(required=False,
+        widget=forms.NumberInput(
+            attrs={
+                "id": "Taille",
+                "class": "form-control"
+            }
+        ))
+    SRO = forms.FloatField(required=False,
+        widget=forms.NumberInput(
+            attrs={
+                "id": "SRO",
+                "class": "form-control"
+            }
+        ))
+
+    RC = forms.FloatField(required=False,
+        widget=forms.NumberInput(
             attrs={
                 "id": "RC",
-                "class": "form-check-input"
+                "class": "form-control"
+            }
+        ))
+    reste_de_examen_clinique = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "id": "reste_de_examen_clinique",
+                "class": "form-control"
             }
         ))
 

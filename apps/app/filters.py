@@ -10,4 +10,4 @@ class PatientFilter(django_filters.FilterSet):
 
     class Meta:
         model = Patient
-        fields = ['cin', 'nom', 'prenom', 'date_de_naissance',]
+        fields = ['Cin', 'Nom', 'Prenom', 'Date_de_naissance',]
