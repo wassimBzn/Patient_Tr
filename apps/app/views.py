@@ -55,7 +55,7 @@ def Export_excel(request):
 
 
 def index(request):
-    patients = Patient.objects.all()
+    patients = Patient.objects.get_queryset().order_by('Nom')
     msg = ''
     success = ''
     MyFilter = PatientFilter(request.GET, queryset=patients)
