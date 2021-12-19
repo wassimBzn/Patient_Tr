@@ -61,7 +61,6 @@ def index(request):
     MyFilter = PatientFilter(request.GET, queryset=patients)
     patients = MyFilter.qs
     paginator = Paginator(patients, 20)
-
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, "./index.html",
@@ -135,7 +134,7 @@ def delete_patient(request, pk):
 def view_patient(request, pk):
     msg = 'Success'
     try:
-        patient = Patient.objects.get(cin=pk)
+        patient = Patient.objects.get(Cin=pk)
     except:
         msg = 'Patient does not exists!'
         success = False
@@ -147,99 +146,61 @@ def view_patient(request, pk):
 def update_patient(request, pk):
     msg = None
     success = False
-    if request.method == "POST":
-        form = AddPatientForm(request.POST or None)
-        if form.is_valid():
-            nom = form.cleaned_data.get("nom")
-            prenom = form.cleaned_data.get("prenom")
-            date_de_naissance = form.cleaned_data.get("date_de_naissance")
-            lieu_de_naissance = form.cleaned_data.get("lieu_de_naissance")
-            profession = form.cleaned_data.get("profession")
-            adresse = form.cleaned_data.get("adresse")
-            cin = form.cleaned_data.get("cin")
-            statut_matrimonial = form.cleaned_data.get("statut_matrimonial")
-            telephone = form.cleaned_data.get("telephone")
-            tabagisme = form.cleaned_data.get("tabagisme")
-            antecedentes = form.cleaned_data.get("antecedentes")
-            medication_en_cours = form.cleaned_data.get("medication_en_cours")
-            plaintes = form.cleaned_data.get("plaintes")
-            reste_de_examen_clinique = form.cleaned_data.get("reste_de_examen_clinique")
-            Temperatue = form.cleaned_data.get("T")
-            PA = form.cleaned_data.get("PA")
-            SRO = form.cleaned_data.get("Slo")
-            Poids = form.cleaned_data.get("Poids")
-            Taille = form.cleaned_data.get("Taille")
-            RC = form.cleaned_data.get("RC")
-            explorations = form.cleaned_data.get("explorations")
-            traitement = form.cleaned_data.get("traitement")
-            evolution = form.cleaned_data.get("evolution")
-            try:
-                patient = Patient.objects.get(cin=pk)
-                patient.nom = nom
-                patient.prenom = prenom
-                patient.date_de_naissance = date_de_naissance
-                patient.lieu_de_naissance = lieu_de_naissance
-                patient.profession = profession
-                patient.adresse = adresse
-                patient.cin = cin
-                patient.statut_matrimonial = statut_matrimonial
-                patient.telephone = telephone
-                patient.tabagisme = tabagisme
-                patient.antecedentes = antecedentes
-                patient.medication_en_cours = medication_en_cours
-                patient.plaintes = plaintes
-                reste_de_examen_clinique.reste_de_examen_clinique = reste_de_examen_clinique
-                Temperatue.Temperatue = Temperatue
-                PA.PA = PA
-                SRO.SRO = SRO
-                Poids.Poids = Poids
-                Taille.Taille = Taille
-                RC.RC = RC
-                patient.explorations = explorations
-                patient.traitement = traitement
-                patient.evolution = evolution
+    try:
+        patient = Patient.objects.get(Cin=pk)
+        if request.method == "POST":
+            form = AddPatientForm(request.POST or None)
+            if form.is_valid():
+                Nom = form.cleaned_data.get("nom")
+                Prenom = form.cleaned_data.get("prenom")
+                Date_de_naissance = form.cleaned_data.get("date_de_naissance")
+                Lieu_de_naissance = form.cleaned_data.get("lieu_de_naissance")
+                Profession = form.cleaned_data.get("profession")
+                Adresse = form.cleaned_data.get("adresse")
+                Cin = form.cleaned_data.get("cin")
+                Sexe = form.cleaned_data.get("sexe")
+                Statut_matrimonial = form.cleaned_data.get("statut_matrimonial")
+                Telephone = form.cleaned_data.get("telephone")
+                patient.Nom = Nom
+                patient.Prenom = Prenom
+                patient.Date_de_naissance = Date_de_naissance
+                patient.Lieu_de_naissance = Lieu_de_naissance
+                patient.Profession = Profession
+                patient.Adresse = Adresse
+                patient.Cin = Cin
+                patient.Sexe = Sexe
+                patient.Statut_matrimonial = Statut_matrimonial
+                patient.Telephone = Telephone
+
                 patient.save()
                 msg = 'Patient Already exists!'
                 success = False
                 return HttpResponseRedirect("/")
-
-            except:
-                form = AddPatientForm()
-                msg = 'Patient does not exists!'
+            else:
                 success = False
-                return HttpResponseRedirect("/")
-            # return redirect("/login/")
+                msg = 'Form is not valid: {}'.format(form.errors)
         else:
-            msg = 'Form is not valid'
-    else:
-        patient = Patient.objects.get(cin=pk)
-        form = AddPatientForm(initial={'nom': patient.nom,
-                                       'prenom': patient.prenom,
-                                       'date_de_naissance': patient.date_de_naissance,
-                                       'lieu_de_naissance': patient.lieu_de_naissance,
-                                       'profession': patient.profession,
-                                       'adresse': patient.adresse,
-                                       'cin': patient.cin,
-                                       'statut_matrimonial': patient.statut_matrimonial,
-                                       'telephone': patient.telephone,
-                                       'tabagisme': patient.tabagisme,
-                                       'antecedentes': patient.antecedentes,
-                                       'medication_en_cours': patient.medication_en_cours,
-                                       'plaintes': patient.plaintes,
-                                       'reste_de_examen_clinique': patient.reste_de_examen_clinique,
-                                       'Temperatue': patient.Temperatue,
-                                       'PA': patient.PA,
-                                       'SRO': patient.SRO,
-                                       'Poids': patient.Poids,
-                                       'Taille': patient.Taille,
-                                       'RC': patient.RC,
-                                       'explorations': patient.explorations,
-                                       'traitement': patient.traitement,
-                                       'evolution': patient.evolution})
+            form = AddPatientForm(initial={'nom': patient.Nom,
+                                           'prenom': patient.Prenom,
+                                           'date_de_naissance': patient.Date_de_naissance,
+                                           'lieu_de_naissance': patient.Lieu_de_naissance,
+                                           'profession': patient.Profession,
+                                           'adresse': patient.Adresse,
+                                           'cin': patient.Cin,
+                                           'sexe': patient.Sexe,
+                                           'statut_matrimonial': patient.Statut_matrimonial,
+                                           'telephone': patient.Telephone,})
 
-        patient = Patient.objects.get(cin=pk)
+            patient = Patient.objects.get(Cin=pk)
+    except:
+        form = AddPatientForm()
+        msg = 'Patient does not exists!'
+        success = False
+        return HttpResponseRedirect("/")
+    # return redirect("/login/")
 
-    return render(request, "./update_patient.html", {"form": form, "patient": patient})
+
+    return render(request, "./update_patient.html", {"success":success,"msg":msg,"form": form, "patient": patient})
 
 
 def add_patient(request):
