@@ -18,11 +18,12 @@ from django.views.generic import ListView
 from django.core.paginator import Paginator
 from django.shortcuts import render
 
-@login_required(login_url="/login/")
 
+@login_required(login_url="/login/")
 class ContactListView(ListView):
     paginate_by = 2
     model = Patient
+
 
 def Export_excel(request):
     columns = ['nom', 'prenom', 'date_de_naissance', 'lieu_de_naissance', 'profession', 'adresse', 'cin',
@@ -37,13 +38,17 @@ def Export_excel(request):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
     for columns_num in range(len(columns)):
-        sheet.write(row_num,columns_num,columns[columns_num],font_style)
+        sheet.write(row_num, columns_num, columns[columns_num], font_style)
     font_style = xlwt.XFStyle()
     for patient in patients:
-        row_num +=1
-        patient_list=[patient.nom,patient.prenom,patient.date_de_naissance,patient.lieu_de_naissance,patient.profession,patient.adresse,patient.cin,patient.statut_matrimonial,patient.telephone,patient.tabagisme,patient.antecedentes,patient.medication_en_cours,patient.plaintes,patient.reste_de_examen,patient.T,patient.PA,patient.Slo,patient.RC,patient.explorations,patient.traitement,patient.evolution]
+        row_num += 1
+        patient_list = [patient.nom, patient.prenom, patient.date_de_naissance, patient.lieu_de_naissance,
+                        patient.profession, patient.adresse, patient.cin, patient.statut_matrimonial, patient.telephone,
+                        patient.tabagisme, patient.antecedentes, patient.medication_en_cours, patient.plaintes,
+                        patient.reste_de_examen, patient.T, patient.PA, patient.Slo, patient.RC, patient.explorations,
+                        patient.traitement, patient.evolution]
         for columns_num in range(len(patient_list)):
-            sheet.write(row_num,columns_num,patient_list[columns_num],font_style)
+            sheet.write(row_num, columns_num, patient_list[columns_num], font_style)
     wb.save(response)
 
     return response
@@ -59,7 +64,8 @@ def index(request):
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, "./index.html", {'page_obj': page_obj, "MyFilter": MyFilter, "patients": patients, "msg": msg, "success": success})
+    return render(request, "./index.html",
+                  {'page_obj': page_obj, "MyFilter": MyFilter, "patients": patients, "msg": msg, "success": success})
 
 
 def charts_patient(request):
@@ -125,6 +131,7 @@ def delete_patient(request, pk):
     context = {}
     return HttpResponseRedirect("/")
 
+
 def view_patient(request, pk):
     msg = 'Success'
     try:
@@ -135,6 +142,7 @@ def view_patient(request, pk):
         return HttpResponseRedirect("/")
 
     return render(request, "./view_patient.html", {"msg": msg, "patient": patient})
+
 
 def update_patient(request, pk):
     msg = None
@@ -180,13 +188,13 @@ def update_patient(request, pk):
                 patient.antecedentes = antecedentes
                 patient.medication_en_cours = medication_en_cours
                 patient.plaintes = plaintes
-                reste_de_examen_clinique.reste_de_examen_clinique =reste_de_examen_clinique
-                Temperatue.Temperatue =Temperatue
-                PA.PA =PA
-                SRO.SRO =SRO
-                Poids.Poids =Poids
-                Taille.Taille =Taille
-                RC.RC =RC
+                reste_de_examen_clinique.reste_de_examen_clinique = reste_de_examen_clinique
+                Temperatue.Temperatue = Temperatue
+                PA.PA = PA
+                SRO.SRO = SRO
+                Poids.Poids = Poids
+                Taille.Taille = Taille
+                RC.RC = RC
                 patient.explorations = explorations
                 patient.traitement = traitement
                 patient.evolution = evolution
@@ -222,8 +230,8 @@ def update_patient(request, pk):
                                        'Temperatue': patient.Temperatue,
                                        'PA': patient.PA,
                                        'SRO': patient.SRO,
-                                       'Poids':patient.Poids,
-                                       'Taille':patient.Taille,
+                                       'Poids': patient.Poids,
+                                       'Taille': patient.Taille,
                                        'RC': patient.RC,
                                        'explorations': patient.explorations,
                                        'traitement': patient.traitement,
@@ -240,39 +248,25 @@ def add_patient(request):
     if request.method == "POST":
         form = AddPatientForm(request.POST or None)
         if form.is_valid():
-            nom = form.cleaned_data.get("nom")
-            prenom = form.cleaned_data.get("prenom")
-            date_de_naissance = form.cleaned_data.get("date_de_naissance")
-            lieu_de_naissance = form.cleaned_data.get("lieu_de_naissance")
-            profession = form.cleaned_data.get("profession")
-            adresse = form.cleaned_data.get("adresse")
-            cin = form.cleaned_data.get("cin")
-            statut_matrimonial = form.cleaned_data.get("statut_matrimonial")
-            telephone = form.cleaned_data.get("telephone")
-            tabagisme = form.cleaned_data.get("tabagisme")
-            antecedentes = form.cleaned_data.get("antecedentes")
-            medication_en_cours = form.cleaned_data.get("medication_en_cours")
-            plaintes = form.cleaned_data.get("plaintes")
-            reste_de_examen_clinique = form.cleaned_data.get("reste_de_examen_clinique")
-            Temperature = form.cleaned_data.get("Temperature")
-            PA = form.cleaned_data.get("PA")
-            SRO = form.cleaned_data.get("SRO")
-            Poids = form.cleaned_data.get("Poids")
-            Taille = form.cleaned_data.get("Taille")
-            RC = form.cleaned_data.get("RC")
-            explorations = form.cleaned_data.get("explorations")
-            traitement = form.cleaned_data.get("traitement")
-            evolution = form.cleaned_data.get("evolution")
+            Nom = form.cleaned_data.get("nom")
+            Prenom = form.cleaned_data.get("prenom")
+            Date_de_naissance = form.cleaned_data.get("date_de_naissance")
+            Lieu_de_naissance = form.cleaned_data.get("lieu_de_naissance")
+            Profession = form.cleaned_data.get("profession")
+            Adresse = form.cleaned_data.get("adresse")
+            Cin = form.cleaned_data.get("cin")
+            Sexe = form.cleaned_data.get("sexe")
+            Statut_matrimonial = form.cleaned_data.get("statut_matrimonial")
+            Telephone = form.cleaned_data.get("telephone")
             try:
-                patient = Patient.objects.get(cin=cin)
+                patient = Patient.objects.get(Cin=Cin)
                 msg = 'Patient Already exists!'
                 success = False
                 return render(request, "./add_patient.html", {"form": form, "msg": msg, "success": success})
 
             except:
-                new_patient = Patient(nom, prenom, date_de_naissance, lieu_de_naissance, profession, adresse, cin,
-                                      statut_matrimonial, telephone, tabagisme, antecedentes, medication_en_cours,
-                                      plaintes, reste_de_examen_clinique, Temperature, PA, SRO,Poids,Taille, RC, explorations, traitement, evolution)
+                new_patient = Patient(Nom, Prenom, Date_de_naissance, Lieu_de_naissance, Profession, Adresse, Cin, Sexe,
+                                      Statut_matrimonial, Telephone)
                 new_patient.save()
                 msg = 'Patient has been successfully created !'
                 success = True
@@ -281,7 +275,7 @@ def add_patient(request):
                 return render(request, "./add_patient.html", {"form": form, "msg": msg, "success": success})
             # return redirect("/login/")
         else:
-            msg = 'Form is not valid'
+            msg = form.errors
     else:
         form = AddPatientForm()
 

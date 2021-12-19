@@ -3,11 +3,6 @@ from django.forms import SelectDateWidget
 
 from apps.app.models import *
 
-GENDER_CHOICES =(
-    ("Male", "Masculine"),
-    ("Female", "Feminine"),
-)
-
 class AddPatientForm(forms.Form):
     nom = forms.CharField(
         widget=forms.TextInput(
@@ -67,18 +62,19 @@ class AddPatientForm(forms.Form):
             }
         ))
 
-    sexe = forms.MultipleChoiceField(
-        required=False,
-        widget=forms.CheckboxSelectMultiple(
+    sexe = forms.CharField(label='sexe',
+        required=True,
+        widget=forms.Select(choices=GENDER_CHOICES,
             attrs={
-                "id": "statut_matrimonial",
+                "id": "sexe",
                 "class": "form-control"
             }
         ),
-        choices=GENDER_CHOICES,
+
     )
-    statut_matrimonial = forms.CharField(
-        widget=forms.TextInput(
+    statut_matrimonial = forms.CharField(label='statut_matrimonial',
+        widget=forms.Select(
+            choices=STATUT_MATRIMONIAL_CHOICES,
             attrs={
                 "id": "statut_matrimonial",
                 "class": "form-control"
@@ -93,121 +89,7 @@ class AddPatientForm(forms.Form):
             }
         ))
 
-    tabagisme = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "id": "tabagisme",
-                "class": "form-control"
-            }
-        ))
-
-    antecedentes = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "id": "antecedentes",
-                "class": "form-control"
-            }
-        ))
-
-    medication_en_cours = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "id": "medication_en_cours",
-                "class": "form-control"
-            }
-        ))
-
-    plaintes = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "id": "plaintes",
-                "class": "form-control"
-            }
-        ))
-
-
-    Temperature = forms.FloatField(required=False,
-        widget=forms.NumberInput(
-            attrs={
-                "id": "Temperature",
-                "class": "form-control"
-            }
-        ))
-
-    PA = forms.FloatField(required=False,
-        widget=forms.NumberInput(
-            attrs={
-                "id": "PA",
-                "class": "form-control"
-            }
-        ))
-
-    Poids = forms.FloatField(required=False,
-        widget=forms.NumberInput(
-            attrs={
-                "id": "Poids",
-                "class": "form-control"
-            }
-        ))
-
-
-    Taille = forms.FloatField(required=False,
-        widget=forms.NumberInput(
-            attrs={
-                "id": "Taille",
-                "class": "form-control"
-            }
-        ))
-    SRO = forms.FloatField(required=False,
-        widget=forms.NumberInput(
-            attrs={
-                "id": "SRO",
-                "class": "form-control"
-            }
-        ))
-
-    RC = forms.FloatField(required=False,
-        widget=forms.NumberInput(
-            attrs={
-                "id": "RC",
-                "class": "form-control"
-            }
-        ))
-    reste_de_examen_clinique = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "id": "reste_de_examen_clinique",
-                "class": "form-control"
-            }
-        ))
-
-    explorations = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "id": "explorations",
-                "class": "form-control"
-            }
-        ))
-
-    traitement = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "id": "traitement",
-                "class": "form-control"
-            }
-        ))
-
-    evolution = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "id": "evolution",
-                "class": "form-control"
-            }
-        ))
 
     class Meta:
         model = Patient
-        fields = (
-        "nom", "prenom", "date_de_naissance", "lieu_de_naissance", "profession", "adresse", "cin", "statut_matrimonial",
-        "telephone", "habitude", "antecedentes", "medication_en_cours", "plaintes", "reste_de_examen", "T", "PA", "Slo",
-        "RC", "explorations", "traitement", "evolution")
+        fields = ("Nom","Prenom","Date_de_naissance","Lieu_de_naissance","Profession","Adresse","Cin","Sexe","Statut_matrimonial","Telephone")

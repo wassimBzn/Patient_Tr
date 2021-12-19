@@ -10,8 +10,8 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 PERCENTAGE_VALIDATOR = [MinValueValidator(0), MaxValueValidator(100)]
 GENDER_CHOICES =(
-    ("Male", "Masculine"),
-    ("Female", "Feminine"),
+    ("Male", "Masculin"),
+    ("Female", "Féminin"),
 )
 YES_OR_NO_CHOICES=(
     ("YES", "OUI"),
@@ -19,10 +19,10 @@ YES_OR_NO_CHOICES=(
 )
 
 STATUT_MATRIMONIAL_CHOICES=(
-    ('célibataire','célibataire'),
-    ('mariée','mariée'),
-    ('veuve','veuve'),
-    ('divorcée','divorcée'),
+    ('celibataire','célibataire'),
+    ('mariee','Mariée'),
+    ('veuve','Veuve'),
+    ('divorcee','divorcée'),
 )
 
 class Habitude(models.Model):
@@ -64,12 +64,12 @@ class Patient(models.Model):
     Sexe = models.CharField(max_length=200,choices=GENDER_CHOICES)
     Statut_matrimonial = models.CharField(max_length=200,choices=STATUT_MATRIMONIAL_CHOICES)
     Telephone = models.IntegerField()
-    Habitude = models.ForeignKey(Habitude,on_delete=models.PROTECT,related_name='Patient',default=None)
-    Antecedentes = models.ForeignKey(Antecedentes,on_delete=models.PROTECT,related_name='Patient',default=None)
 
 class Consultation(models.Model):
     Patient = models.ForeignKey(Patient,on_delete=models.PROTECT,related_name='Consultation',default=None)
     Date_de_consultation = models.DateTimeField(default=datetime.datetime.now())
+    Habitude = models.ForeignKey(Habitude,on_delete=models.PROTECT,related_name='Patient',default=None)
+    Antecedentes = models.ForeignKey(Antecedentes,on_delete=models.PROTECT,related_name='Patient',default=None)
     Examen_phisique = models.ForeignKey(Examen_phisique,on_delete=models.PROTECT,related_name='Consultation',default=None)
     Examen_clinique = models.ForeignKey(Examen_clinique,on_delete=models.PROTECT,related_name='Consultation',default=None)
     Explorations = models.CharField(max_length=500,default=None)
