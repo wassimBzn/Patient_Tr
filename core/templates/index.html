@@ -62,15 +62,15 @@
                                                              src="/static/assets/images/user/avatar-1.jpg"
                                                              alt="activity-user"></td>
                                                     <td>
-                                                        <h6 class="mb-1">{{ patient.nom }}</h6>
-                                                        <p class="m-0">{{ patient.prenom }}</p>
+                                                        <h6 class="mb-1">{{ patient.Nom }}</h6>
+                                                        <p class="m-0">{{ patient.Prenom }}</p>
                                                     </td>
                                                     <td>
                                                         <h6 class="text-muted"><i
-                                                                class="fas fa-circle text-c-green f-10 m-r-15"></i>{{ patient.date_de_naissance }}
+                                                                class="fas fa-circle text-c-green f-10 m-r-15"></i>{{ patient.Date_de_naissance }}
                                                         </h6>
                                                     </td>
-                                                    <div id="myModal" class="modal fade" role="dialog">
+                                                    <div id="{{ patient.Cin }}" class="modal fade" role="dialog">
                                                         <div class="modal-dialog">
 
                                                             <!-- Modal content-->
@@ -85,15 +85,15 @@
 
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <p>Do you really want to delete thisthis
+                                                                    <p>Do you really want to delete this
                                                                         patient? </p>
                                                                 </div>
                                                                 <div class="modal-footer">
 
                                                                     <a href="" data-toggle="modal"
-                                                                       data-target="#myModal"
+                                                                       data-target="#{{ patient.Cin }}"
                                                                        class="label theme-bg2 text-white">No</a>
-                                                                    <a href="/delete_patient/{{ patient.cin }}"
+                                                                    <a href="/delete_patient/{{patient.Cin}}"
                                                                        class="label theme-bg text-white f-12">Yes</a>
 
                                                                 </div>
@@ -102,12 +102,12 @@
                                                         </div>
                                                     </div>
 
-                                                    <td><a href="/view_patient/{{ patient.cin }}"
+                                                    <td><a href="/view_patient/{{ patient.Cin }}"
                                                            class="label theme-bg2 text-white">View</a><a
-                                                            href="/update_patient/{{ patient.cin }}"
+                                                            href="/update_patient/{{ patient.Cin }}"
                                                             class="label theme-bg text-white f-12">Update</a><a href=""
                                                                                                                 data-toggle="modal"
-                                                                                                                data-target="#myModal"
+                                                                                                                data-target="#{{ patient.Cin }}"
                                                                                                                 class="label theme-bg2 text-white">Delete</a>
 
 

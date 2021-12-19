@@ -119,14 +119,14 @@ def delete_patient(request, pk):
     msg = None
     success = False
     html_template = loader.get_template('index.html')
-    patient = Patient.objects.get(cin=pk)
+    patient = Patient.objects.get(Cin=pk)
 
     try:
         patient.delete()
         msg = "patient{} has been successfully deleted"
         success = False
     except:
-        msg = "patient {} has not been deleted! ".format(patient.nom)
+        msg = "patient {} has not been deleted! ".format(patient.Nom)
         success = False
     context = {}
     return HttpResponseRedirect("/")
