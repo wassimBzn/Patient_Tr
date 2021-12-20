@@ -58,9 +58,18 @@
 
                                             {% for patient in page_obj %}
                                                 <tr class="unread">
-                                                    <td><img class="rounded-circle" style="width:40px;"
+
+                                                    <td>
+                                                        {% if patient.Sexe == 'Female' %}
+                                                        <img class="rounded-circle" style="width:40px;"
                                                              src="/static/assets/images/user/avatar-1.jpg"
-                                                             alt="activity-user"></td>
+                                                             alt="activity-user">
+                                                        {% else %}
+                                                            <img class="rounded-circle" style="width:40px;"
+                                                                 src="/static/assets/images/user/avatar-2.jpg"
+                                                                 alt="activity-user">
+                                                        {% endif %}
+                                                        </td>
                                                     <td>
                                                         <h6 class="mb-1">{{ patient.Nom }}</h6>
                                                         <p class="m-0">{{ patient.Prenom }}</p>
@@ -103,12 +112,16 @@
                                                     </div>
 
                                                     <td><a href="/view_patient/{{ patient.Cin }}"
-                                                           class="label theme-bg2 text-white">View</a><a
-                                                            href="/update_patient/{{ patient.Cin }}"
-                                                            class="label theme-bg text-white f-12">Update</a><a href=""
-                                                                                                                data-toggle="modal"
-                                                                                                                data-target="#{{ patient.Cin }}"
-                                                                                                                class="label theme-bg2 text-white">Delete</a>
+                                                           class="label theme-bg2 text-white">View</a>
+                                                        <a href="/update_patient/{{ patient.Cin }}"
+                                                            class="label theme-bg text-white f-12">Update</a>
+
+                                                        <a href=""
+                                                            data-toggle="modal"
+                                                            data-target="#{{ patient.Cin }}"
+                                                            class="label theme-bg2 text-white">Delete</a>
+                                                        <a href="/consultation_patient/{{ patient.Cin }}"
+                                                           class="label theme-bg text-white f-12">Consultation</a>
 
 
                                                     </td>

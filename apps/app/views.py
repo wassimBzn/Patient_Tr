@@ -11,7 +11,7 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from django.urls import reverse
 from apps.app.models import *
-from apps.app.forms import AddPatientForm
+from apps.app.forms import *
 from apps.app.filters import PatientFilter
 import xlwt
 from django.views.generic import ListView
@@ -203,6 +203,86 @@ def update_patient(request, pk):
     return render(request, "./update_patient.html", {"success":success,"msg":msg,"form": form, "patient": patient})
 
 
+def consultation_patient(request, pk):
+    msg = None
+    success = False
+    selectedPatient=Patient.objects.get(Cin=pk)
+    try:
+
+        if request.method == "POST":
+             HabitudeForm = AddHabitudeForm(request.POST or None)
+             AntecedentesForm = AddAntecedentesForm(request.POST or None)
+             Examen_phisiqueForm = AddExamen_phisiqueForm(request.POST or None)
+             Examen_cliniqueForm = AddExamen_cliniqueForm(request.POST or None)
+             ConsultationForm = AddConsultationForm(request.POST or None)
+             if ConsultationForm.is_valid() and HabitudeForm.is_valid() and AntecedentesForm.is_valid() and Examen_phisiqueForm.is_valid() and Examen_cliniqueForm.is_valid():
+                date = str(datetime.datetime.now().day) + str(datetime.datetime.now().month) + str(datetime.datetime.now().year) + str(datetime.datetime.now().hour) + str(datetime.datetime.now().second)
+                date=int(date)
+                #Add Habitude
+                Tabagisme=HabitudeForm.cleaned_data.get("Tabagisme")
+                Nombre_de_Cigarette_par_jours=HabitudeForm.cleaned_data.get("Nombre_de_Cigarette_par_jours")
+                Alcool=HabitudeForm.cleaned_data.get("Alcool")
+                Allergies_medicamenteuses=HabitudeForm.cleaned_data.get("Allergies_medicamenteuses")
+                Autres=HabitudeForm.cleaned_data.get("Autres")
+                New_Habitude=Habitude(date,Tabagisme,Nombre_de_Cigarette_par_jours,Alcool,Allergies_medicamenteuses,Autres)
+                New_Habitude.save()
+
+                #Add Antecedentes
+                Medicaux=AntecedentesForm.cleaned_data.get("Medicaux")
+                Chururgicaux=AntecedentesForm.cleaned_data.get("Chururgicaux")
+                Medications_en_cours=AntecedentesForm.cleaned_data.get("Medications_en_cours")
+                New_Antecedentes=Antecedentes(date,Medicaux,Chururgicaux,Medications_en_cours)
+                New_Antecedentes.save()
+
+                #Add Examen_phisique
+                plaintes=Examen_phisiqueForm.cleaned_data.get("plaintes")
+                Examen_Cinetique=Examen_phisiqueForm.cleaned_data.get("Examen_Cinetique")
+                Reste_de_examen_phisique=Examen_phisiqueForm.cleaned_data.get("Reste_de_examen_phisique")
+                New_Examen_phisique=Examen_phisique(date,plaintes,Examen_Cinetique,Reste_de_examen_phisique)
+                New_Examen_phisique.save()
+
+                #Add Examen_clinique
+                Temperature=Examen_cliniqueForm.cleaned_data.get("Temperature")
+                PA=Examen_cliniqueForm.cleaned_data.get("PA")
+                SRO=Examen_cliniqueForm.cleaned_data.get("SRO")
+                Poids=Examen_cliniqueForm.cleaned_data.get("Poids")
+                Taille=Examen_cliniqueForm.cleaned_data.get("Taille")
+                RC=Examen_cliniqueForm.cleaned_data.get("RC")
+                Reste_de_examen_clinique=Examen_cliniqueForm.cleaned_data.get("Reste_de_examen_clinique")
+                New_Examen_clinique=Examen_clinique(date,Temperature,PA,SRO,Poids,Taille,RC,Reste_de_examen_clinique)
+                New_Examen_clinique.save()
+                #Add Consultation
+                Date_de_consultation=ConsultationForm.cleaned_data.get("Date_de_consultation")
+                Explorations=ConsultationForm.cleaned_data.get("Explorations")
+                Traitement=ConsultationForm.cleaned_data.get("Traitement")
+                Evolution=ConsultationForm.cleaned_data.get("Evolution")
+                Remarques=ConsultationForm.cleaned_data.get("Remarques")
+                Prochaine_Rondez_vous=ConsultationForm.cleaned_data.get("Prochaine_Rondez_vous")
+                New_consultation=Consultation(date,selectedPatient.Cin,Date_de_consultation,New_Habitude.id,New_Antecedentes.id,New_Examen_phisique.id,New_Examen_clinique.id,Explorations,Traitement,Evolution,Remarques,Prochaine_Rondez_vous)
+                New_consultation.save()
+
+                msg = 'Consultation Added Successfully!'
+                success = True
+             else:
+                success = False
+                msg = 'Form is not valid: {}'.format(ConsultationForm.errors)
+        else:
+            msg = ''
+            success = True
+            selectedPatient=Patient.objects.get(Cin=pk)
+            HabitudeForm = AddHabitudeForm()
+            AntecedentesForm = AddAntecedentesForm()
+            Examen_phisiqueForm = AddExamen_phisiqueForm()
+            Examen_cliniqueForm = AddExamen_cliniqueForm()
+            ConsultationForm = AddConsultationForm()
+    except:
+        msg = 'Patient does not exists!'
+        success = False
+        return HttpResponseRedirect("/")
+    # return redirect("/login/")
+
+
+    return render(request, "./patient_consultation.html", {"success":success,"msg":msg,"HabitudeForm": HabitudeForm,"AntecedentesForm": AntecedentesForm,"Examen_phisiqueForm": Examen_phisiqueForm,"Examen_cliniqueForm": Examen_cliniqueForm,"ConsultationForm": ConsultationForm,"patient": selectedPatient})
 def add_patient(request):
     msg = None
     success = False
@@ -241,3 +321,11 @@ def add_patient(request):
         form = AddPatientForm()
 
     return render(request, "./add_patient.html", {"form": form, "msg": msg, "success": success})
+def consultations(request):
+    msg = None
+    success = False
+    form=None
+
+    return render(request, "./Consultation.html", {"form": form, "msg": msg, "success": success})
+
+
