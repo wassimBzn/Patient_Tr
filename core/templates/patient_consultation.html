@@ -28,201 +28,315 @@
                 </div>
             </div>
             <!-- [ breadcrumb ] end -->
-            <div class="main-body">
-                <div class="page-wrapper">
-                    <!-- [ Main Content ] start -->
-                    <form role="form" method="POST" action="/consultation_patient/{{ patient.Cin }}/"/>
-                        {% csrf_token %}
-                        <div class="row">
+            <div class="row">
+                <div class="column" style="width: 50%;">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- [ Main Content ] start -->
+                            <form role="form" method="POST" action="/consultation_patient/{{ patient.Cin }}/"/>
+                            {% csrf_token %}
+                            <div class="row">
 
-                            <div class="col-sm-12">
+                                <div class="col-sm-12">
 
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5>Consultation</h5>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Consultation</h5>
+                                        </div>
+
+
+                                        <div class="card-body">
+
+                                            <h5>Informations Generales</h5>
+                                            {% if success %}
+                                                <div style="text-align: center;color:#1c7430"><label>{{ msg }}</label></div>
+                                            {% else %}
+                                                <div style="text-align: center;color:#c82333"><label>{{ msg }}</label></div>
+                                            {% endif %}
+                                            <hr>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <b><label>Nom: <br></label></b>
+                                                    <label>{{ patient.Nom }}</label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <b><label>Prénom: <br></label></b>
+                                                    <label>{{ patient.Prenom }}</label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <b><label>Date de naissance: <br></label></b>
+                                                    <label>{{ patient.Date_de_naissance }}</label>
+
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Date_de_consultation">Date de consultation</label>
+                                                    {{ ConsultationForm.Date_de_consultation }}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>HABITUDE</h5>
+                                        </div>
 
-
-                                    <div class="card-body">
-
-                                        <h5>Informations Generales</h5>
-                                        {% if success %}
-                                            <div style="text-align: center;color:#1c7430"><label>{{ msg }}</label></div>
-                                        {% else %}
-                                             <div style="text-align: center;color:#c82333"><label>{{ msg }}</label></div>
-                                         {% endif %}
-                                        <hr>
-                                        <div class="col-md-6">
+                                        <div class="card-body">
                                             <div class="form-group">
-                                                <b><label>Nom: <br></label></b>
-                                                <label>{{ patient.Nom }}</label>
+                                                <label for="Tabagisme">Tabagisme</label>
+                                                {{ HabitudeForm.Tabagisme }}
                                             </div>
                                             <div class="form-group">
-                                                <b><label>Prénom: <br></label></b>
-                                                <label>{{ patient.Prenom }}</label>
+                                                <label for="Nombre_de_Cigarette_par_jours">Nombre de Cigarette par jours</label>
+                                                {{ HabitudeForm.Nombre_de_Cigarette_par_jours }}
                                             </div>
                                             <div class="form-group">
-                                                <b><label>Date de naissance: <br></label></b>
-                                                <label>{{ patient.Date_de_naissance }}</label>
-
+                                                <label for="Alcool">Alcool</label>
+                                                {{ HabitudeForm.Alcool }}
                                             </div>
                                             <div class="form-group">
-                                                <label for="Date_de_consultation">Date de consultation</label>
-                                                {{ ConsultationForm.Date_de_consultation }}
+                                                <label for="Allergies_medicamenteuses">Allergies medicamenteuses</label>
+                                                {{ HabitudeForm.Allergies_medicamenteuses }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Autres">Autres</label>
+                                                {{ HabitudeForm.Autres }}
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>ANTECEDENTES</h5>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label for="Medicaux">Medicaux</label>
+                                                {{ AntecedentesForm.Medicaux }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Chururgicaux">Chururgicaux</label>
+                                                {{ AntecedentesForm.Chururgicaux }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Medications_en_cours">Medications_en_cours</label>
+                                                {{ AntecedentesForm.Medications_en_cours }}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>EXAMEN PHISIQUE</h5>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label for="plaintes">plaintes</label>
+                                                {{ Examen_phisiqueForm.plaintes }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Examen_Cinetique">Examen Cinetique</label>
+                                                {{ Examen_phisiqueForm.Examen_Cinetique }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Reste_de_examen_phisique">Reste de l'examen phisique</label>
+                                                {{ Examen_phisiqueForm.Reste_de_examen_phisique }}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>EXAMEN CLINIQUE</h5>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label for="Temperature">Temperature</label>
+                                                {{ Examen_cliniqueForm.Temperature }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="PA">PA</label>
+                                                {{ Examen_cliniqueForm.PA }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="SRO">SRO</label>
+                                                {{ Examen_cliniqueForm.SRO }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="SRO">Poids</label>
+                                                {{ Examen_cliniqueForm.Poids }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Taille">Taille</label>
+                                                {{ Examen_cliniqueForm.Taille }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="RC">RC</label>
+                                                {{ Examen_cliniqueForm.RC }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Reste_de_examen_clinique">Reste de l'examen clinique</label>
+                                                {{ Examen_cliniqueForm.Reste_de_examen_clinique }}
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5>HABITUDE</h5>
-                                    </div>
-
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <label for="Tabagisme">Tabagisme</label>
-                                            {{ HabitudeForm.Tabagisme }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Nombre_de_Cigarette_par_jours">Nombre de Cigarette par jours</label>
-                                            {{ HabitudeForm.Nombre_de_Cigarette_par_jours }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Alcool">Alcool</label>
-                                            {{ HabitudeForm.Alcool }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Allergies_medicamenteuses">Allergies medicamenteuses</label>
-                                            {{ HabitudeForm.Allergies_medicamenteuses }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Autres">Autres</label>
-                                            {{ HabitudeForm.Autres }}
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>RESTE DE CONSULTATION</h5>
                                         </div>
 
+                                        <div class="card-body">
 
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5>ANTECEDENTES</h5>
-                                    </div>
-
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <label for="Medicaux">Medicaux</label>
-                                            {{ AntecedentesForm.Medicaux }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Chururgicaux">Chururgicaux</label>
-                                            {{ AntecedentesForm.Chururgicaux }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Medications_en_cours">Medications_en_cours</label>
-                                            {{ AntecedentesForm.Medications_en_cours }}
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5>EXAMEN PHISIQUE</h5>
-                                    </div>
-
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <label for="plaintes">plaintes</label>
-                                            {{ Examen_phisiqueForm.plaintes }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Examen_Cinetique">Examen Cinetique</label>
-                                            {{ Examen_phisiqueForm.Examen_Cinetique }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Reste_de_examen_phisique">Reste de l'examen phisique</label>
-                                            {{ Examen_phisiqueForm.Reste_de_examen_phisique }}
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5>EXAMEN CLINIQUE</h5>
-                                    </div>
-
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <label for="Temperature">Temperature</label>
-                                            {{ Examen_cliniqueForm.Temperature }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="PA">PA</label>
-                                            {{ Examen_cliniqueForm.PA }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="SRO">SRO</label>
-                                            {{ Examen_cliniqueForm.SRO }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="SRO">Poids</label>
-                                            {{ Examen_cliniqueForm.Poids }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Taille">Taille</label>
-                                            {{ Examen_cliniqueForm.Taille }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="RC">RC</label>
-                                            {{ Examen_cliniqueForm.RC }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Reste_de_examen_clinique">Reste de l'examen clinique</label>
-                                            {{ Examen_cliniqueForm.Reste_de_examen_clinique }}
+                                            <div class="form-group">
+                                                <label for="Explorations">Explorations</label>
+                                                {{ ConsultationForm.Explorations }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Traitement">Traitement</label>
+                                                {{ ConsultationForm.Traitement }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Evolution">Evolution</label>
+                                                {{ ConsultationForm.Evolution }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Remarques">Remarques</label>
+                                                {{ ConsultationForm.Remarques }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Prochaine_Rondez_vous">Prochaine Rondez vous</label>
+                                                {{ ConsultationForm.Prochaine_Rondez_vous }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Reste_de_examen_clinique">Reste de l'examen clinique</label>
+                                                {{ ConsultationForm.Reste_de_examen_clinique }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5>RESTE DE CONSULTATION</h5>
-                                    </div>
-
-                                    <div class="card-body">
-
-                                        <div class="form-group">
-                                            <label for="Explorations">Explorations</label>
-                                            {{ ConsultationForm.Explorations }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Traitement">Traitement</label>
-                                            {{ ConsultationForm.Traitement }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Evolution">Evolution</label>
-                                            {{ ConsultationForm.Evolution }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Remarques">Remarques</label>
-                                            {{ ConsultationForm.Remarques }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Prochaine_Rondez_vous">Prochaine Rondez vous</label>
-                                            {{ ConsultationForm.Prochaine_Rondez_vous }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Reste_de_examen_clinique">Reste de l'examen clinique</label>
-                                            {{ ConsultationForm.Reste_de_examen_clinique }}
-                                        </div>
-                                    </div>
-                                </div>
-                                       <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                                    <button type="submit" class="btn btn-primary">Sauvegarder</button>
 
                                 </div>
                             </div>
 
-                    </form>
-                </div>
+                            </form>
+                        </div>
 
+                    </div>
+                </div>
+    <div class="column" style="width: 50%;">
+        <div class="main-body">
+            <div class="">
+                <!-- [ Main Content ] start -->
+                <form role="form" method="POST" action="/consultation_patient/{{ patient.Cin }}/"/>
+                {% csrf_token %}
+                <div class="column">
+
+                    <div class="col-sm-12">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Historiques Des Consultation</h5>
+                            </div>
+
+
+                            <div class="card-body">
+
+                                <h5> Dates des Consultations</h5>
+                                {% if success %}
+                                    <div style="text-align: center;color:#1c7430"><label>{{ msg }}</label></div>
+                                {% else %}
+                                    <div style="text-align: center;color:#c82333"><label>{{ msg }}</label></div>
+                                {% endif %}
+                                <table class="table table-hover">
+                                <tbody>
+
+                                        {% for consultation in consultations_page_obj %}
+                                        <tr class="unread">
+                                            <td>
+                                                <b><label>Date de consultation: <br></label></b>
+                                                <h6 class="text-muted"><i
+                                                        class="fas fa-circle text-c-green f-10 m-r-15"></i>{{ consultation.Date_de_consultation }}
+                                                </h6>
+                                            </td>
+                                            <div id="{{ consultation.id }}" class="modal fade" role="dialog">
+                                                <div class="modal-dialog">
+
+                                                    <!-- Modal content-->
+                                                    <div class="modal-content">
+
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title float-left">Delete
+                                                                Consultation</h4>
+                                                            <button type="button" class="close"
+                                                                    data-dismiss="modal">&times;
+                                                            </button>
+
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Do you really want to delete this
+                                                                consultation? </p>
+                                                        </div>
+                                                        <div class="modal-footer">
+
+                                                            <a href="" data-toggle="modal"
+                                                               data-target="#{{ consultation.id }}"
+                                                               class="label theme-bg2 text-white">No</a>
+                                                            <a href="/delete_consultation/{{ consultation.id }}"
+                                                               class="label theme-bg text-white f-12">Yes</a>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <td><a href="//{{ consultation.id }}"
+                                                   class="label theme-bg2 text-white">View</a>
+                                                <a href="/update_patient/{{ consultation.id  }}"
+                                                   class="label theme-bg text-white f-12">Update</a>
+
+                                                <a href=""
+                                                   data-toggle="modal"
+                                                   data-target="#{{ consultation.id  }}"
+                                                   class="label theme-bg2 text-white">Delete</a>
+
+
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+
+                                </table>
+                            </div>
+                            <div class="pagination">
+                                               <span class="step-links">
+                                                   {% if page_obj.has_previous %}
+                                                       <a href="?page=1">&laquo; first</a>
+                                                       <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                                                   {% endif %}
+
+                                                   <span class="current">
+                                                       Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                                   </span>
+
+                                                   {% if page_obj.has_next %}
+                                                       <a href="?page={{ page_obj.next_page_number }}">next</a>
+                                                       <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                                                   {% endif %}
+                                               </span>
+                            </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                </div>
             </div>
+
         </div>
     </div>
     </div>

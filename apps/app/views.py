@@ -12,7 +12,7 @@ from django.template import loader
 from django.urls import reverse
 from apps.app.models import *
 from apps.app.forms import *
-from apps.app.filters import PatientFilter
+from apps.app.filters import *
 import xlwt
 from django.views.generic import ListView
 from django.core.paginator import Paginator
@@ -206,6 +206,7 @@ def update_patient(request, pk):
 def consultation_patient(request, pk):
     msg = None
     success = False
+    consultations_page_obj =None
     selectedPatient=Patient.objects.get(Cin=pk)
     try:
 
@@ -261,6 +262,7 @@ def consultation_patient(request, pk):
                 New_consultation=Consultation(date,selectedPatient.Cin,Date_de_consultation,New_Habitude.id,New_Antecedentes.id,New_Examen_phisique.id,New_Examen_clinique.id,Explorations,Traitement,Evolution,Remarques,Prochaine_Rondez_vous)
                 New_consultation.save()
 
+
                 msg = 'Consultation Added Successfully!'
                 success = True
              else:
@@ -276,13 +278,28 @@ def consultation_patient(request, pk):
             Examen_cliniqueForm = AddExamen_cliniqueForm()
             ConsultationForm = AddConsultationForm()
     except:
+        selectedPatient=Patient.objects.get(Cin=pk)
+        HabitudeForm = AddHabitudeForm()
+        AntecedentesForm = AddAntecedentesForm()
+        Examen_phisiqueForm = AddExamen_phisiqueForm()
+        Examen_cliniqueForm = AddExamen_cliniqueForm()
+        ConsultationForm = AddConsultationForm()
         msg = 'Patient does not exists!'
         success = False
-        return HttpResponseRedirect("/")
-    # return redirect("/login/")
+        return render(request, "./patient_consultation.html", {"consultations_page_obj": consultations_page_obj,"success":success,"msg":msg,"HabitudeForm": HabitudeForm,"AntecedentesForm": AntecedentesForm,"Examen_phisiqueForm": Examen_phisiqueForm,"Examen_cliniqueForm": Examen_cliniqueForm,"ConsultationForm": ConsultationForm,"patient": selectedPatient})
 
 
-    return render(request, "./patient_consultation.html", {"success":success,"msg":msg,"HabitudeForm": HabitudeForm,"AntecedentesForm": AntecedentesForm,"Examen_phisiqueForm": Examen_phisiqueForm,"Examen_cliniqueForm": Examen_cliniqueForm,"ConsultationForm": ConsultationForm,"patient": selectedPatient})
+    #Consultation history
+    patient_consultations=Consultation.objects.filter(Patient__Cin=selectedPatient.Cin).order_by('Date_de_consultation')
+    My_consultation_Filter = ConsultationFilter(request.GET, queryset=patient_consultations)
+    Consultations=My_consultation_Filter.qs
+    paginator = Paginator(Consultations, 5)
+    page_number = request.GET.get('page')
+    consultations_page_obj = paginator.get_page(page_number)
+
+    return render(request, "./patient_consultation.html", {"consultations_page_obj": consultations_page_obj,"success":success,"msg":msg,"HabitudeForm": HabitudeForm,"AntecedentesForm": AntecedentesForm,"Examen_phisiqueForm": Examen_phisiqueForm,"Examen_cliniqueForm": Examen_cliniqueForm,"ConsultationForm": ConsultationForm,"patient": selectedPatient})
+
+
 def add_patient(request):
     msg = None
     success = False
