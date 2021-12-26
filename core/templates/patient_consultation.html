@@ -33,7 +33,11 @@
                     <div class="main-body">
                         <div class="page-wrapper">
                             <!-- [ Main Content ] start -->
-                            <form role="form" method="POST" action="/consultation_patient/{{ patient.Cin }}/"/>
+                            {% if action == "update_consultation" %}
+                            <form role="form" method="POST" action="/consultation_patient/{{ patient.Cin }}/update_consultation/{{ consultation.id }}/"/>
+                            {% else %}
+                                <form role="form" method="POST" action="/consultation_patient/{{ patient.Cin }}/"/>
+                            {% endif %}
                             {% csrf_token %}
                             <div class="row">
 
@@ -42,6 +46,11 @@
                                     <div class="card">
                                         <div class="card-header">
                                             <h5>Consultation</h5>
+                                        </div>
+
+                                        <div style="margin-left: 60%">
+                                            <a href="/consultation_patient/{{ patient.Cin }}"
+                                               class="label theme-bg text-white f-12">Add New Consultation</a>
                                         </div>
 
 
@@ -230,6 +239,7 @@
         <div class="main-body">
             <div class="">
                 <!-- [ Main Content ] start -->
+
                 <form role="form" method="POST" action="/consultation_patient/{{ patient.Cin }}/"/>
                 {% csrf_token %}
                 <div class="column">
@@ -284,7 +294,7 @@
                                                             <a href="" data-toggle="modal"
                                                                data-target="#{{ consultation.id }}"
                                                                class="label theme-bg2 text-white">No</a>
-                                                            <a href="/delete_consultation/{{ consultation.id }}"
+                                                            <a href="delete_consultation/{{ consultation.id  }}"
                                                                class="label theme-bg text-white f-12">Yes</a>
 
                                                         </div>
@@ -293,9 +303,10 @@
                                                 </div>
                                             </div>
 
-                                            <td><a href="//{{ consultation.id }}"
+                                            <td>
+                                                <a href="/consultation_patient/{{ patient.Cin }}/{{ consultation.id  }}"
                                                    class="label theme-bg2 text-white">View</a>
-                                                <a href="/update_patient/{{ consultation.id  }}"
+                                                <a href="/consultation_patient/{{ patient.Cin }}/update_consultation/{{ consultation.id  }}"
                                                    class="label theme-bg text-white f-12">Update</a>
 
                                                 <a href=""
@@ -327,7 +338,7 @@
                                                        <a href="?page={{ consultations_page_obj.paginator.num_pages }}">last &raquo;</a>
                                                    {% endif %}
                                                </span>
-                            </div>
+                                    </div>
 
                                 </div>
                             </div>
