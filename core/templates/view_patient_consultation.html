@@ -1,0 +1,243 @@
+
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Forms {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="page-header-title">
+                                <h5 class="m-b-10">Consultation d'un patient</h5>
+                            </div>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                                <li class="breadcrumb-item"><a href="javascript:">Gestion des patients</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:">Consultation d'un patient</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <div class="row">
+                <div class="column" style="width: 50%;">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- [ Main Content ] start -->
+
+                            {% csrf_token %}
+                            <div class="row">
+
+                                <div class="col-sm-12">
+
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Consultation</h5>
+                                        </div>
+
+                                        <div style="margin-left: 60%">
+                                            <a href="/print_consultation_patient/{{ patient.Cin }}"
+                                               class="label theme-bg text-white f-12">Print Page</a>
+                                        </div>
+
+
+                                        <div class="card-body">
+
+                                            <h5>Informations Generales</h5>
+                                            {% if success %}
+                                                <div style="text-align: center;color:#1c7430"><label>{{ msg }}: </label></b></div>
+                                            {% else %}
+                                                <div style="text-align: center;color:#c82333"><label>{{ msg }}: </label></b></div>
+                                            {% endif %}
+                                            <hr>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <b><label>Nom: <br> </label></b></b>
+                                                    <label>{{ patient.Nom }} </label></b>
+                                                </div>
+                                                <div class="form-group">
+                                                    <b><label>Prénom: <br></label></b></b>
+                                                    <label>{{ patient.Prenom }}</label></b>
+                                                </div>
+                                                <div class="form-group">
+                                                    <b><label>Date de naissance: <br> </label></b></b>
+                                                    <label>{{ patient.Date_de_naissance }} </label></b>
+
+                                                </div>
+                                                <div class="form-group">
+                                                    <b>  <label for="Date_de_consultation">Date de consultation: </label></b>
+                                                    {{ Consultation.Date_de_consultation }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>HABITUDE</h5>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <b>  <label for="Tabagisme">Tabagisme: </label></b>
+                                                {{ Habitude.Tabagisme }}
+                                            </div>
+                                            <div class="form-group">
+                                                <b>  <label for="Nombre_de_Cigarette_par_jours">Nombre de Cigarette par jours: </label></b>
+                                                {{ Habitude.Nombre_de_Cigarette_par_jours }}
+                                            </div>
+                                            <div class="form-group">
+                                                <b>  <label for="Alcool">Alcool: </label></b>
+                                                {{ Habitude.Alcool }}
+                                            </div>
+                                            <div class="form-group">
+                                                <b>  <label for="Allergies_medicamenteuses">Allergies medicamenteuses: </label></b>
+                                                {{ Habitude.Allergies_medicamenteuses }}
+                                            </div>
+                                            <div class="form-group">
+                                                <b>  <label for="Autres">Autres: </label></b>
+                                                {{ Habitude.Autres }}
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>ANTECEDENTES</h5>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <b>  <label for="Medicaux">Medicaux: </label></b>
+                                                {{ Antecedentes.Medicaux }}
+                                            </div>
+                                            <div class="form-group">
+                                                <b>  <label for="Chururgicaux">Chururgicaux: </label></b>
+                                                {{ Antecedentes.Chururgicaux }}
+                                            </div>
+                                            <div class="form-group">
+                                                <b>  <label for="Medications_en_cours">Medications_en_cours: </label></b>
+                                                {{ Antecedentes.Medications_en_cours }}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>EXAMEN PHISIQUE</h5>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <b>  <label for="plaintes">plaintes: </label></b>
+                                                {{ Examen_phisique.plaintes }}
+                                            </div>
+                                            <div class="form-group">
+                                                <b>  <label for="Examen_Cinetique">Examen Cinetique: </label></b>
+                                                {{ Examen_phisique.Examen_Cinetique }}
+                                            </div>
+                                            <div class="form-group">
+                                                <b>  <label for="Reste_de_examen_phisique">Reste de l'examen phisique: : </label></b>
+                                                {{ Examen_phisique.Reste_de_examen_phisique }}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>EXAMEN CLINIQUE</h5>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <b>  <label for="Temperature">Temperature: </label></b>
+                                                {{ Examen_clinique.Temperature }}
+                                            </div>
+                                            <div class="form-group">
+                                                <b>  <label for="PA">PA: </label></b>
+                                                {{ Examen_clinique.PA }}
+                                            </div>
+                                            <div class="form-group">
+                                                <b>  <label for="SRO">SRO: </label></b>
+                                                {{ Examen_clinique.SRO }}
+                                            </div>
+                                            <div class="form-group">
+                                                <b>  <label for="SRO">Poids: </label></b>
+                                                {{ Examen_clinique.Poids }}
+                                            </div>
+                                            <div class="form-group">
+                                                <b>  <label for="Taille">Taille: </label></b>
+                                                {{ Examen_clinique.Taille }}
+                                            </div>
+                                            <div class="form-group">
+                                                <b>  <label for="RC">RC: </label></b>
+                                                {{ Examen_clinique.RC }}
+                                            </div>
+                                            <div class="form-group">
+                                                <b>  <label for="Reste_de_examen_clinique">Reste de l'examen clinique: </label></b>
+                                                {{ Examen_clinique.Reste_de_examen_clinique }}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>RESTE DE CONSULTATION</h5>
+                                        </div>
+
+                                        <div class="card-body">
+
+                                            <div class="form-group">
+                                                <b>  <label for="Explorations">Explorations: </label></b>
+                                                {{ Consultation.Explorations }}
+                                            </div>
+                                            <div class="form-group">
+                                                <b>  <label for="Traitement">Traitement: </label></b>
+                                                {{ Consultation.Traitement }}
+                                            </div>
+                                            <div class="form-group">
+                                                <b>  <label for="Evolution">Evolution: </label></b>
+                                                {{ Consultation.Evolution }}
+                                            </div>
+                                            <div class="form-group">
+                                                <b>  <label for="Remarques">Remarques: </label></b>
+                                                {{ Consultation.Remarques }}
+                                            </div>
+                                            <div class="form-group">
+                                                <b>  <label for="Prochaine_Rondez_vous">Prochaine Rondez vous: </label></b>
+                                                {{ Consultation.Prochaine_Rondez_vous }}
+                                            </div>
+                                            <div class="form-group">
+                                                <b>  <label for="Reste_de_examen_clinique">Reste de l'examen clinique: </label></b>
+                                                {{ Consultation.Reste_de_examen_clinique }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

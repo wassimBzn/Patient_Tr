@@ -75,7 +75,7 @@ class Patient(models.Model):
 class Consultation(models.Model):
     id = models.AutoField(primary_key=True, default=date)
     Patient = models.ForeignKey(Patient,on_delete=models.PROTECT,related_name='Consultation',default=None)
-    Date_de_consultation = models.DateTimeField(default=timezone.now())
+    Date_de_consultation = models.DateTimeField(default=timezone.now)
     Habitude = models.ForeignKey(Habitude,on_delete=models.PROTECT,related_name='Consultation',default=None)
     Antecedentes = models.ForeignKey(Antecedentes,on_delete=models.PROTECT,related_name='Consultation',default=None)
     Examen_phisique = models.ForeignKey(Examen_phisique,on_delete=models.PROTECT,related_name='Consultation',default=None)
@@ -84,4 +84,4 @@ class Consultation(models.Model):
     Traitement = models.CharField(max_length=500,default=None)
     Evolution = models.CharField(max_length=500,default=None)
     Remarques = models.CharField(max_length=500,default=None)
-    Prochaine_Rondez_vous = models.DateTimeField(default=timezone.now())
+    Prochaine_Rondez_vous = models.DateTimeField(default=timezone.now)

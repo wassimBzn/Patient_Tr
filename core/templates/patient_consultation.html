@@ -294,7 +294,7 @@
                                                             <a href="" data-toggle="modal"
                                                                data-target="#{{ consultation.id }}"
                                                                class="label theme-bg2 text-white">No</a>
-                                                            <a href="delete_consultation/{{ consultation.id  }}"
+                                                            <a href="/delete_consultation_patient/{{ patient.Cin }}/{{ consultation.id }}/"
                                                                class="label theme-bg text-white f-12">Yes</a>
 
                                                         </div>
@@ -304,7 +304,7 @@
                                             </div>
 
                                             <td>
-                                                <a href="/consultation_patient/{{ patient.Cin }}/{{ consultation.id  }}"
+                                                <a href="/view_consultation_patient/{{ patient.Cin }}/{{ consultation.id  }}"
                                                    class="label theme-bg2 text-white">View</a>
                                                 <a href="/consultation_patient/{{ patient.Cin }}/update_consultation/{{ consultation.id  }}"
                                                    class="label theme-bg text-white f-12">Update</a>
