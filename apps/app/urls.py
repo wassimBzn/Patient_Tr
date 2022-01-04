@@ -16,7 +16,9 @@ urlpatterns = [
     path('consultation_patient/<str:patient_id>/',consultation_patient,name='consultation_patient'),
     path('consultation_patient/<str:patient_id>/<str:action>/<str:consultation_id>/',consultation_patient,name='consultation_patient'),
     path('delete_consultation_patient/<str:patient_id>/<str:consultation_id>/',delete_consultation_patient,name='delete_consultation_patient'),
+    path('delete_consultation_patient/<str:patient_id>/<str:consultation_id>/<str:source>',delete_consultation_patient,name='delete_consultation_patient'),
     path('view_consultation_patient/<str:patient_id>/<str:consultation_id>/',view_consultation_patient,name='view_consultation_patient'),
+    path('global_consultation_patient/',global_consultation_patient,name='global_consultation_patient'),
     path('charts_patient/',charts_patient,name='charts_patient'),
     path('Export_excel/',Export_excel,name='Export_excel'),
 

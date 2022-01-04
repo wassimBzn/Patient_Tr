@@ -1,0 +1,152 @@
+
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Forms {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="page-header-title">
+                                <h5 class="m-b-10">Consultation d'un patient</h5>
+                            </div>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                                <li class="breadcrumb-item"><a href="javascript:">Gestion des patients</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:">Consultations des patient</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    <div class="column" style="width: 50%;">
+        <div class="main-body">
+            <div class="">
+                <!-- [ Main Content ] start -->
+
+                <form role="form" method="POST" action="/consultation_patient/{{ consultation.Patient_id }}/"/>
+                {% csrf_token %}
+                <div class="column">
+
+                    <div class="col-sm-12">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Historiques Des Consultation</h5>
+                            </div>
+
+
+                            <div class="card-body">
+
+                                <h5> Dates des Consultations</h5>
+                                {% if success %}
+                                    <div style="text-align: center;color:#1c7430"><label>{{ msg }}</label></div>
+                                {% else %}
+                                    <div style="text-align: center;color:#c82333"><label>{{ msg }}</label></div>
+                                {% endif %}
+                                <table class="table table-hover">
+                                <tbody>
+
+                                        {% for consultation in consultations_page_obj %}
+                                        <tr class="unread">
+                                            <td>
+                                                <b><label>Date de consultation: <br></label></b>
+                                                <h6 class="text-muted"><i
+                                                        class="fas fa-circle text-c-green f-10 m-r-15"></i>{{ consultation.Date_de_consultation }}
+                                                </h6>
+                                            </td>
+                                            <div id="{{ consultation.id }}" class="modal fade" role="dialog">
+                                                <div class="modal-dialog">
+
+                                                    <!-- Modal content-->
+                                                    <div class="modal-content">
+
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title float-left">Delete
+                                                                Consultation</h4>
+                                                            <button type="button" class="close"
+                                                                    data-dismiss="modal">&times;
+                                                            </button>
+
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Do you really want to delete this
+                                                                consultation? </p>
+                                                        </div>
+                                                        <div class="modal-footer">
+
+                                                            <a href="" data-toggle="modal"
+                                                               data-target="#{{ consultation.id }}"
+                                                               class="label theme-bg2 text-white">No</a>
+                                                            <a href="/delete_consultation_patient/{{ consultation.Patient_id }}/{{ consultation.id }}/global"
+                                                               class="label theme-bg text-white f-12">Yes</a>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <td>
+                                                <a href="/view_consultation_patient/{{ consultation.Patient_id }}/{{ consultation.id  }}"
+                                                   class="label theme-bg2 text-white">View</a>
+                                                <a href="/consultation_patient/{{ consultation.Patient_id }}/update_consultation/{{ consultation.id  }}"
+                                                   class="label theme-bg text-white f-12">Update</a>
+
+                                                <a href=""
+                                                   data-toggle="modal"
+                                                   data-target="#{{ consultation.id  }}"
+                                                   class="label theme-bg2 text-white">Delete</a>
+
+
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+
+                                </table>
+                            </div>
+                            <div class="pagination">
+                                               <span class="step-links">
+                                                   {% if consultations_page_obj.has_previous %}
+                                                       <a href="?page=1">&laquo; first</a>
+                                                       <a href="?page={{ consultations_page_obj.previous_page_number }}">previous</a>
+                                                   {% endif %}
+
+                                                   <span class="current">
+                                                       Page {{ consultations_page_obj.number }} of {{ consultations_page_obj.paginator.num_pages }}.
+                                                   </span>
+
+                                                   {% if consultations_page_obj.has_next %}
+                                                       <a href="?page={{ consultations_page_obj.next_page_number }}">next</a>
+                                                       <a href="?page={{ consultations_page_obj.paginator.num_pages }}">last &raquo;</a>
+                                                   {% endif %}
+                                               </span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

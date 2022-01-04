@@ -225,8 +225,32 @@ def view_consultation_patient(request, patient_id,consultation_id=None):
         "patient": patient,
     }
     return render(request, "./view_patient_consultation.html", context)
+def global_consultation_patient(request):
+    habitude = Habitude.objects.all()
+    antecedentes = Antecedentes.objects.all()
+    examen_phisique = Examen_phisique.objects.all()
+    examen_clinique = Examen_clinique.objects.all()
+    patient_consultations = Consultation.objects.all().order_by('-Date_de_consultation')
+    My_consultation_Filter = ConsultationFilter(request.GET, queryset=patient_consultations)
+    Consultations = My_consultation_Filter.qs
+    paginator = Paginator(Consultations, 10)
+    page_number = request.GET.get('page')
+    success=True
+    msg="all patients consultations"
+    consultations_page_obj = paginator.get_page(page_number)
+    context = {
+        "success": success,
+        "msg": msg,
+        "Habitude": habitude,
+        "Antecedentes": antecedentes,
+        "Examen_phisique": examen_phisique,
+        "Examen_clinique": examen_clinique,
+        "consultations_page_obj": consultations_page_obj,
+    }
 
-def delete_consultation_patient(request, patient_id, consultation_id=None):
+    return render(request, "./global_patient_consultation.html", context)
+
+def delete_consultation_patient(request, patient_id, consultation_id=None,source=None):
     msg = None
     success = False
     html_template = loader.get_template('index.html')
@@ -255,7 +279,10 @@ def delete_consultation_patient(request, patient_id, consultation_id=None):
         msg = "patient {} has not been deleted! ".format(patient.Nom)
         success = False
     context = {}
-    return HttpResponseRedirect("/consultation_patient/{}/".format(patient_id),context)
+    if source == "global" :
+        return HttpResponseRedirect("/global_consultation_patient/".format(patient_id),context)
+    else:
+        return HttpResponseRedirect("/consultation_patient/{}/".format(patient_id),context)
 
 def consultation_patient(request, patient_id, action=None, consultation_id=None):
     msg = None
