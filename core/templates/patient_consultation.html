@@ -247,13 +247,14 @@
                     <div class="col-sm-12">
 
                         <div class="card">
+
                             <div class="card-header">
                                 <h5>Historiques Des Consultation</h5>
                             </div>
 
-
                             <div class="card-body">
-
+                                <a href="/Export_excel_single_patient_consultations/{{ patient.Cin }}/" class="label theme-bg text-white f-12"
+                                   style="margin-left: 50%">Export Excel</a> <br><br>
                                 <h5> Dates des Consultations</h5>
                                 {% if success %}
                                     <div style="text-align: center;color:#1c7430"><label>{{ msg }}</label></div>

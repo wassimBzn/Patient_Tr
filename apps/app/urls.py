@@ -22,6 +22,7 @@ urlpatterns = [
     path('charts_patient/',charts_patient,name='charts_patient'),
     path('Export_excel/',Export_excel_patient,name='Export_excel'),
     path('Export_excel_patient_consultations/',Export_excel_patient_consultations,name='Export_excel_patient_consultations'),
+    path('Export_excel_single_patient_consultations/<str:Cin>/',Export_excel_single_patient_consultations,name='Export_excel_single_patient_consultations'),
 
     # Matches any html file
     # re_path(r'^.*\.*', pages, name='pages'),
