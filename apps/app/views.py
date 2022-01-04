@@ -24,11 +24,36 @@ class ContactListView(ListView):
     paginate_by = 2
     model = Patient
 
-
-def Export_excel(request):
-    columns = ['nom', 'prenom', 'date_de_naissance', 'lieu_de_naissance', 'profession', 'adresse', 'cin',
-               'statut_matrimonial', 'telephone', 'tabagisme', 'antecedentes', 'medication_en_cours', 'plaintes',
-               'reste_de_examen', 'T', 'PA', 'Slo', 'RC', 'explorations', 'traitement', 'evolution']
+def Export_excel_patient_consultations(request):
+    columns = ['Nom',
+               'Prenom',
+               'Date_de_naissance',
+               'Habitude_Tabagisme',
+               'Habitude_Nombre_de_Cigarette_par_jours',
+               'Habitude_Alcool',
+               'Habitude_Allergies_medicamenteuses',
+               'Habitude_Autres',
+               'Antecedentes_Medicaux',
+               'Antecedentes_Chururgicaux',
+               'Antecedentes_Medications_en_cours',
+               'Examen_phisique_plaintes',
+               'Examen_phisique_Examen_Cinetique',
+               'Examen_phisique_Reste_de_examen_phisique',
+               'Examen_clinique_Temperature',
+               'Examen_clinique_PA',
+               'Examen_clinique_SRO',
+               'Examen_clinique_Poids',
+               'Examen_clinique_Taille',
+               'Examen_clinique_RC',
+               'Examen_clinique_Reste_de_examen_clinique',
+               'Consultation_Date_de_consultation',
+               'Consultation_Examen_phisique',
+               'Consultation_Examen_clinique',
+               'Consultation_Explorations',
+               'Consultation_Traitement',
+               'Consultation_Evolution',
+               'Consultation_Remarques',
+               'Consultation_Prochaine_Rondez_vous']
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename=patients{}.xls'.format(str(datetime.datetime.now()))
     patients = Patient.objects.all()
@@ -42,14 +67,83 @@ def Export_excel(request):
     font_style = xlwt.XFStyle()
     for patient in patients:
         row_num += 1
-        patient_list = [patient.nom, patient.prenom, patient.date_de_naissance, patient.lieu_de_naissance,
-                        patient.profession, patient.adresse, patient.cin, patient.statut_matrimonial, patient.telephone,
-                        patient.tabagisme, patient.antecedentes, patient.medication_en_cours, patient.plaintes,
-                        patient.reste_de_examen, patient.T, patient.PA, patient.Slo, patient.RC, patient.explorations,
-                        patient.traitement, patient.evolution]
+        patient_consultations = Consultation.objects.filter(Patient__Cin=patient.Cin).order_by('-Date_de_consultation')
+        columns = [patient.Nom,patient.Prenom,patient.Date_de_naissance,'','','','','','','','','','','','','','','','','','','','','','','','','']
+        for columns_num in range(len(columns)):
+            sheet.write(row_num, columns_num, columns[columns_num], font_style)
+        row_num+=1
+        for consultation in patient_consultations:
+            habitude = Habitude.objects.get(id=consultation.Habitude_id)
+            antecedentes = Antecedentes.objects.get(id=consultation.Antecedentes_id)
+            examen_phisique = Examen_phisique.objects.get(id=consultation.Examen_phisique_id)
+            examen_clinique = Examen_clinique.objects.get(id=consultation.Examen_clinique_id)
+
+            consultation_list = ['',
+                                 '',
+                                 '',
+                                 habitude.Tabagisme,
+                        habitude.Nombre_de_Cigarette_par_jours,
+                        habitude.Alcool,
+                        habitude.Allergies_medicamenteuses,
+                        habitude.Autres,
+                        antecedentes.Medicaux,
+                        antecedentes.Chururgicaux,
+                        antecedentes.Medications_en_cours,
+                        examen_phisique.plaintes,
+                        examen_phisique.Examen_Cinetique,
+                        examen_phisique.Reste_de_examen_phisique,
+                        examen_clinique.Temperature,
+                        examen_clinique.PA,
+                        examen_clinique.SRO,
+                        examen_clinique.Poids,
+                        examen_clinique.Taille,
+                        examen_clinique.RC,
+                        examen_clinique.Reste_de_examen_clinique,
+                        str(consultation.Date_de_consultation),
+                        consultation.Explorations,
+                        consultation.Traitement,
+                        consultation.Evolution,
+                        consultation.Remarques,
+                        str(consultation.Prochaine_Rondez_vous)]
+
+            for columns_num in range(len(consultation_list)):
+                sheet.write(row_num, columns_num, consultation_list[columns_num], font_style)
+            row_num+=1
+    wb.save(response)
+
+    return response
+
+def Export_excel_patient(request):
+    columns = ['Nom','Prenom','Date_de_naissance','Lieu_de_naissance','Profession','Adresse','Cin','Sexe','Statut_matrimonial','Telephone']
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=patients{}.xls'.format(str(datetime.datetime.now()))
+    patients = Patient.objects.all()
+    wb = xlwt.Workbook(encoding='utf-8')
+    sheet = wb.add_sheet('Patients')
+    row_num = 1
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+    for columns_num in range(len(columns)):
+        sheet.write(row_num, columns_num, columns[columns_num], font_style)
+    font_style = xlwt.XFStyle()
+    for patient in patients:
+        patient_consultations = Consultation.objects.filter(Patient__Cin=patient.Cin).order_by('-Date_de_consultation')
+
+        row_num += 1
+        patient_list = [patient.Nom,
+                        patient.Prenom,
+                        patient.Date_de_naissance,
+                        patient.Lieu_de_naissance,
+                        patient.Profession,
+                        patient.Adresse,
+                        patient.Cin,
+                        patient.Sexe,
+                        patient.Statut_matrimonial,
+                        patient.Telephone]
         for columns_num in range(len(patient_list)):
             sheet.write(row_num, columns_num, patient_list[columns_num], font_style)
     wb.save(response)
+
 
     return response
 

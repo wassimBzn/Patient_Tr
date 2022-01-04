@@ -48,17 +48,22 @@
                             <div class="card-body">
 
                                 <h5> Dates des Consultations</h5>
+
+                                <a href="/Export_excel_patient_consultations" class="label theme-bg text-white f-12"
+                                   style="margin-left: 50%">Export Excel</a> <br><br>
                                 {% if success %}
                                     <div style="text-align: center;color:#1c7430"><label>{{ msg }}</label></div>
                                 {% else %}
                                     <div style="text-align: center;color:#c82333"><label>{{ msg }}</label></div>
                                 {% endif %}
+
                                 <table class="table table-hover">
                                 <tbody>
 
                                         {% for consultation in consultations_page_obj %}
                                         <tr class="unread">
                                             <td>
+
                                                 <b><label>Date de consultation: <br></label></b>
                                                 <h6 class="text-muted"><i
                                                         class="fas fa-circle text-c-green f-10 m-r-15"></i>{{ consultation.Date_de_consultation }}
