@@ -34,7 +34,8 @@
                     <form role="form" method="POST" action="/update_patient/{{ patient.cin }}/">
                         {% csrf_token %}
                         <div class="row">
-
+                            <a href="/Export_Patient_consultation_pdf/{{ patient.Cin }}/" class="label theme-bg text-white f-12"
+                               style="margin-left: 50%">Export Pdf</a> <br><br>
                             <div class="col-sm-12">
 
                                 <div class="card">

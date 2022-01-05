@@ -22,7 +22,9 @@ urlpatterns = [
     path('charts_patient/',charts_patient,name='charts_patient'),
     path('Export_excel/',Export_excel_patient,name='Export_excel'),
     path('Export_excel_patient_consultations/',Export_excel_patient_consultations,name='Export_excel_patient_consultations'),
-    path('Export_excel_single_patient_consultations/<str:Cin>/',Export_excel_single_patient_consultations,name='Export_excel_single_patient_consultations'),
+    path('Export_Patient_pdf/<str:patient_id>/',Export_Patient_pdf,name='Export_Patient_pdf'),
+    path('Export_Patient_consultation_pdf/<str:patient_id>/<str:consultation_id>/',Export_Patient_consultation_pdf,name='Export_Patient_consultation_pdf'),
+    path('Export_excel_single_patient_consultations/<str:patient_id>/',Export_excel_single_patient_consultations,name='Export_excel_single_patient_consultations'),
 
     # Matches any html file
     # re_path(r'^.*\.*', pages, name='pages'),

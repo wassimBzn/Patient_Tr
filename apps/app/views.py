@@ -18,12 +18,56 @@ from django.views.generic import ListView
 from django.core.paginator import Paginator
 from django.shortcuts import render
 
+import io
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
+
+def Export_Patient_pdf(request,patient_id,):
+    # Create a file-like buffer to receive PDF data.
+    buffer = io.BytesIO()
+
+    # Create the PDF object, using the buffer as its "file."
+    p = canvas.Canvas(buffer)
+
+    # Draw things on the PDF. Here's where the PDF generation happens.
+    # See the ReportLab documentation for the full list of functionality.
+    p.drawString(100, 100, "Hello world.")
+
+    # Close the PDF object cleanly, and we're done.
+    p.showPage()
+    p.save()
+
+    # FileResponse sets the Content-Disposition header so that browsers
+    # present the option to save the file.
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename='hello.pdf')
+
+def Export_Patient_consultation_pdf(request,patient_id,consultation_id):
+    # Create a file-like buffer to receive PDF data.
+    buffer = io.BytesIO()
+
+    # Create the PDF object, using the buffer as its "file."
+    p = canvas.Canvas(buffer)
+
+    # Draw things on the PDF. Here's where the PDF generation happens.
+    # See the ReportLab documentation for the full list of functionality.
+    p.drawString(100, 100, "Hello world.")
+
+    # Close the PDF object cleanly, and we're done.
+    p.showPage()
+    p.save()
+
+    # FileResponse sets the Content-Disposition header so that browsers
+    # present the option to save the file.
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename='hello.pdf')
 
 @login_required(login_url="/login/")
 class ContactListView(ListView):
     paginate_by = 2
     model = Patient
-def Export_excel_single_patient_consultations(request,Cin):
+
+def Export_excel_single_patient_consultations(request,patient_id):
     columns = ['Nom',
                'Prenom',
                'Date_de_naissance',
@@ -55,7 +99,7 @@ def Export_excel_single_patient_consultations(request,Cin):
                'Consultation_Prochaine_Rondez_vous']
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename=patients{}.xls'.format(str(datetime.datetime.now()))
-    patient = Patient.objects.get(Cin=Cin)
+    patient = Patient.objects.get(Cin=patient_id)
     wb = xlwt.Workbook(encoding='utf-8')
     sheet = wb.add_sheet('Patients')
     row_num = 0
@@ -110,6 +154,7 @@ def Export_excel_single_patient_consultations(request,Cin):
     wb.save(response)
 
     return response
+
 def Export_excel_patient_consultations(request):
     columns = ['Nom',
                'Prenom',
@@ -198,6 +243,7 @@ def Export_excel_patient_consultations(request):
     wb.save(response)
 
     return response
+
 def Export_excel_patient(request):
     columns = ['Nom','Prenom','Date_de_naissance','Lieu_de_naissance','Profession','Adresse','Cin','Sexe','Statut_matrimonial','Telephone']
     response = HttpResponse(content_type='application/ms-excel')
@@ -232,7 +278,6 @@ def Export_excel_patient(request):
 
     return response
 
-
 def index(request):
     patients = Patient.objects.get_queryset().order_by('Nom')
     msg = ''
@@ -244,7 +289,6 @@ def index(request):
     page_obj = paginator.get_page(page_number)
     return render(request, "./index.html",
                   {'page_obj': page_obj, "MyFilter": MyFilter, "patients": patients, "msg": msg, "success": success})
-
 
 def charts_patient(request):
     context = {}
@@ -265,7 +309,6 @@ def charts_patient(request):
     context['msg'] = msg
     context['success'] = success
     return render(request, "./charts-morris.html", context)
-
 
 @login_required(login_url="/login/")
 def pages(request):
@@ -308,7 +351,6 @@ def delete_patient(request, patient_id):
     context = {}
     return HttpResponseRedirect("/")
 
-
 def view_patient(request, patient_id):
     msg = 'Success'
     try:
@@ -319,7 +361,6 @@ def view_patient(request, patient_id):
         return HttpResponseRedirect("/")
 
     return render(request, "./view_patient.html", {"msg": msg, "patient": patient})
-
 
 def update_patient(request, patient_id):
     msg = None
@@ -404,6 +445,7 @@ def view_consultation_patient(request, patient_id,consultation_id=None):
         "patient": patient,
     }
     return render(request, "./view_patient_consultation.html", context)
+
 def global_consultation_patient(request):
     habitude = Habitude.objects.all()
     antecedentes = Antecedentes.objects.all()
@@ -681,7 +723,6 @@ def consultation_patient(request, patient_id, action=None, consultation_id=None)
 
     return render(request, "./patient_consultation.html", context)
 
-
 def add_patient(request):
     msg = None
     success = False
@@ -720,7 +761,6 @@ def add_patient(request):
         form = AddPatientForm()
 
     return render(request, "./add_patient.html", {"form": form, "msg": msg, "success": success})
-
 
 def consultations(request):
     msg = None
