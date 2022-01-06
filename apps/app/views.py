@@ -21,19 +21,34 @@ from django.shortcuts import render
 import io
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
+from textwrap import wrap
 
 def Export_Patient_pdf(request,patient_id,):
     # Create a file-like buffer to receive PDF data.
     buffer = io.BytesIO()
+    patient=Patient.objects.get(Cin=patient_id)
 
     # Create the PDF object, using the buffer as its "file."
     p = canvas.Canvas(buffer)
+    w=30
+    h=100
 
     # Draw things on the PDF. Here's where the PDF generation happens.
     # See the ReportLab documentation for the full list of functionality.
-    p.drawString(100, 100, "Hello world.")
 
-    # Close the PDF object cleanly, and we're done.
+    p.drawString(w, h, " ");h+=350
+    p.drawString(w, h, "Profession : {}".format(patient.Profession));h+=30
+    p.drawString(w, h, "Telephone : {}".format(patient.Telephone));h+=30
+    p.drawString(w, h, "Statut_matrimonial : {}".format(patient.Statut_matrimonial));h+=30
+    p.drawString(w, h, "Sexe : {}".format(patient.Sexe));h+=30
+    p.drawString(w, h, "Cin : {}".format(patient.Cin));h+=30
+    p.drawString(w, h, "Adresse : {}".format(patient.Adresse));h+=30
+    p.drawString(w, h, "Lieu_de_naissance : {}".format(patient.Lieu_de_naissance));h+=30
+    p.drawString(w, h, "Date_de_naissance : {}".format(patient.Date_de_naissance));h+=30
+    p.drawString(w, h, "Prenom : {}".format(patient.Prenom));h+=30
+    p.drawString(w, h, "Nom: {}".format(patient.Nom));h+=30
+    p.drawString(200, h, "Information Generale d'un patient  ");h+=100
+# Close the PDF object cleanly, and we're done.
     p.showPage()
     p.save()
 
@@ -45,15 +60,70 @@ def Export_Patient_pdf(request,patient_id,):
 def Export_Patient_consultation_pdf(request,patient_id,consultation_id):
     # Create a file-like buffer to receive PDF data.
     buffer = io.BytesIO()
-
+    patient=Patient.objects.get(Cin=patient_id)
+    consultation = Consultation.objects.get(id=consultation_id)
+    habitude = Habitude.objects.get(id=consultation.Habitude_id)
+    antecedentes = Antecedentes.objects.get(id=consultation.Antecedentes_id)
+    examen_phisique = Examen_phisique.objects.get(id=consultation.Examen_phisique_id)
+    examen_clinique = Examen_clinique.objects.get(id=consultation.Examen_clinique_id)
     # Create the PDF object, using the buffer as its "file."
     p = canvas.Canvas(buffer)
+    p.drawCentredString(300, 800, "Consultation d'un patient")
+    p.drawRightString(550, 780, "Dr.Taher Ben Salem")
+    p.line(40, 770, 560, 770)
+    x=50
+    y=735
+    p.setFont('Helvetica-Bold', 12)
+    p.drawString(x, y, "Information Generale");y-=30
+    p.setFont('Helvetica', 11)
+    p.drawString(x+10, y, "Nom: {}".format(patient.Nom));y-=20
+    p.drawString(x+10, y, "Prénom: {}".format(patient.Prenom));y-=20
+    p.drawString(x+10, y, "Date de naissance: {}".format(patient.Date_de_naissance));y-=20
+    p.setFont('Helvetica-Bold', 12)
 
-    # Draw things on the PDF. Here's where the PDF generation happens.
-    # See the ReportLab documentation for the full list of functionality.
-    p.drawString(100, 100, "Hello world.")
+    p.drawString(x, y, "Habitude");y-=30
+    p.setFont('Helvetica', 11)
+    p.drawString(x+10, y, "Tabagisme : {}".format(habitude.Tabagisme));y-=20
+    p.drawString(x+10, y, "Nombre de Cigarette par jours : {}".format(habitude.Nombre_de_Cigarette_par_jours));y-=20
+    p.drawString(x+10, y, "Alcool: {}".format(habitude.Alcool));y-=20
+    p.drawString(x+10, y, "Allergies medicamenteuses : {}".format(habitude.Allergies_medicamenteuses));y-=20
+    p.drawString(x+10, y, "Autres: {}".format(habitude.Autres));y-=20
 
-    # Close the PDF object cleanly, and we're done.
+    p.setFont('Helvetica-Bold', 12)
+    p.drawString(x, y, "Antecedentes");y-=30
+    p.setFont('Helvetica', 11)
+    p.drawString(x+10, y, "Medicaux: {}".format(antecedentes.Medicaux));y-=20
+    p.drawString(x+10, y, "Chururgicaux: {}".format(antecedentes.Chururgicaux));y-=20
+    p.drawString(x+10, y, "Medications en cours: {}".format(antecedentes.Medications_en_cours));y-=20
+
+    p.setFont('Helvetica-Bold', 12)
+    p.drawString(x, y, "Examen_phisique");y-=30
+    p.setFont('Helvetica', 11)
+    p.drawString(x+10, y, "plaintes: {}".format(examen_phisique.plaintes));y-=20
+    p.drawString(x+10, y, "Examen Cinetique: {}".format(examen_phisique.Examen_Cinetique));y-=20
+    p.drawString(x+10, y, "Reste de examen phisique: {}".format(examen_phisique.Reste_de_examen_phisique));y-=20
+
+    p.setFont('Helvetica-Bold', 12)
+    p.drawString(x, y, "Examen_clinique");y-=30
+    p.setFont('Helvetica', 11)
+    p.drawString(x+10, y, "Temperature: {}".format(examen_clinique.Temperature));y-=20
+    p.drawString(x+10, y, "PA: {}".format(examen_clinique.PA));y-=20
+    p.drawString(x+10, y, "SRO: {}".format(examen_clinique.SRO));y-=20
+    p.drawString(x+10, y, "Poids: {}".format(examen_clinique.Poids));y-=20
+    p.drawString(x+10, y, "Taille: {}".format(examen_clinique.Taille));y-=20
+    p.drawString(x+10, y, "RC: {}".format(examen_clinique.RC));y-=20
+    p.drawString(x+10, y, "Reste de examen clinique: {}".format(examen_clinique.Reste_de_examen_clinique));y-=20
+    p.setFont('Helvetica-Bold', 12)
+    p.drawString(x, y, "Consultation");y-=30
+    p.setFont('Helvetica', 11)
+    p.drawString(x+10, y, "Date de consultation: {}".format(consultation.Date_de_consultation));y-=20
+    p.drawString(x+10, y, "Explorations: {}".format(consultation.Explorations));y-=20
+    p.drawString(x+10, y, "Traitement: {}".format(consultation.Traitement));y-=20
+    p.drawString(x+10, y, "Evolution: {}".format(consultation.Evolution));y-=20
+    p.drawString(x+10, y, "Remarques: {}".format(consultation.Remarques));y-=20
+    p.drawString(x+10, y, "Prochaine Rondez vous: {}".format(consultation.Prochaine_Rondez_vous));y-=20
+
+# Close the PDF object cleanly, and we're done.
     p.showPage()
     p.save()
 

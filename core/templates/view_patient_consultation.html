@@ -7,7 +7,20 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>HTML-to-PDF Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="html2pdf.bundle.min.js"></script>
 
+    <script>
+        function generatePDF() {
+            // Choose the element that our invoice is rendered in.
+            const element = document.getElementById('invoice');
+            // Choose the element and save the PDF for our user.
+            html2pdf().from(element).save();
+        }
+    </script>
     <div class="pcoded-content">
         <div class="pcoded-inner-content">
             <!-- [ breadcrumb ] start -->
@@ -47,6 +60,7 @@
                                         <div style="margin-left: 60%">
                                             <a href="/Export_Patient_consultation_pdf/{{ patient.Cin }}/{{ Consultation.id }}" class="label theme-bg text-white f-12"
                                                style="margin-left: 50%">Export Pdf</a> <br><br>
+
                                         </div>
 
 
@@ -241,4 +255,6 @@
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+
+{% endblock javascripts %}

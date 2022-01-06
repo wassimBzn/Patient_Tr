@@ -39,15 +39,15 @@ class Habitude(models.Model):
 
 class Antecedentes(models.Model):
     id = models.AutoField(primary_key=True, default=date)
-    Medicaux= models.CharField(max_length=500,default=None)
-    Chururgicaux= models.CharField(max_length=500,default=None)
-    Medications_en_cours= models.CharField(max_length=500,default=None)
+    Medicaux = models.CharField(max_length=500,default=None)
+    Chururgicaux = models.CharField(max_length=500,default=None)
+    Medications_en_cours = models.CharField(max_length=500,default=None)
 
 class Examen_phisique(models.Model):
     id = models.AutoField(primary_key=True, default=date)
     plaintes = models.CharField(max_length=500,default=None)
-    Examen_Cinetique= models.CharField(max_length=500,default=None)
-    Reste_de_examen_phisique= models.CharField(max_length=500,default=None)
+    Examen_Cinetique = models.CharField(max_length=500,default=None)
+    Reste_de_examen_phisique = models.CharField(max_length=500,default=None)
 
 class Examen_clinique(models.Model):
     id = models.AutoField(primary_key=True, default=date)
