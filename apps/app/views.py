@@ -22,6 +22,7 @@ import io
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
 from textwrap import wrap
+import math
 
 def Export_Patient_pdf(request,patient_id,):
     # Create a file-like buffer to receive PDF data.
@@ -56,6 +57,38 @@ def Export_Patient_pdf(request,patient_id,):
     # present the option to save the file.
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=True, filename='hello.pdf')
+def write_item_in_pdf(p,x,y,fieldName,Fieldvalue):
+    length_of_string = len(str(Fieldvalue))
+    if length_of_string < 75:
+        p.drawString(x+10, y, "{} : {}".format(fieldName,Fieldvalue)); y-=20
+    else:
+        number_of_lines= math.ceil(length_of_string/73)
+        cotient=math.ceil(length_of_string/number_of_lines)
+        list_value_words=Fieldvalue.split(' ')
+        if len(list_value_words) < 2 and number_of_lines > 1 :
+            Line_list= [Fieldvalue[i:i+cotient] for i in range(0, len(Fieldvalue), cotient)]
+        else:
+            Line_list=[]
+            line_length=0
+            line=''
+            for word in list_value_words:
+                if line_length <=75:
+                    line_length+=len(word)
+                    line+=" "+word
+                else:
+                    line_length=0
+                    Line_list.append(line)
+                    line=''
+
+        iteration=0
+        for ln in Line_list:
+            if iteration==0:
+                p.drawString(x+10, y, "{} : {}".format(fieldName,ln)); y-=20
+            else:
+                p.drawString(x+10, y, "{}  {}".format(" ",ln)); y-=20
+            iteration+=1
+
+    return p,x,y
 
 def Export_Patient_consultation_pdf(request,patient_id,consultation_id):
     # Create a file-like buffer to receive PDF data.
@@ -81,27 +114,26 @@ def Export_Patient_consultation_pdf(request,patient_id,consultation_id):
     p.drawString(x+10, y, "Date de naissance: {}".format(patient.Date_de_naissance));y-=20
     p.setFont('Helvetica-Bold', 12)
 
-    p.drawString(x, y, "Habitude");y-=30
+    p.drawString(x, y, "Habitude"); y -= 30
     p.setFont('Helvetica', 11)
     p.drawString(x+10, y, "Tabagisme : {}".format(habitude.Tabagisme));y-=20
     p.drawString(x+10, y, "Nombre de Cigarette par jours : {}".format(habitude.Nombre_de_Cigarette_par_jours));y-=20
     p.drawString(x+10, y, "Alcool: {}".format(habitude.Alcool));y-=20
     p.drawString(x+10, y, "Allergies medicamenteuses : {}".format(habitude.Allergies_medicamenteuses));y-=20
-    p.drawString(x+10, y, "Autres: {}".format(habitude.Autres));y-=20
-
+    p, x, y = write_item_in_pdf(p, x, y, "Autres", habitude.Autres)
     p.setFont('Helvetica-Bold', 12)
-    p.drawString(x, y, "Antecedentes");y-=30
+    p.drawString(x, y, "Antecedentes"); y -= 30
     p.setFont('Helvetica', 11)
-    p.drawString(x+10, y, "Medicaux: {}".format(antecedentes.Medicaux));y-=20
-    p.drawString(x+10, y, "Chururgicaux: {}".format(antecedentes.Chururgicaux));y-=20
-    p.drawString(x+10, y, "Medications en cours: {}".format(antecedentes.Medications_en_cours));y-=20
+    p, x, y = write_item_in_pdf(p, x, y, "Medicaux", antecedentes.Medicaux)
+    p, x, y = write_item_in_pdf(p, x, y, "Chururgicaux", antecedentes.Chururgicaux)
+    p, x, y = write_item_in_pdf(p, x, y, "Medications en cours", antecedentes.Medications_en_cours)
 
     p.setFont('Helvetica-Bold', 12)
     p.drawString(x, y, "Examen_phisique");y-=30
     p.setFont('Helvetica', 11)
-    p.drawString(x+10, y, "plaintes: {}".format(examen_phisique.plaintes));y-=20
-    p.drawString(x+10, y, "Examen Cinetique: {}".format(examen_phisique.Examen_Cinetique));y-=20
-    p.drawString(x+10, y, "Reste de examen phisique: {}".format(examen_phisique.Reste_de_examen_phisique));y-=20
+    p, x, y = write_item_in_pdf(p, x, y, "plaintes", examen_phisique.plaintes)
+    p, x, y = write_item_in_pdf(p, x, y, "Examen Cinetique", examen_phisique.Examen_Cinetique)
+    p, x, y = write_item_in_pdf(p, x, y, "Reste de examen phisique", examen_phisique.Reste_de_examen_phisique)
 
     p.setFont('Helvetica-Bold', 12)
     p.drawString(x, y, "Examen_clinique");y-=30
@@ -112,15 +144,16 @@ def Export_Patient_consultation_pdf(request,patient_id,consultation_id):
     p.drawString(x+10, y, "Poids: {}".format(examen_clinique.Poids));y-=20
     p.drawString(x+10, y, "Taille: {}".format(examen_clinique.Taille));y-=20
     p.drawString(x+10, y, "RC: {}".format(examen_clinique.RC));y-=20
-    p.drawString(x+10, y, "Reste de examen clinique: {}".format(examen_clinique.Reste_de_examen_clinique));y-=20
+    p, x, y = write_item_in_pdf(p, x, y, "Reste de examen clinique", examen_clinique.Reste_de_examen_clinique)
+
     p.setFont('Helvetica-Bold', 12)
     p.drawString(x, y, "Consultation");y-=30
     p.setFont('Helvetica', 11)
     p.drawString(x+10, y, "Date de consultation: {}".format(consultation.Date_de_consultation));y-=20
-    p.drawString(x+10, y, "Explorations: {}".format(consultation.Explorations));y-=20
-    p.drawString(x+10, y, "Traitement: {}".format(consultation.Traitement));y-=20
-    p.drawString(x+10, y, "Evolution: {}".format(consultation.Evolution));y-=20
-    p.drawString(x+10, y, "Remarques: {}".format(consultation.Remarques));y-=20
+    p, x, y = write_item_in_pdf(p, x, y, "Explorations", consultation.Explorations)
+    p, x, y = write_item_in_pdf(p, x, y, "Traitement", consultation.Traitement)
+    p, x, y = write_item_in_pdf(p, x, y, "Evolution", consultation.Evolution)
+    p, x, y = write_item_in_pdf(p, x, y, "Remarques", consultation.Remarques)
     p.drawString(x+10, y, "Prochaine Rondez vous: {}".format(consultation.Prochaine_Rondez_vous));y-=20
 
 # Close the PDF object cleanly, and we're done.
