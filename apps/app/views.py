@@ -58,21 +58,41 @@ def Export_Patient_pdf(request,patient_id,):
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=True, filename='hello.pdf')
 def write_item_in_pdf(p,x,y,fieldName,Fieldvalue):
+    #get the length of the string
     length_of_string = len(str(Fieldvalue))
-    if length_of_string < 75:
-        p.drawString(x+10, y, "{} : {}".format(fieldName,Fieldvalue)); y-=20
+    #75 is the max length of the line
+    #if we reach the max we should come back to the line
+    #if it's under 75  we write the line as it is
+    if y <= 50:
+        p.showPage()
+        p.drawCentredString(300, 800, " ")
+        p.drawRightString(550, 780, "Dr.Taher Ben Salem")
+        p.line(40, 770, 560, 770)
+        x=50
+        y=735
+    if length_of_string < 56:
+        p.setFont('Helvetica-Bold', 10)
+        p.drawString(x+10, y, "{} :".format(fieldName))
+        p.setFont('Helvetica', 10)
+        #full page = 595 , max letters per page= 89 , 595/89= 6.6 + add some numbers for beautifying,,,,56 max latters per line
+        p.drawString(x+20+(23*6.6), y, " {}".format(Fieldvalue)); y-=20
     else:
-        number_of_lines= math.ceil(length_of_string/73)
-        cotient=math.ceil(length_of_string/number_of_lines)
+        #max number of caracters per line
+        cotient=56
+        #else we should calculate how much lines we need
+        number_of_lines= math.ceil(length_of_string/cotient)
+        #split the value to list of words
         list_value_words=Fieldvalue.split(' ')
+        #if we have a short word we write it as it is by concatinatin all the words together in the list
         if len(list_value_words) < 2 and number_of_lines > 1 :
             Line_list= [Fieldvalue[i:i+cotient] for i in range(0, len(Fieldvalue), cotient)]
         else:
+            # concatinate the words together and write them and return to new line when >75 characters
             Line_list=[]
             line_length=0
             line=''
             for word in list_value_words:
-                if line_length <=75:
+                if line_length <=56:
                     line_length+=len(word)
                     line+=" "+word
                 else:
@@ -81,11 +101,18 @@ def write_item_in_pdf(p,x,y,fieldName,Fieldvalue):
                     line=''
 
         iteration=0
+        #write the phrases saved into the pdf page
         for ln in Line_list:
+            #if it is in the first line write the title field else no
+
             if iteration==0:
-                p.drawString(x+10, y, "{} : {}".format(fieldName,ln)); y-=20
+                p.setFont('Helvetica-Bold', 10)
+                p.drawString(x+10, y, "{} :".format(fieldName))
+                p.setFont('Helvetica', 10)
+                p.drawString(x+10+(23*6.6), y, " {}".format(ln)); y-=20
             else:
-                p.drawString(x+10, y, "{}  {}".format(" ",ln)); y-=20
+                p.setFont('Helvetica', 10)
+                p.drawString(x+10+(23*6.6), y, " {}".format(ln)); y-=20
             iteration+=1
 
     return p,x,y
@@ -108,60 +135,55 @@ def Export_Patient_consultation_pdf(request,patient_id,consultation_id):
     y=735
     p.setFont('Helvetica-Bold', 12)
     p.drawString(x, y, "Information Generale");y-=30
-    p.setFont('Helvetica', 11)
-    p.drawString(x+10, y, "Nom: {}".format(patient.Nom));y-=20
-    p.drawString(x+10, y, "Prénom: {}".format(patient.Prenom));y-=20
-    p.drawString(x+10, y, "Date de naissance: {}".format(patient.Date_de_naissance));y-=20
+    p, x, y = write_item_in_pdf(p, x, y, "Nom",patient.Nom)
+    p, x, y = write_item_in_pdf(p, x, y, "Prénom",patient.Prenom)
+    p, x, y = write_item_in_pdf(p, x, y, "Date de naissance",patient.Date_de_naissance)
+    y -= 10
     p.setFont('Helvetica-Bold', 12)
-
     p.drawString(x, y, "Habitude"); y -= 30
-    p.setFont('Helvetica', 11)
-    p.drawString(x+10, y, "Tabagisme : {}".format(habitude.Tabagisme));y-=20
-    p.drawString(x+10, y, "Nombre de Cigarette par jours : {}".format(habitude.Nombre_de_Cigarette_par_jours));y-=20
-    p.drawString(x+10, y, "Alcool: {}".format(habitude.Alcool));y-=20
-    p.drawString(x+10, y, "Allergies medicamenteuses : {}".format(habitude.Allergies_medicamenteuses));y-=20
+    p, x, y = write_item_in_pdf(p, x, y, "Tabagisme",habitude.Tabagisme)
+    p, x, y = write_item_in_pdf(p, x, y, "Nombre de Cigarette par jours",habitude.Nombre_de_Cigarette_par_jours)
+    p, x, y = write_item_in_pdf(p, x, y, "Alcool",habitude.Alcool)
+    p, x, y = write_item_in_pdf(p, x, y, "Allergies medicamenteuses",habitude.Allergies_medicamenteuses)
     p, x, y = write_item_in_pdf(p, x, y, "Autres", habitude.Autres)
+    y -= 10
     p.setFont('Helvetica-Bold', 12)
     p.drawString(x, y, "Antecedentes"); y -= 30
-    p.setFont('Helvetica', 11)
     p, x, y = write_item_in_pdf(p, x, y, "Medicaux", antecedentes.Medicaux)
     p, x, y = write_item_in_pdf(p, x, y, "Chururgicaux", antecedentes.Chururgicaux)
     p, x, y = write_item_in_pdf(p, x, y, "Medications en cours", antecedentes.Medications_en_cours)
-
+    y -= 10
     p.setFont('Helvetica-Bold', 12)
     p.drawString(x, y, "Examen_phisique");y-=30
-    p.setFont('Helvetica', 11)
     p, x, y = write_item_in_pdf(p, x, y, "plaintes", examen_phisique.plaintes)
     p, x, y = write_item_in_pdf(p, x, y, "Examen Cinetique", examen_phisique.Examen_Cinetique)
     p, x, y = write_item_in_pdf(p, x, y, "Reste de examen phisique", examen_phisique.Reste_de_examen_phisique)
-
+    y -= 10
     p.setFont('Helvetica-Bold', 12)
     p.drawString(x, y, "Examen_clinique");y-=30
-    p.setFont('Helvetica', 11)
-    p.drawString(x+10, y, "Temperature: {}".format(examen_clinique.Temperature));y-=20
-    p.drawString(x+10, y, "PA: {}".format(examen_clinique.PA));y-=20
-    p.drawString(x+10, y, "SRO: {}".format(examen_clinique.SRO));y-=20
-    p.drawString(x+10, y, "Poids: {}".format(examen_clinique.Poids));y-=20
-    p.drawString(x+10, y, "Taille: {}".format(examen_clinique.Taille));y-=20
-    p.drawString(x+10, y, "RC: {}".format(examen_clinique.RC));y-=20
-    p, x, y = write_item_in_pdf(p, x, y, "Reste de examen clinique", examen_clinique.Reste_de_examen_clinique)
-
+    p, x, y = write_item_in_pdf(p, x, y, "Temperature",examen_clinique.Temperature)
+    p, x, y = write_item_in_pdf(p, x, y, "PA",examen_clinique.PA)
+    p, x, y = write_item_in_pdf(p, x, y, "SRO",examen_clinique.SRO)
+    p, x, y = write_item_in_pdf(p, x, y, "Poids",examen_clinique.Poids)
+    p, x, y = write_item_in_pdf(p, x, y, "Taille",examen_clinique.Taille)
+    p, x, y = write_item_in_pdf(p, x, y, "RC",examen_clinique.RC)
+    p, x, y = write_item_in_pdf(p, x, y, "Reste de examen clinique",examen_clinique.Reste_de_examen_clinique)
+    y -= 10
     p.setFont('Helvetica-Bold', 12)
     p.drawString(x, y, "Consultation");y-=30
-    p.setFont('Helvetica', 11)
-    p.drawString(x+10, y, "Date de consultation: {}".format(consultation.Date_de_consultation));y-=20
+    p, x, y = write_item_in_pdf(p, x, y, "Date de consultation", consultation.Date_de_consultation)
     p, x, y = write_item_in_pdf(p, x, y, "Explorations", consultation.Explorations)
     p, x, y = write_item_in_pdf(p, x, y, "Traitement", consultation.Traitement)
     p, x, y = write_item_in_pdf(p, x, y, "Evolution", consultation.Evolution)
     p, x, y = write_item_in_pdf(p, x, y, "Remarques", consultation.Remarques)
-    p.drawString(x+10, y, "Prochaine Rondez vous: {}".format(consultation.Prochaine_Rondez_vous));y-=20
-
-# Close the PDF object cleanly, and we're done.
+    p, x, y = write_item_in_pdf(p, x, y, "Prochaine Rondez vous", consultation.Prochaine_Rondez_vous)# Close the PDF object cleanly, and we're done.
     p.showPage()
     p.save()
 
+
     # FileResponse sets the Content-Disposition header so that browsers
     # present the option to save the file.
+    buffer.seek(0)
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=True, filename='hello.pdf')
 
