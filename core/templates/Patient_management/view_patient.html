@@ -1,0 +1,136 @@
+
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Forms {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+    <style >
+        @media print
+        {
+            #non-printable { display: none; }
+            #printablearea { display: block; }
+        }
+    </style>
+{% endblock stylesheets %}
+
+{% block content %}
+    <script>
+        function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+        }
+    </script>
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="page-header-title">
+                                <h5 class="m-b-10">Ajout <patient></patient></h5>
+                            </div>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                                <li class="breadcrumb-item"><a href="/">Gestion des patients</a></li>
+                                <li class="breadcrumb-item"><a href="/view_patient/{{ patient.Cin }}">Plus des détails sur le patient {{ patient.Nom }} {{ patient.Prenom }}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <form role="form" method="POST" action="/update_patient/{{ patient.cin }}/">
+                        {% csrf_token %}
+                        <div class="row" >
+                            <a href="/Export_Patient_pdf/{{ patient.Cin }}/" class="label theme-bg text-white f-12"
+                               style="margin-left: 50%">PDF</a>
+
+                            <a href="" onclick="printDiv('printablearea')"
+                               class="label theme-bg2 text-white">Imprimer</a>
+
+
+                            <div class="col-sm-12" id="printablearea">
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Informations Generales</h5>
+                                    </div>
+
+                                   <h6><div class="card-body">
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <b><label>Nom: <br></label></b>
+                                                <label>{{ patient.Nom }}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <b><label>Prénom: <br></label></b>
+                                                <label>{{ patient.Prenom }}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <b><label>Date de naissance: <br></label></b>
+                                                <label>{{ patient.Date_de_naissance }}</label>
+
+                                            </div>
+                                            <div class="form-group">
+                                                <b><label>Lieu de naissance: <br></label></b>
+                                                <label>{{ patient.Kieu_de_naissance }}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <b><label>Profession: <br></label></b>
+                                                <label>{{ patient.Profession }}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <b><label>Adresse: <br></label></b>
+                                                <label>{{ patient.Aresse }}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <b><label>Pièce d'identité: <br></label></b>
+                                                <label>{{ patient.Cin }}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <b><label>Sexe: <br></label></b>
+                                                <label>{{ patient.Sexe }}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <b><label>Statut matrimonial: <br></label></b>
+                                                <label>{{ patient.Statut_matrimonial }}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <b><label>Téléphone GSM: <br></label></b>
+                                                <label>{{ patient.Telephone }}</label>
+                                            </div>
+
+                                        </div>
+
+                                    </div></h6>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+{% endblock javascripts %}

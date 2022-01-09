@@ -16,12 +16,12 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h5 class="m-b-10">Ajout <patient></patient></h5>
+                                <h5 class="m-b-10">Ajout patient</h5>
                             </div>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="javascript:">Gestion des patients</a></li>
-                                <li class="breadcrumb-item"><a href="javascript:">Ajout d'un patient</a></li>
+                                <li class="breadcrumb-item"><a href="/">Gestion des patients</a></li>
+                                <li class="breadcrumb-item"><a href="/add_patient">Ajout d'un patient</a></li>
                             </ul>
                         </div>
                     </div>
@@ -83,85 +83,24 @@
                                                 {{ form.cin }}
                                             </div>
                                             <div class="form-group">
+                                                <label>Sexe</label>
+                                                {{ form.sexe }}
+                                            </div>
+                                            <div class="form-group">
                                                 <label>Statut matrimonial</label>
+
                                                 {{ form.statut_matrimonial }}
                                             </div>
                                             <div class="form-group">
                                                 <label>Téléphone GSM</label>
                                                 {{ form.telephone }}
                                             </div>
+                                            <button type="submit" class="btn btn-primary">Ajouter</button>
 
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <!-- Input group -->
-
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Habitude</h5>
-
-                            </div>
-
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="tabagisme">Tabagisme (PA) Alcoolisme Allergies connue</label>
-                                    {{ form.tabagisme }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>ANTECEDENTES</h5>
-                            </div>
-
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="antecedentes">Antécédents</label>
-                                    {{ form.antecedentes }}
-                                </div>
-                                <div class="form-group">
-                                    <label for="medication_en_cours">Médication en cours</label>
-                                    {{ form.medication_en_cours }}
-                                </div>
-                                <div class="form-group">
-                                    <label for="plaintes">Plaintes</label>
-                                    {{ form.plaintes }}
-                                </div>
-
-
-                                <div class="form-group">
-                                    <label for="reste_de_examen">Reste de l'éxamen</label>
-                                    {{ form.reste_de_examen }}
-                                </div>
-
-                                <div class="form-group form-check" id="examen_phisique">
-                                    <label for="Examen_Phisique">Examen Phisique</label>  <br>
-                                    {{ form.T }}
-                                    <label class="form-check-label" for="T"> T </label><br>
-                                    {{ form.PA }}
-                                    <label class="form-check-label" for="PA"> PA </label><br>
-                                    {{ form.Slo }}
-
-                                    <label class="form-check-label" for="Slo"> Slo </label><br>
-                                    {{ form.RC }}
-                                    <label class="form-check-label" for="RC"> RC </label><br>
-                                </div>
-                                <div class="form-group">
-                                    <label for="explorations">Explorations</label>
-                                    {{ form.explorations }}
-                                </div>
-                                <div class="form-group">
-                                    <label for="traitement">Traitement</label>
-                                    {{ form.traitement }}
-                                </div>
-                                <div class="form-group">
-                                    <label for="evolution">Evolution</label>
-                                    {{ form.evolution }}
-                                </div>
-                                <button type="submit" class="btn btn-primary">Sauvegarder</button>
-
                             </div>
                         </div>
                     </form>
