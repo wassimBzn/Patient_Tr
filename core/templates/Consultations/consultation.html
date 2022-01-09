@@ -16,13 +16,12 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h5 class="m-b-10">Ajout patient</h5>
+                                <h5 class="m-b-10">Consultation</h5>
                             </div>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="javascript:">Gestion des patients</a></li>
-                                <li class="breadcrumb-item"><a href="javascript:">Ajout d'un patient</a></li>
-                            </ul>
+                                <li class="breadcrumb-item"><a href="/global_consultation_patient">Gestion des consultations</a></li>
+                                <li class="breadcrumb-item"><a href="/consultation_patient/{{ patient.Cin }}">Consultations de {{ patient.Nom }} {{ patient.Prenom }} </a></li>                            </ul>
                         </div>
                     </div>
                 </div>
@@ -39,7 +38,7 @@
 
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Ajout d'un patient</h5>
+                                        <h5>Consultation d'un patient</h5>
                                     </div>
 
                                     <div class="card-body">

@@ -485,7 +485,7 @@ def view_patient(request, patient_id):
         success = False
         return HttpResponseRedirect("/")
 
-    return render(request, "./view_patient.html", {"msg": msg, "patient": patient})
+    return render(request, "./Patient_management/view_patient.html", {"msg": msg, "patient": patient})
 
 def update_patient(request, patient_id):
     msg = None
@@ -543,7 +543,7 @@ def update_patient(request, patient_id):
         return HttpResponseRedirect("/")
     # return redirect("/login/")
 
-    return render(request, "./update_patient.html", {"success": success, "msg": msg, "form": form, "patient": patient})
+    return render(request, "./Patient_management/update_patient.html", {"success": success, "msg": msg, "form": form, "patient": patient})
 
 def view_consultation_patient(request, patient_id,consultation_id=None):
     msg = 'Success'
@@ -569,7 +569,7 @@ def view_consultation_patient(request, patient_id,consultation_id=None):
         "Consultation": consultation,
         "patient": patient,
     }
-    return render(request, "./view_patient_consultation.html", context)
+    return render(request, "./Consultations/view_patient_consultation.html", context)
 
 def global_consultation_patient(request):
     habitude = Habitude.objects.all()
@@ -594,7 +594,7 @@ def global_consultation_patient(request):
         "consultations_page_obj": consultations_page_obj,
     }
 
-    return render(request, "./global_patient_consultation.html", context)
+    return render(request, "./Consultations/global_patient_consultation.html", context)
 
 def delete_consultation_patient(request, patient_id, consultation_id=None,source=None):
     msg = None
@@ -817,7 +817,7 @@ def consultation_patient(request, patient_id, action=None, consultation_id=None)
         ConsultationForm = AddConsultationForm()
         msg = 'Patient does not exists!'
         success = False
-        return render(request, "./patient_consultation.html",
+        return render(request, "./Consultations/patient_consultation.html",
                       {"consultations_page_obj": consultations_page_obj, "success": success, "msg": msg,
                        "HabitudeForm": HabitudeForm, "AntecedentesForm": AntecedentesForm,
                        "Examen_phisiqueForm": Examen_phisiqueForm, "Examen_cliniqueForm": Examen_cliniqueForm,
@@ -846,7 +846,7 @@ def consultation_patient(request, patient_id, action=None, consultation_id=None)
     if action == "update_consultation":
         context["consultation"]= consultation
 
-    return render(request, "./patient_consultation.html", context)
+    return render(request, "./Consultations/patient_consultation.html", context)
 
 def add_patient(request):
     msg = None
@@ -868,7 +868,7 @@ def add_patient(request):
                 patient = Patient.objects.get(Cin=Cin)
                 msg = 'Patient Already exists!'
                 success = False
-                return render(request, "./add_patient.html", {"form": form, "msg": msg, "success": success})
+                return render(request, "./Patient_management/add_patient.html", {"form": form, "msg": msg, "success": success})
 
             except:
                 new_patient = Patient(Nom, Prenom, Date_de_naissance, Lieu_de_naissance, Profession, Adresse, Cin, Sexe,
@@ -878,18 +878,18 @@ def add_patient(request):
                 success = True
                 print("An exception occurred")
                 form = AddPatientForm()
-                return render(request, "./add_patient.html", {"form": form, "msg": msg, "success": success})
+                return render(request, "./Patient_management/add_patient.html", {"form": form, "msg": msg, "success": success})
             # return redirect("/login/")
         else:
             msg = form.errors
     else:
         form = AddPatientForm()
 
-    return render(request, "./add_patient.html", {"form": form, "msg": msg, "success": success})
+    return render(request, "./Patient_management/add_patient.html", {"form": form, "msg": msg, "success": success})
 
 def consultations(request):
     msg = None
     success = False
     form = None
 
-    return render(request, "./Consultation.html", {"form": form, "msg": msg, "success": success})
+    return render(request, "./Consultations/consultation.html", {"form": form, "msg": msg, "success": success})

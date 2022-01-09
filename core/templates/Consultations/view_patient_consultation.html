@@ -33,8 +33,9 @@
                             </div>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="javascript:">Gestion des patients</a></li>
-                                <li class="breadcrumb-item"><a href="javascript:">Consultation d'un patient</a></li>
+                                <li class="breadcrumb-item"><a href="/global_consultation_patient">Gestion des consultations</a></li>
+                                <li class="breadcrumb-item"><a href="/consultation_patient/{{ patient.Cin }}">Consultations de {{ patient.Nom }} {{ patient.Prenom }} </a></li>
+                                <li class="breadcrumb-item"><a href="/consultation_patient/{{ patient.Cin }}">Consultation de date {{ Consultation.Date_de_consultation }}  </a></li>
                             </ul>
                         </div>
                     </div>

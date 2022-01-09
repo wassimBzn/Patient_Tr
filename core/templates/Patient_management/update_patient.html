@@ -20,8 +20,8 @@
                             </div>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="javascript:">Gestion des patients</a></li>
-                                <li class="breadcrumb-item"><a href="javascript:">Plus de détail sur le patient patient</a></li>
+                                <li class="breadcrumb-item"><a href="/">Gestion des patients</a></li>
+                                <li class="breadcrumb-item"><a href="/update_patient/{{ patient.Cin }}">Modification d'un patient</a></li>
                             </ul>
                         </div>
                     </div>
@@ -31,73 +31,75 @@
             <div class="main-body">
                 <div class="page-wrapper">
                     <!-- [ Main Content ] start -->
-                    <form role="form" method="POST" action="/update_patient/{{ patient.cin }}/">
+                    <form role="form" method="POST" action="/update_patient/{{ patient.Cin }}/">
                         {% csrf_token %}
                         <div class="row">
-                            <a href="/Export_Patient_pdf/{{ patient.Cin }}/" class="label theme-bg text-white f-12"
-                               style="margin-left: 50%">Export Pdf</a> <br><br>
 
                             <div class="col-sm-12">
 
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>les infos du patient</h5>
+                                        <h5>Modification d'un patient</h5>
                                     </div>
 
-                                   <h6><div class="card-body">
+                                    <div class="card-body">
+                                        {% if success %}
+                                            <div style="text-align: center;color:#1c7430"><label>{{ msg }}</label></div>
+                                        {% else %}
+                                            <div style="text-align: center;color:#c82333"><label>{{ msg }}</label></div>
+                                        {% endif %}
 
-                                        <h5>Informations Generales</h5>
-                                        <br><br><br>
+                                        <hr>
                                         <div class="col-md-6">
 
                                             <div class="form-group">
-                                                <b><label>Nom: <br></label></b>
-                                                <label>{{ patient.Nom }}</label>
+                                                <label>Nom</label>
+                                                {{ form.nom }}
                                             </div>
                                             <div class="form-group">
-                                                <b><label>Prénom: <br></label></b>
-                                                <label>{{ patient.Prenom }}</label>
+                                                <label>Prénom</label>
+                                                {{ form.prenom }}
                                             </div>
                                             <div class="form-group">
-                                                <b><label>Date de naissance: <br></label></b>
-                                                <label>{{ patient.Date_de_naissance }}</label>
+                                                <label>Date de naissance</label>
+                                                {{ form.date_de_naissance }}
 
                                             </div>
                                             <div class="form-group">
-                                                <b><label>Lieu de naissance: <br></label></b>
-                                                <label>{{ patient.Kieu_de_naissance }}</label>
+                                                <label>Lieu de naissance</label>
+                                                {{ form.lieu_de_naissance }}
                                             </div>
                                             <div class="form-group">
-                                                <b><label>Profession: <br></label></b>
-                                                <label>{{ patient.Profession }}</label>
+                                                <label>Profession</label>
+                                                {{ form.profession }}
                                             </div>
                                             <div class="form-group">
-                                                <b><label>Adresse: <br></label></b>
-                                                <label>{{ patient.Aresse }}</label>
+                                                <label>Adresse</label>
+                                                {{ form.adresse }}
                                             </div>
                                             <div class="form-group">
-                                                <b><label>Pièce d'identité: <br></label></b>
-                                                <label>{{ patient.Cin }}</label>
+                                                <label>Pièce d'identité</label>
+                                                {{ form.cin }}
                                             </div>
                                             <div class="form-group">
-                                                <b><label>Sexe: <br></label></b>
-                                                <label>{{ patient.Sexe }}</label>
+                                                <label>Sexe</label>
+                                                {{ form.sexe }}
                                             </div>
                                             <div class="form-group">
-                                                <b><label>Statut matrimonial: <br></label></b>
-                                                <label>{{ patient.Statut_matrimonial }}</label>
+                                                <label>Statut matrimonial</label>
+                                                {{ form.statut_matrimonial }}
                                             </div>
                                             <div class="form-group">
-                                                <b><label>Téléphone GSM: <br></label></b>
-                                                <label>{{ patient.Telephone }}</label>
+                                                <label>Téléphone GSM</label>
+                                                {{ form.telephone }}
                                             </div>
 
                                         </div>
-
-                                    </div></h6>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                                <button type="submit" class="btn btn-primary">Sauvegarder</button>
 
                     </form>
                 </div>
@@ -111,22 +113,4 @@
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}
-
-    var doc = new jsPDF();
-    var elementHandler = {
-    '#ignorePDF': function (element, renderer) {
-    return true;
-    }
-    };
-    var source = window.document.getElementsByTagName("body")[0];
-    doc.fromHTML(
-    source,
-    15,
-    15,
-    {
-    'width': 180,'elementHandlers': elementHandler
-    });
-
-    doc.output("dataurlnewwindow");
-{% endblock javascripts %}
+{% block javascripts %}{% endblock javascripts %}
