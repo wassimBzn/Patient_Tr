@@ -31,7 +31,7 @@
                                     <div class="table-responsive">
                                         <form method="get">
                                             <a href="/Export_excel" class="label theme-bg text-white f-12"
-                                               style="margin-left: 50%">Export Excel</a> <br><br>
+                                               style="margin-left: 50%">Export un fichier excel</a> <br><br>
                                             <div class="col-md-6">
                                                 <label>Filtre par</label>
 
@@ -85,22 +85,22 @@
                                                             <!-- Modal content-->
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h4 class="modal-title float-left">Delete patient</h4>
+                                                                    <h4 class="modal-title float-left">Suppriession d'un patient</h4>
                                                                     <button type="button" class="close"
                                                                             data-dismiss="modal">&times;
                                                                     </button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <p>Do you really want to delete this
+                                                                    <p>Voulez-vous vraiment supprimer ce
                                                                         patient? </p>
                                                                 </div>
                                                                 <div class="modal-footer">
 
                                                                     <a href="" data-toggle="modal"
                                                                        data-target="#{{ patient.Cin }}"
-                                                                       class="label theme-bg2 text-white">No</a>
+                                                                       class="label theme-bg2 text-white">Non</a>
                                                                     <a href="/delete_patient/{{patient.Cin}}"
-                                                                       class="label theme-bg text-white f-12">Yes</a>
+                                                                       class="label theme-bg text-white f-12">Oui</a>
 
                                                                 </div>
                                                             </div>
@@ -109,14 +109,14 @@
                                                     </div>
 
                                                     <td><a href="/view_patient/{{ patient.Cin }}"
-                                                           class="label theme-bg2 text-white">View</a>
+                                                           class="label theme-bg2 text-white">Voir plus</a>
                                                         <a href="/update_patient/{{ patient.Cin }}"
-                                                            class="label theme-bg text-white f-12">Update</a>
+                                                            class="label theme-bg text-white f-12">Modification</a>
 
                                                         <a href=""
                                                             data-toggle="modal"
                                                             data-target="#{{ patient.Cin }}"
-                                                            class="label theme-bg2 text-white">Delete</a>
+                                                            class="label theme-bg2 text-white">Suppression</a>
                                                         <a href="/consultation_patient/{{ patient.Cin }}"
                                                            class="label theme-bg text-white f-12">Consultation</a>
 

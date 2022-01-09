@@ -49,7 +49,7 @@
 
                                         <div style="margin-left: 60%">
                                             <a href="/consultation_patient/{{ patient.Cin }}"
-                                               class="label theme-bg text-white f-12">Add New Consultation</a>
+                                               class="label theme-bg text-white f-12">Ajouter une Consultation</a>
                                         </div>
 
 
@@ -253,7 +253,7 @@
 
                             <div class="card-body">
                                 <a href="/Export_excel_single_patient_consultations/{{ patient.Cin }}/" class="label theme-bg text-white f-12"
-                                   style="margin-left: 50%">Export Excel</a> <br><br>
+                                   style="margin-left: 50%">Exporter un fichier excel</a> <br><br>
                                 <h5> Dates des Consultations</h5>
                                 {% if success %}
                                     <div style="text-align: center;color:#1c7430"><label>{{ msg }}</label></div>
@@ -278,7 +278,7 @@
                                                     <div class="modal-content">
 
                                                         <div class="modal-header">
-                                                            <h4 class="modal-title float-left">Delete
+                                                            <h4 class="modal-title float-left">Suppriession d'une
                                                                 Consultation</h4>
                                                             <button type="button" class="close"
                                                                     data-dismiss="modal">&times;
@@ -286,16 +286,16 @@
 
                                                         </div>
                                                         <div class="modal-body">
-                                                            <p>Do you really want to delete this
-                                                                consultation? </p>
+                                                            <p>Voulez-vous vraiment supprimer ce
+                                                                consultation?</p>
                                                         </div>
                                                         <div class="modal-footer">
 
                                                             <a href="" data-toggle="modal"
                                                                data-target="#{{ consultation.id }}"
-                                                               class="label theme-bg2 text-white">No</a>
+                                                               class="label theme-bg2 text-white">Non</a>
                                                             <a href="/delete_consultation_patient/{{ patient.Cin }}/{{ consultation.id }}/"
-                                                               class="label theme-bg text-white f-12">Yes</a>
+                                                               class="label theme-bg text-white f-12">Oui</a>
 
                                                         </div>
                                                     </div>
@@ -305,14 +305,14 @@
 
                                             <td>
                                                 <a href="/view_consultation_patient/{{ patient.Cin }}/{{ consultation.id  }}"
-                                                   class="label theme-bg2 text-white">View</a>
+                                                   class="label theme-bg2 text-white">Voir plus</a>
                                                 <a href="/consultation_patient/{{ patient.Cin }}/update_consultation/{{ consultation.id  }}"
-                                                   class="label theme-bg text-white f-12">Update</a>
+                                                   class="label theme-bg text-white f-12">Modification</a>
 
                                                 <a href=""
                                                    data-toggle="modal"
                                                    data-target="#{{ consultation.id  }}"
-                                                   class="label theme-bg2 text-white">Delete</a>
+                                                   class="label theme-bg2 text-white">Suppression</a>
 
 
                                             </td>
@@ -325,17 +325,17 @@
                             <div class="pagination">
                                                <span class="step-links">
                                                    {% if consultations_page_obj.has_previous %}
-                                                       <a href="?page=1">&laquo; first</a>
-                                                       <a href="?page={{ consultations_page_obj.previous_page_number }}">previous</a>
+                                                       <a href="?page=1">&laquo; première</a>
+                                                       <a href="?page={{ consultations_page_obj.previous_page_number }}">précédente</a>
                                                    {% endif %}
 
                                                    <span class="current">
-                                                       Page {{ consultations_page_obj.number }} of {{ consultations_page_obj.paginator.num_pages }}.
+                                                       Page {{ consultations_page_obj.number }} sur {{ consultations_page_obj.paginator.num_pages }}.
                                                    </span>
 
                                                    {% if consultations_page_obj.has_next %}
-                                                       <a href="?page={{ consultations_page_obj.next_page_number }}">next</a>
-                                                       <a href="?page={{ consultations_page_obj.paginator.num_pages }}">last &raquo;</a>
+                                                       <a href="?page={{ consultations_page_obj.next_page_number }}">suivante</a>
+                                                       <a href="?page={{ consultations_page_obj.paginator.num_pages }}">dernière &raquo;</a>
                                                    {% endif %}
                                                </span>
                                     </div>
