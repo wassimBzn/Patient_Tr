@@ -23,7 +23,7 @@
 
                                 <div class="card-header">
 
-                                    <h5>Recent Users</h5>
+                                    <h5> Gestion des patients </h5>
                                 </div>
                                 <!-- Modal -->
 
@@ -33,18 +33,18 @@
                                             <a href="/Export_excel" class="label theme-bg text-white f-12"
                                                style="margin-left: 50%">Export Excel</a> <br><br>
                                             <div class="col-md-6">
-                                                <label>Filter By</label>
+                                                <label>Filtre par</label>
 
                                                 <label>Nom</label>
                                                 {{ MyFilter.form.nom }}
                                                 <label>Prénom</label>
                                                 {{ MyFilter.form.prenom }}
                                                 <label>Date de naissance</label>
-                                                {{ MyFilter.form.date_de_naissance }}
+                                                {{ MyFilter.form.Date_de_naissance }}
                                                 <label>CIN</label>
                                                 {{ MyFilter.form.cin }}
                                                 <button type="submit" class="label theme-bg text-white f-12"
-                                                        class="labe2 theme-bg2 text-white">Submit
+                                                        class="labe2 theme-bg2 text-white">Filtrer
                                                 </button>
 
 
@@ -84,14 +84,11 @@
 
                                                             <!-- Modal content-->
                                                             <div class="modal-content">
-
                                                                 <div class="modal-header">
-                                                                    <h4 class="modal-title float-left">Delete
-                                                                        patient</h4>
+                                                                    <h4 class="modal-title float-left">Delete patient</h4>
                                                                     <button type="button" class="close"
                                                                             data-dismiss="modal">&times;
                                                                     </button>
-
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <p>Do you really want to delete this
@@ -135,17 +132,17 @@
                                     <div class="pagination">
                                                <span class="step-links">
                                                    {% if page_obj.has_previous %}
-                                                       <a href="?page=1">&laquo; first</a>
-                                                       <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                                                       <a href="?page=1">&laquo; première</a>
+                                                       <a href="?page={{ page_obj.previous_page_number }}"> précédente</a>
                                                    {% endif %}
 
                                                    <span class="current">
-                                                       Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                                       Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}.
                                                    </span>
 
                                                    {% if page_obj.has_next %}
-                                                       <a href="?page={{ page_obj.next_page_number }}">next</a>
-                                                       <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                                                       <a href="?page={{ page_obj.next_page_number }}">suivante</a>
+                                                       <a href="?page={{ page_obj.paginator.num_pages }}">dernière &raquo;</a>
                                                    {% endif %}
                                                </span>
                                     </div>

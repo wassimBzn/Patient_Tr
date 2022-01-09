@@ -4,7 +4,15 @@
 {% block title %} UI Forms {% endblock %}
 
 <!-- Specific CSS goes HERE -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+    <style >
+        @media print
+        {
+            #non-printable { display: none; }
+            #printablearea { display: block; }
+        }
+    </style>
+{% endblock stylesheets %}
 
 {% block content %}
     <meta charset="utf-8" />
@@ -14,11 +22,15 @@
     <script src="html2pdf.bundle.min.js"></script>
 
     <script>
-        function generatePDF() {
-            // Choose the element that our invoice is rendered in.
-            const element = document.getElementById('invoice');
-            // Choose the element and save the PDF for our user.
-            html2pdf().from(element).save();
+        function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
         }
     </script>
     <div class="pcoded-content">
@@ -51,28 +63,30 @@
                             {% csrf_token %}
                             <div class="row">
 
-                                <div class="col-sm-12">
+                                <div  class="col-sm-12" id="printablearea">
 
-                                    <div class="card">
+                                    <div class="card" >
                                         <div class="card-header">
                                             <h5>Consultation</h5>
                                         </div>
 
-                                        <div style="margin-left: 60%">
+                                        <div style="margin-left: 60%" id="non-printable">
                                             <a href="/Export_Patient_consultation_pdf/{{ patient.Cin }}/{{ Consultation.id }}" class="label theme-bg text-white f-12"
-                                               style="margin-left: 50%">Export Pdf</a> <br><br>
+                                               style="margin-left: 50%">Export Pdf</a>
+                                            <a href="" onclick="printDiv('printablearea')"
+                                               class="label theme-bg2 text-white">Print</a>
+                                            <br><br>
+
 
                                         </div>
-
-
-                                        <div class="card-body">
+                                        <div class="card-body" >
 
                                             <h5>Informations Generales</h5>
 
                                             {% if success %}
-                                                <div style="text-align: center;color:#1c7430"><label>{{ msg }}: </label></b></div>
+                                                <div style="text-align: center;color:#1c7430"><label>{{ msg }} </label></div>
                                             {% else %}
-                                                <div style="text-align: center;color:#c82333"><label>{{ msg }}: </label></b></div>
+                                                <div style="text-align: center;color:#c82333"><label>{{ msg }} </label></div>
                                             {% endif %}
                                             <hr>
                                             <div class="col-md-6">

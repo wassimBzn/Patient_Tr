@@ -4,10 +4,29 @@
 {% block title %} UI Forms {% endblock %}
 
 <!-- Specific CSS goes HERE -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+    <style >
+        @media print
+        {
+            #non-printable { display: none; }
+            #printablearea { display: block; }
+        }
+    </style>
+{% endblock stylesheets %}
 
 {% block content %}
+    <script>
+        function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
 
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+        }
+    </script>
     <div class="pcoded-content">
         <div class="pcoded-inner-content">
             <!-- [ breadcrumb ] start -->
@@ -33,11 +52,15 @@
                     <!-- [ Main Content ] start -->
                     <form role="form" method="POST" action="/update_patient/{{ patient.cin }}/">
                         {% csrf_token %}
-                        <div class="row">
+                        <div class="row" >
                             <a href="/Export_Patient_pdf/{{ patient.Cin }}/" class="label theme-bg text-white f-12"
-                               style="margin-left: 50%">Export Pdf</a> <br><br>
+                               style="margin-left: 50%">Export Pdf</a>
 
-                            <div class="col-sm-12">
+                            <a href="" onclick="printDiv('printablearea')"
+                               class="label theme-bg2 text-white">Print</a>
+
+
+                            <div class="col-sm-12" id="printablearea">
 
                                 <div class="card">
                                     <div class="card-header">
@@ -110,20 +133,4 @@
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 
-    var doc = new jsPDF();
-    var elementHandler = {
-    '#ignorePDF': function (element, renderer) {
-    return true;
-    }
-    };
-    var source = window.document.getElementsByTagName("body")[0];
-    doc.fromHTML(
-    source,
-    15,
-    15,
-    {
-    'width': 180,'elementHandlers': elementHandler
-    });
-
-    doc.output("dataurlnewwindow");
 {% endblock javascripts %}

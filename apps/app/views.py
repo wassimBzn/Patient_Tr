@@ -31,7 +31,10 @@ def Export_Patient_pdf(request,patient_id,):
 
     # Create the PDF object, using the buffer as its "file."
     p = canvas.Canvas(buffer)
-    w=30
+    p.drawCentredString(300, 800, "Information Generale d'un patient")
+    p.drawRightString(550, 780, "Dr.Taher Ben Salem")
+    p.line(40, 770, 560, 770)
+    w=50
     h=100
 
     # Draw things on the PDF. Here's where the PDF generation happens.
@@ -48,7 +51,6 @@ def Export_Patient_pdf(request,patient_id,):
     p.drawString(w, h, "Date_de_naissance : {}".format(patient.Date_de_naissance));h+=30
     p.drawString(w, h, "Prenom : {}".format(patient.Prenom));h+=30
     p.drawString(w, h, "Nom: {}".format(patient.Nom));h+=30
-    p.drawString(200, h, "Information Generale d'un patient  ");h+=100
 # Close the PDF object cleanly, and we're done.
     p.showPage()
     p.save()
@@ -468,10 +470,10 @@ def delete_patient(request, patient_id):
 
     try:
         patient.delete()
-        msg = "patient{} has been successfully deleted"
+        msg = "Le patient {} a été supprimé avec succès".format(patient.Nom)
         success = False
     except:
-        msg = "patient {} has not been deleted! ".format(patient.Nom)
+        msg = "Le patient {} n'a pas été supprimé avec succès".format(patient.Nom)
         success = False
     context = {}
     return HttpResponseRedirect("/")
@@ -481,14 +483,14 @@ def view_patient(request, patient_id):
     try:
         patient = Patient.objects.get(Cin=patient_id)
     except:
-        msg = 'Patient does not exists!'
+        msg = "Le patient n'existe pas"
         success = False
         return HttpResponseRedirect("/")
 
     return render(request, "./Patient_management/view_patient.html", {"msg": msg, "patient": patient})
 
 def update_patient(request, patient_id):
-    msg = None
+    msg = ''
     success = False
     try:
         patient = Patient.objects.get(Cin=patient_id)
@@ -517,12 +519,12 @@ def update_patient(request, patient_id):
                 patient.Telephone = Telephone
 
                 patient.save()
-                msg = 'Patient Already exists!'
+                msg = "Le patient n'existe pas"
                 success = False
                 return HttpResponseRedirect("/")
             else:
                 success = False
-                msg = 'Form is not valid: {}'.format(form.errors)
+                msg = "Le formulaire n'est pas valide: {}".format(form.errors)
         else:
             form = AddPatientForm(initial={'nom': patient.Nom,
                                            'prenom': patient.Prenom,
@@ -538,7 +540,7 @@ def update_patient(request, patient_id):
             patient = Patient.objects.get(Cin=patient_id)
     except:
         form = AddPatientForm()
-        msg = 'Patient does not exists!'
+        msg = "Le patient n'existe pas"
         success = False
         return HttpResponseRedirect("/")
     # return redirect("/login/")
@@ -546,7 +548,7 @@ def update_patient(request, patient_id):
     return render(request, "./Patient_management/update_patient.html", {"success": success, "msg": msg, "form": form, "patient": patient})
 
 def view_consultation_patient(request, patient_id,consultation_id=None):
-    msg = 'Success'
+    msg = ''
     success = True
     try:
        patient = Patient.objects.get(Cin=patient_id)
@@ -556,7 +558,7 @@ def view_consultation_patient(request, patient_id,consultation_id=None):
        examen_phisique = Examen_phisique.objects.get(id=consultation.Examen_phisique_id)
        examen_clinique = Examen_clinique.objects.get(id=consultation.Examen_clinique_id)
     except:
-       msg = 'Patient does not exists!'
+       msg = "Le patient n'existe pas"
        success = False
        return HttpResponseRedirect("/consultation_patient/{}/".format(patient_id))
     context = {
@@ -582,7 +584,7 @@ def global_consultation_patient(request):
     paginator = Paginator(Consultations, 10)
     page_number = request.GET.get('page')
     success=True
-    msg="all patients consultations"
+    msg="toutes les consultations des patients"
     consultations_page_obj = paginator.get_page(page_number)
     context = {
         "success": success,
@@ -619,10 +621,10 @@ def delete_consultation_patient(request, patient_id, consultation_id=None,source
         examen_phisique.delete()
         print('deleting examen_clinique')
         examen_clinique.delete()
-        msg = "consultation {} of the user {} has been successfully deleted".format(consultation.Date_de_consultation,patient.Nom)
+        msg = "la consultation {} de l'utilisateur {} a été supprimée avec succès".format(consultation.Date_de_consultation,patient.Nom)
         success = False
     except:
-        msg = "patient {} has not been deleted! ".format(patient.Nom)
+        msg = "le patient {} n'a pas été supprimé ".format(patient.Nom)
         success = False
     context = {}
     if source == "global" :
@@ -729,7 +731,7 @@ def consultation_patient(request, patient_id, action=None, consultation_id=None)
                     examen_phisique.save()
                     examen_clinique.save()
                     consultation.save()
-                    msg = 'Consultation Updated Successfully!'
+                    msg = "Consultation mise à jour avec succès"
                     success = True
 
                 else:
@@ -749,7 +751,7 @@ def consultation_patient(request, patient_id, action=None, consultation_id=None)
                                                     New_Examen_clinique.id, Explorations, Traitement, Evolution,
                                                     Remarques, Prochaine_Rondez_vous)
                     New_consultation.save()
-                    msg = 'Consultation Added Successfully!'
+                    msg = 'Consultation ajoutée avec succès'
                     success = True
                     selectedPatient = Patient.objects.get(Cin=patient_id)
                     HabitudeForm = AddHabitudeForm()
@@ -759,7 +761,7 @@ def consultation_patient(request, patient_id, action=None, consultation_id=None)
                     ConsultationForm = AddConsultationForm()
             else:
                 success = False
-                msg = 'Form is not valid: {}'.format(ConsultationForm.errors)
+                msg = "Le formulaire n'est pas valide: {}".format(ConsultationForm.errors)
         else:
             selectedPatient = Patient.objects.get(Cin=patient_id)
             if action == "update_consultation":
@@ -798,7 +800,7 @@ def consultation_patient(request, patient_id, action=None, consultation_id=None)
                              'Remarques': consultation.Remarques,
                              'Prochaine_Rondez_vous': consultation.Prochaine_Rondez_vous,
                              })
-                msg = 'Updating Consultation of {} related to the user {}'.format(consultation.Date_de_consultation,selectedPatient.Nom)
+                msg = "Consultation de {} liée au patient {}".format(consultation.Date_de_consultation,selectedPatient.Nom)
                 success = True
             else:
                 msg = ''
@@ -815,7 +817,7 @@ def consultation_patient(request, patient_id, action=None, consultation_id=None)
         Examen_phisiqueForm = AddExamen_phisiqueForm()
         Examen_cliniqueForm = AddExamen_cliniqueForm()
         ConsultationForm = AddConsultationForm()
-        msg = 'Patient does not exists!'
+        msg = "Le patient n'existe pas"
         success = False
         return render(request, "./Consultations/patient_consultation.html",
                       {"consultations_page_obj": consultations_page_obj, "success": success, "msg": msg,
@@ -849,7 +851,7 @@ def consultation_patient(request, patient_id, action=None, consultation_id=None)
     return render(request, "./Consultations/patient_consultation.html", context)
 
 def add_patient(request):
-    msg = None
+    msg = ''
     success = False
     if request.method == "POST":
         form = AddPatientForm(request.POST or None)
@@ -866,7 +868,7 @@ def add_patient(request):
             Telephone = form.cleaned_data.get("telephone")
             try:
                 patient = Patient.objects.get(Cin=Cin)
-                msg = 'Patient Already exists!'
+                msg = 'Le patient existe déjà!'
                 success = False
                 return render(request, "./Patient_management/add_patient.html", {"form": form, "msg": msg, "success": success})
 
@@ -874,14 +876,14 @@ def add_patient(request):
                 new_patient = Patient(Nom, Prenom, Date_de_naissance, Lieu_de_naissance, Profession, Adresse, Cin, Sexe,
                                       Statut_matrimonial, Telephone)
                 new_patient.save()
-                msg = 'Patient has been successfully created !'
+                msg = 'Le patient a été créé avec succès!'
                 success = True
                 print("An exception occurred")
                 form = AddPatientForm()
                 return render(request, "./Patient_management/add_patient.html", {"form": form, "msg": msg, "success": success})
             # return redirect("/login/")
         else:
-            msg = form.errors
+            msg = "Erreur lors de l'ajout d'un nouveau patient, veuillez contacter l'administrateur"
     else:
         form = AddPatientForm()
 
