@@ -12,19 +12,19 @@ from django.utils import timezone
 
 PERCENTAGE_VALIDATOR = [MinValueValidator(0), MaxValueValidator(100)]
 GENDER_CHOICES =(
-    ("Male", "Masculin"),
-    ("Female", "Féminin"),
+    ("Masculin", "Masculin"),
+    ("Féminin", "Féminin"),
 )
 YES_OR_NO_CHOICES=(
-    ("YES", "OUI"),
-    ("NO", "NON"),
+    ("OUI", "OUI"),
+    ("NON", "NON"),
 )
 
 STATUT_MATRIMONIAL_CHOICES=(
-    ('celibataire','célibataire'),
-    ('mariee','Mariée'),
-    ('veuve','Veuve'),
-    ('divorcee','divorcée'),
+    ('Celibataire','Celibataire'),
+    ('Mariée','Mariée'),
+    ('Veuve','Veuve'),
+    ('Divorcée','Divorcée'),
 )
 date = str(datetime.datetime.now().day) + str(datetime.datetime.now().month) + str(datetime.datetime.now().year) + str(datetime.datetime.now().hour) +  str(datetime.datetime.now().minute)+str(datetime.datetime.now().second)
 date=int(date)

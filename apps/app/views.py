@@ -22,8 +22,98 @@ import io
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
 from textwrap import wrap
-import math
 
+# importing date class from datetime module
+from datetime import date
+
+# creating the date object of today's date
+todays_date = date.today()
+
+import math
+def patient_stats(request):
+    patients = Patient.objects.all()
+    nb_patient_sexe_male = Patient.objects.filter(Sexe="Masculin").count()
+    nb_patient_sexe_female = Patient.objects.filter(Sexe="Féminin").count()
+
+    nb_patient_celibataire= Patient.objects.filter(Statut_matrimonial="Celibataire").count()
+    nb_patient_mariee= Patient.objects.filter(Statut_matrimonial="Mariée").count()
+    nb_patient_veuve= Patient.objects.filter(Statut_matrimonial="Veuve").count()
+    nb_patient_divorcee= Patient.objects.filter(Statut_matrimonial="Divorcée").count()
+
+    patients_years_birthday_babies=Patient.objects.filter(Date_de_naissance__year__range=[todays_date.year-5,todays_date.year]).count()
+    patients_years_birthday_childs=Patient.objects.filter(Date_de_naissance__year__range=[todays_date.year-13,todays_date.year-6]).count()
+    patients_years_birthday_teen=Patient.objects.filter(Date_de_naissance__year__range=[todays_date.year-19,todays_date.year-14]).count()
+    patients_years_birthday_Adult=Patient.objects.filter(Date_de_naissance__year__range=[todays_date.year-29,todays_date.year-20]).count()
+    patients_years_birthday_adolescent_Middle_Age_Adult=Patient.objects.filter(Date_de_naissance__year__range=[todays_date.year-59,todays_date.year-30]).count()
+    patients_years_birthday_Senior_Adult=Patient.objects.filter(Date_de_naissance__year__range=[todays_date.year-200,todays_date.year-60]).count()
+    nbr_patient=Patient.objects.all().count()
+
+    msg = ''
+    success = ''
+    context = {
+        "nbr_patient":nbr_patient,
+        "nb_patient_sexe_male":nb_patient_sexe_male ,
+        "nb_patient_sexe_female":nb_patient_sexe_female ,
+        "nb_patient_celibataire":nb_patient_celibataire,
+        "nb_patient_mariee":nb_patient_mariee,
+        "nb_patient_veuve":nb_patient_veuve,
+        "nb_patient_divorcee":nb_patient_divorcee,
+        "patients_years_birthday_babies":patients_years_birthday_babies,
+        "patients_years_birthday_childs":patients_years_birthday_childs,
+        "patients_years_birthday_teen":patients_years_birthday_teen,
+        "patients_years_birthday_Adult":patients_years_birthday_Adult,
+        "patients_years_birthday_adolescent_Middle_Age_Adult":patients_years_birthday_adolescent_Middle_Age_Adult,
+        "patients_years_birthday_Senior_Adult":patients_years_birthday_Senior_Adult,
+    }
+    return render(request, "./statestics/patient_stats.html", context)
+def consultation_stats(request):
+    context={}
+    try:
+        msg = ''
+        success = ''
+        patients = Patient.objects.all()
+        consultation = Consultation.objects.all()
+        #HABITUDE STATS
+        habitude_Tabagisme_YES = 0
+        habitude_Tabagisme_NO = 0
+        habitude_Alcool_YES = 0
+        habitude_Alcool_NO = 0
+        habitude_Allergies_medicamenteuses_YES = 0
+        habitude_Allergies_medicamenteuses_NO = 0
+        for patient in patients:
+            if Consultation.objects.filter(Patient__Cin=patient.Cin).count()>0:
+                patient_consultations = Consultation.objects.filter(Patient__Cin=patient.Cin).last()
+                if patient_consultations.Habitude.Tabagisme=="OUI":
+                    habitude_Tabagisme_YES += 1
+                else:
+                    habitude_Tabagisme_NO += 1
+                if patient_consultations.Habitude.Alcool=="OUI":
+                    habitude_Alcool_YES += 1
+                else:
+                    habitude_Alcool_NO += 1
+                if patient_consultations.Habitude.Allergies_medicamenteuses=="OUI":
+                    habitude_Allergies_medicamenteuses_YES += 1
+                else:
+                    habitude_Allergies_medicamenteuses_NO += 1
+
+        antecedentes = Antecedentes.objects.all()
+        examen_phisique = Examen_phisique.objects.all()
+        examen_clinique = Examen_clinique.objects.all()
+        context = {
+            'habitude_Tabagisme_YES':habitude_Tabagisme_YES,
+            'habitude_Tabagisme_NO':habitude_Tabagisme_NO,
+            'habitude_Alcool_YES':habitude_Alcool_YES,
+            'habitude_Alcool_NO':habitude_Alcool_NO,
+            'habitude_Allergies_medicamenteuses_YES':habitude_Allergies_medicamenteuses_YES,
+            'habitude_Allergies_medicamenteuses_NO':habitude_Allergies_medicamenteuses_NO,
+        }
+        return render(request, "./statestics/consultation_stats.html",context)
+    except template.TemplateDoesNotExist:
+        html_template = loader.get_template('page-404.html')
+        return HttpResponse(html_template.render(context, request))
+    except:
+        html_template = loader.get_template('page-500.html')
+        return HttpResponse(html_template.render(context, request))
 def Export_Patient_pdf(request,patient_id,):
     # Create a file-like buffer to receive PDF data.
     buffer = io.BytesIO()
@@ -422,7 +512,7 @@ def charts_patient(request):
     patients = Patient.objects.all()
     msg = ''
     success = ''
-    html_template = loader.get_template('charts-morris.html')
+    html_template = loader.get_template('statestics/consultation_stats.html')
     T_Number = Patient.objects.filter(T=True).count()
     PA_Number = Patient.objects.filter(PA=True).count()
     SLO_Number = Patient.objects.filter(Slo=True).count()
@@ -435,7 +525,7 @@ def charts_patient(request):
     context['patients'] = patients
     context['msg'] = msg
     context['success'] = success
-    return render(request, "./charts-morris.html", context)
+    return render(request, "./statestics/consultation_stats.html", context)
 
 @login_required(login_url="/login/")
 def pages(request):
