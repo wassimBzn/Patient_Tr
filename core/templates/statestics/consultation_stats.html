@@ -1,0 +1,223 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Charts Morris {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+    <link rel="stylesheet" href="/static/assets/plugins/chart-morris/css/morris.css">
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="page-header-title">
+                                <h5 class="m-b-10">Statistiques des Consultations </h5>
+                            </div>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                                <li class="breadcrumb-item"><a href="javascript:">Statistiques</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:">Statistiques des patients</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="row">
+                        <!-- [ Morris Chart ] start -->
+                        <div class="col-xl-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Nombre des patients Tabagismes</h5>
+
+                                </div>
+                                <div class="card-block">
+                                    <div id="morris-bar-chart" style="height:300px"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6" style="visibility: hidden; display:none;">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Bar [ Stacked ] Chart</h5>
+                                </div>
+                                <div class="card-block">
+                                    <div id="morris-bar-stacked-chart" style="height:300px"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6" style="visibility: hidden; display:none;">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Line [ Angle ] Chart</h5>
+                                </div>
+                                <div class="card-block">
+                                    <div id="morris-area-chart" style="height:300px"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6" style="visibility: hidden; display:none;">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Area [ Smooth ] Chart</h5>
+                                </div>
+                                <div class="card-block">
+                                    <div id="morris-area-curved-chart" style="height:300px"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6" style="visibility: hidden; display:none;">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Line [ Angle ] Chart</h5>
+                                </div>
+                                <div class="card-block">
+                                    <div id="morris-line-chart" class="ChartShadow" style="height:300px"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6" style="visibility: hidden; display:none;">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Line [ Smooth ] Chart</h5>
+                                </div>
+                                <div class="card-block">
+                                    <div id="morris-line-smooth-chart" class="ChartShadow" style="height:300px"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6" >
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Statistiques des patients alcooliques</h5>
+                                </div>
+                                <div class="card-block">
+                                    <div id="morris-donut-chart" style="height:300px"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6" >
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Statistiques des Patients qui ont des Allergies medicamenteuses </h5>
+                                </div>
+                                <div class="card-block">
+                                    <div id="morris_donut_chart__Allergies_medicamenteuses" style="height:300px"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- [ Morris Chart ] end -->
+                    </div>
+                    <!-- [ Main Content ] end -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+    <script>
+        'use strict';
+        $(document).ready(function() {
+            setTimeout(function() {
+                // [ bar-simple ] chart start
+                Morris.Bar({
+                    element: 'morris-bar-chart',
+                    data: [
+
+                        {
+                            y: 'Tabagisme',
+                            b:  {{ habitude_Tabagisme_YES }},
+                        },
+                        {
+                            y: 'Non Tabagisme',
+                            b:  {{ habitude_Tabagisme_NO }},
+                        },
+
+                    ],
+                    xkey: 'y',
+                    barSizeRatio: 0.70,
+                    barGap: 1,
+                    resize: true,
+                    responsive:true,
+                    ykeys: ['a', 'b'],
+                    labels: ['Bar 1', 'Statestiques des patients tabagismes', 'Bar 3'],
+                    barColors: ["0-#1de9b6-#1dc4e9", "0-#899FD4-#A389D4", "#04a9f5"]
+                });
+                // [ bar-simple ] chart end
+
+                var graph_alcool= Morris.Donut({
+                    element: 'morris-donut-chart',
+                    data: [
+                        {
+                            value: {{ habitude_Alcool_YES }},
+                            label: 'Alcolique'
+                        },            {
+                            value: {{ habitude_Alcool_NO }},
+                            label: 'Non Alcolique'}
+                    ],
+                    colors: [
+                        '#1de9b6',
+                        '#A389D4',
+                        '#04a9f5',
+                        '#1dc4e9',
+                        '#FF5733',
+                        '#DCD91E',
+                        '#AF01BD',
+                    ],
+                    resize: true,
+                    formatter: function(x) {
+                        return "val : " + x
+                    }
+                });
+                var graph_Allergies_medicamenteuses = Morris.Donut({
+                    element: 'morris_donut_chart__Allergies_medicamenteuses',
+                    data: [
+                        {
+                            value: {{ habitude_Allergies_medicamenteuses_YES }},
+                            label: 'Alergique'
+                        },{
+                            value: {{ habitude_Allergies_medicamenteuses_NO }},
+                            label: 'Non Alergique'}
+                    ],
+                    colors: [
+                        '#FF5733',
+                        '#DCD91E',
+                        '#AF01BD',
+                        '#1de9b6',
+                        '#A389D4',
+                        '#04a9f5',
+                        '#1dc4e9',
+                    ],
+                    resize: true,
+                    formatter: function(x) {
+                        return "val : " + x
+                    }
+                });
+                // [ Donut-chart ] end
+            }, 700);
+
+        });
+
+    </script>
+    <script src="/static/assets/plugins/chart-morris/js/raphael.min.js"></script>
+    <script src="/static/assets/plugins/chart-morris/js/morris.min.js"></script>
+    <script src="/static/assets/js/pages/chart-morris-custom.js"></script>
+
+{% endblock javascripts %}

@@ -20,12 +20,12 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Morris Chart</h5>
+                            <h5 class="m-b-10">Statistiques des patients </h5>
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-                            <li class="breadcrumb-item"><a href="javascript:">Chart</a></li>
-                            <li class="breadcrumb-item"><a href="javascript:">Morris Chart</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">Statistiques</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">Statistiques des patients</a></li>
                         </ul>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                     <div class="col-xl-6">
                         <div class="card">
                             <div class="card-header">
-                                <h5>Examen Phisique par patient</h5>
+                                <h5>Nombre des patients par cycle de vie</h5>
 
                             </div>
                             <div class="card-block">
@@ -101,14 +101,23 @@
                     <div class="col-xl-6" >
                         <div class="card">
                             <div class="card-header">
-                                <h5>Examen Phisique par patient</h5>
+                                <h5>Nombre des patients par sexe</h5>
                             </div>
                             <div class="card-block">
                                 <div id="morris-donut-chart" style="height:300px"></div>
                             </div>
                         </div>
                     </div>
-
+                    <div class="col-xl-6" >
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Nombre des patients par statut matrimonial</h5>
+                            </div>
+                            <div class="card-block">
+                                <div id="morris_donut_chart_Statut_matrimonial" style="height:300px"></div>
+                            </div>
+                        </div>
+                    </div>
                     <!-- [ Morris Chart ] end -->
                 </div>
                 <!-- [ Main Content ] end -->
@@ -130,58 +139,84 @@
                 Morris.Bar({
                     element: 'morris-bar-chart',
                     data: [
+
                         {
-                            y: 'T',
-                            b:  {{ T_Number }},
+                            y: 'Babies',
+                            b:  {{ patients_years_birthday_babies }},
                         },
                         {
-                            y: 'PA',
-                            b:  {{ PA_Number }},
+                            y: 'Childs',
+                            b:  {{ patients_years_birthday_childs }},
                         },
                         {
-                            y: 'SLO',
-                            b:  {{ SLO_Number }},
+                            y: 'Teens',
+                            c:  {{ patients_years_birthday_teen }},
+                        }, {
+                            y: 'Adults',
+                            d:  {{ patients_years_birthday_Adult }},
                         },
                         {
-                            y: 'RC',
-                            b:  {{ RC_Number }},
+                            y: 'Middle',
+                            e: {{ patients_years_birthday_adolescent_Middle_Age_Adult }},
+                        }, {
+                            y: 'Senior',
+                            f:  {{ patients_years_birthday_Senior_Adult }},
                         }
+
                     ],
                     xkey: 'y',
                     barSizeRatio: 0.70,
                     barGap: 1,
                     resize: true,
                     responsive:true,
-                    ykeys: ['a', 'b', 'c'],
+                    ykeys: ['a', 'b', 'c','d','e','f'],
                     labels: ['Bar 1', 'Nombre des patients', 'Bar 3'],
                     barColors: ["0-#1de9b6-#1dc4e9", "0-#899FD4-#A389D4", "#04a9f5"]
                 });
                 // [ bar-simple ] chart end
 
-                var graph = Morris.Donut({
+                var graph_sexe = Morris.Donut({
                     element: 'morris-donut-chart',
-                    data: [{
-                        value: {{Patients_Number}},
-                        label: 'Total'
-                    },
+                    data: [
                         {
-                            value: {{ T_Number }},
-                            label: 'T'
-                        },
-                        {
-                            value: {{ PA_Number }},
-                            label: 'PA'
-                        },
-                        {
-                            value: {{ SLO_Number }},
-                            label: 'SLO'
-                        },
-                        {
-                            value: {{ RC_Number }},
-                            label: 'RC'
-                        }
+                            value: {{ nb_patient_sexe_female }},
+                            label: 'Femmes'
+                        },            {
+                            value: {{ nb_patient_sexe_male }},
+                            label: 'Hommes'}
                     ],
                     colors: [
+                        '#1de9b6',
+                        '#A389D4',
+                        '#04a9f5',
+                        '#1dc4e9',
+                        '#FF5733',
+                        '#DCD91E',
+                        '#AF01BD',
+                    ],
+                    resize: true,
+                    formatter: function(x) {
+                        return "val : " + x
+                    }
+                });
+                var graph_Statut_matrimonial = Morris.Donut({
+                    element: 'morris_donut_chart_Statut_matrimonial',
+                    data: [
+                        {
+                            value: {{ nb_patient_celibataire }},
+                            label: 'Celibataire'
+                        },            {
+                            value: {{ nb_patient_mariee }},
+                            label: 'Mariée'} ,         {
+                            value: {{ nb_patient_veuve }},
+                            label: 'Veuve'},          {
+                            value: {{ nb_patient_divorcee }},
+                            label: 'Divorcée'}
+                    ],
+                    colors: [
+                        '#FF5733',
+                        '#DCD91E',
+                        '#AF01BD',
                         '#1de9b6',
                         '#A389D4',
                         '#04a9f5',
