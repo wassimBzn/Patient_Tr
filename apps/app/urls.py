@@ -12,7 +12,6 @@ urlpatterns = [
     path('view_patient/<str:patient_id>/',view_patient,name='view_patient'),
     path('update_patient/<str:patient_id>/',update_patient,name='update_patient'),
     path('delete_patient/<str:patient_id>/',delete_patient,name='delete_patient'),
-    path('consultations/',consultations,name='consultations'),
     path('consultation_patient/<str:patient_id>/',consultation_patient,name='consultation_patient'),
     path('consultation_patient/<str:patient_id>/<str:action>/<str:consultation_id>/',consultation_patient,name='consultation_patient'),
     path('delete_consultation_patient/<str:patient_id>/<str:consultation_id>/',delete_consultation_patient,name='delete_consultation_patient'),
