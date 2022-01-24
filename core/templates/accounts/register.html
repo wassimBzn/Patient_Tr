@@ -24,7 +24,7 @@
                             {{ msg | safe }}
                         {% else %}
                             Add your credentials
-                        {% endif %} 
+                        {% endif %}
                     </span>
 
                     <br />
@@ -32,7 +32,7 @@
 
                     <form role="form" method="post" action="">
 
-                        {% csrf_token %}                    
+                        {% csrf_token %}
 
                         <div class="input-group mb-3">
                             {{ form.username }}
@@ -53,7 +53,51 @@
                             {{ form.password2 }}
                         </div>
                         <span class="text-error">{{ form.password2.errors }}</span>
-                        
+                        <div class="input-group mb-3">
+                                 {{ employee_form.nom }}
+                             </div>
+                         <span class="text-error">{{ employee_form.nom.errors }}</span>
+                    <div class="input-group mb-3">
+                        {{ employee_form.prenom }}
+                    </div>
+                        <span class="text-error">{{ employee_form.prenom.errors }}</span>
+
+                        <label>Date de naissance</label>
+                    <div class="input-group mb-2">
+                        {{ employee_form.date_de_naissance }}
+
+                    </div>
+                        <span class="text-error">{{ employee_form.date_de_naissance.errors }}</span>
+                    <div class="input-group mb-3">
+                        {{ employee_form.lieu_de_naissance }}
+                    </div>
+                        <span class="text-error">{{ employee_form.role.errors }}</span>
+                        <label>Role</label>
+                    <div class="input-group mb-3">
+                        {{ employee_form.role }}
+                    </div>
+                        <span class="text-error">{{ employee_form.adresse.errors }}</span>
+                    <div class="input-group mb-3">
+                        {{ employee_form.adresse }}
+                    </div>
+                        <span class="text-error">{{ employee_form.cin.errors }}</span>
+                    <div class="input-group mb-3">
+                        {{ employee_form.cin }}
+                    </div>
+                        <span class="text-error">{{ employee_form.sexe.errors }}</span>
+                    <div class="input-group mb-3">
+                        {{ employee_form.sexe }}
+                    </div>
+                        <span class="text-error">{{ employee_form.statut_matrimonial.errors }}</span>
+                   <div class="input-group mb-3">
+                        {{ employee_form.statut_matrimonial }}
+                    </div>
+                        <span class="text-error">{{ employee_form.telephone.errors }}</span>
+                    <div class="input-group mb-3">
+                        {{ employee_form.telephone }}
+                    </div>
+                        <span class="text-error">{{ employee_form.telephone.errors }}</span>
+
                         <div class="form-group text-left">
                             <div class="checkbox checkbox-fill d-inline">
                                 <input type="checkbox" name="checkbox-fill-1" id="checkbox-fill-a1" checked="">
