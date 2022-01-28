@@ -71,6 +71,7 @@ class Patient(models.Model):
     Sexe = models.CharField(max_length=200,choices=GENDER_CHOICES)
     Statut_matrimonial = models.CharField(max_length=200,choices=STATUT_MATRIMONIAL_CHOICES)
     Telephone = models.IntegerField()
+    used =models.BooleanField(default=True)
 
 class Consultation(models.Model):
     id = models.AutoField(primary_key=True, default=date)
@@ -85,3 +86,4 @@ class Consultation(models.Model):
     Evolution = models.CharField(max_length=500,default=None)
     Remarques = models.CharField(max_length=500,default=None)
     Prochaine_Rondez_vous = models.DateTimeField(default=timezone.now)
+    archived= models.BooleanField(default=False)

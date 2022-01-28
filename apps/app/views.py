@@ -16,87 +16,46 @@ from apps.app.filters import *
 import xlwt
 from django.views.generic import ListView
 from django.core.paginator import Paginator
-from django.shortcuts import render
-
 import io
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
-from textwrap import wrap
-
 # importing date class from datetime module
 from datetime import date
-
 # creating the date object of today's date
 import math
+from apps.authentication.models import Employee
 
 todays_date = date.today()
 context={}
 from django.shortcuts import render
 
-def handler404_(request):
-    html_template = loader.get_template('page-404.html')
-    response = render(html_template.render(context, request))
-    response.status_code = 404
-    return response
+secretaire_access=['add_patient','view_patient','update_patient','delete_patient','Export_Patient_pdf','Export_excel']
+def Check_Permission(request):
+    user = Employee.objects.get(Username=request.user.username)
+    path=request.path
+    print(path)
+    context = {}
+    if user.Role != "Administrateur":
+      if any(access in path for access in secretaire_access):
+          return True
+    else:
+        return True
 
-def handler500_(request):
-
-    html_template = loader.get_template('page-500.html')
-    response = render(html_template.render(context, request))
-    response.status_code = 500
-    return response
-
-def patient_stats(request):
-    try:
-        patients = Patient.objects.all()
-        nb_patient_sexe_male = Patient.objects.filter(Sexe="Masculin").count()
-        nb_patient_sexe_female = Patient.objects.filter(Sexe="Féminin").count()
-
-        nb_patient_celibataire= Patient.objects.filter(Statut_matrimonial="Celibataire").count()
-        nb_patient_mariee= Patient.objects.filter(Statut_matrimonial="Mariée").count()
-        nb_patient_veuve= Patient.objects.filter(Statut_matrimonial="Veuve").count()
-        nb_patient_divorcee= Patient.objects.filter(Statut_matrimonial="Divorcée").count()
-
-        patients_years_birthday_babies=Patient.objects.filter(Date_de_naissance__year__range=[todays_date.year-5,todays_date.year]).count()
-        patients_years_birthday_childs=Patient.objects.filter(Date_de_naissance__year__range=[todays_date.year-13,todays_date.year-6]).count()
-        patients_years_birthday_teen=Patient.objects.filter(Date_de_naissance__year__range=[todays_date.year-19,todays_date.year-14]).count()
-        patients_years_birthday_Adult=Patient.objects.filter(Date_de_naissance__year__range=[todays_date.year-29,todays_date.year-20]).count()
-        patients_years_birthday_adolescent_Middle_Age_Adult=Patient.objects.filter(Date_de_naissance__year__range=[todays_date.year-59,todays_date.year-30]).count()
-        patients_years_birthday_Senior_Adult=Patient.objects.filter(Date_de_naissance__year__range=[todays_date.year-200,todays_date.year-60]).count()
-        nbr_patient=Patient.objects.all().count()
-
-        msg = ''
-        success = ''
-        context = {
-            "nbr_patient":nbr_patient,
-            "nb_patient_sexe_male":nb_patient_sexe_male ,
-            "nb_patient_sexe_female":nb_patient_sexe_female ,
-            "nb_patient_celibataire":nb_patient_celibataire,
-            "nb_patient_mariee":nb_patient_mariee,
-            "nb_patient_veuve":nb_patient_veuve,
-            "nb_patient_divorcee":nb_patient_divorcee,
-            "patients_years_birthday_babies":patients_years_birthday_babies,
-            "patients_years_birthday_childs":patients_years_birthday_childs,
-            "patients_years_birthday_teen":patients_years_birthday_teen,
-            "patients_years_birthday_Adult":patients_years_birthday_Adult,
-            "patients_years_birthday_adolescent_Middle_Age_Adult":patients_years_birthday_adolescent_Middle_Age_Adult,
-            "patients_years_birthday_Senior_Adult":patients_years_birthday_Senior_Adult,
-        }
-        return render(request, "./statestics/patient_stats.html", context)
-    except template.TemplateDoesNotExist:
-
-        html_template = loader.get_template('page-404.html')
-        return HttpResponse(html_template.render(context, request))
-
-    except:
-        html_template = loader.get_template('page-500.html')
-        return HttpResponse(html_template.render(context, request))
+    return False
+@login_required(login_url="/login/")
 def consultation_stats(request):
-    context={}
+
+    employee = Employee.objects.get(Username=request.user.username)
+    context = {}
+    context['employee'] = employee
+    if not Check_Permission(request):
+        html_template = loader.get_template('page-403.html')
+        return HttpResponse(html_template.render(context, request))
+
     try:
         msg = ''
         success = ''
-        patients = Patient.objects.all()
+        patients = Patient.objects.filter(used=True)
         consultation = Consultation.objects.all()
         #HABITUDE STATS
         habitude_Tabagisme_YES = 0
@@ -124,14 +83,13 @@ def consultation_stats(request):
         antecedentes = Antecedentes.objects.all()
         examen_phisique = Examen_phisique.objects.all()
         examen_clinique = Examen_clinique.objects.all()
-        context = {
-            'habitude_Tabagisme_YES':habitude_Tabagisme_YES,
-            'habitude_Tabagisme_NO':habitude_Tabagisme_NO,
-            'habitude_Alcool_YES':habitude_Alcool_YES,
-            'habitude_Alcool_NO':habitude_Alcool_NO,
-            'habitude_Allergies_medicamenteuses_YES':habitude_Allergies_medicamenteuses_YES,
-            'habitude_Allergies_medicamenteuses_NO':habitude_Allergies_medicamenteuses_NO,
-        }
+        context['habitude_Tabagisme_YES'] = habitude_Tabagisme_YES
+        context['habitude_Tabagisme_NO'] = habitude_Tabagisme_NO
+        context['habitude_Alcool_YES'] = habitude_Alcool_YES
+        context['habitude_Alcool_NO'] = habitude_Alcool_NO
+        context['habitude_Allergies_medicamenteuses_YES'] = habitude_Allergies_medicamenteuses_YES
+        context['habitude_Allergies_medicamenteuses_NO'] = habitude_Allergies_medicamenteuses_NO
+        Check_Permission(request)
         return render(request, "./statestics/consultation_stats.html",context)
     except template.TemplateDoesNotExist:
         html_template = loader.get_template('page-404.html')
@@ -139,8 +97,83 @@ def consultation_stats(request):
     except:
         html_template = loader.get_template('page-500.html')
         return HttpResponse(html_template.render(context, request))
+
+@login_required(login_url="/login/")
+def handler403_(request):
+    html_template = loader.get_template('page-403.html')
+    return HttpResponse(html_template.render(context, request))
+
+@login_required(login_url="/login/")
+def handler404_(request):
+    html_template = loader.get_template('page-404.html')
+    return HttpResponse(html_template.render(context, request))
+
+@login_required(login_url="/login/")
+def handler500_(request):
+    html_template = loader.get_template('page-500.html')
+    return HttpResponse(html_template.render(context, request))
+
+@login_required(login_url="/login/")
+def patient_stats(request):
+    context={}
+    try:
+        patients = Patient.objects.filter(used=True)
+        employee = Employee.objects.get(Username=request.user.username)
+        context["employee"] = employee
+        if not Check_Permission(request):
+            html_template = loader.get_template('page-403.html')
+            return HttpResponse(html_template.render(context, request))
+        nb_patient_sexe_male = Patient.objects.filter(used=True,Sexe="Masculin").count()
+        nb_patient_sexe_female = Patient.objects.filter(used=True,Sexe="Féminin").count()
+
+        nb_patient_celibataire= Patient.objects.filter(used=True,Statut_matrimonial="Celibataire").count()
+        nb_patient_mariee= Patient.objects.filter(used=True,Statut_matrimonial="Mariée").count()
+        nb_patient_veuve= Patient.objects.filter(used=True,Statut_matrimonial="Veuve").count()
+        nb_patient_divorcee= Patient.objects.filter(used=True,Statut_matrimonial="Divorcée").count()
+
+        patients_years_birthday_babies=Patient.objects.filter(used=True,Date_de_naissance__year__range=[todays_date.year-5,todays_date.year]).count()
+        patients_years_birthday_childs=Patient.objects.filter(used=True,Date_de_naissance__year__range=[todays_date.year-13,todays_date.year-6]).count()
+        patients_years_birthday_teen=Patient.objects.filter(used=True,Date_de_naissance__year__range=[todays_date.year-19,todays_date.year-14]).count()
+        patients_years_birthday_Adult=Patient.objects.filter(used=True,Date_de_naissance__year__range=[todays_date.year-29,todays_date.year-20]).count()
+        patients_years_birthday_adolescent_Middle_Age_Adult=Patient.objects.filter(used=True,Date_de_naissance__year__range=[todays_date.year-59,todays_date.year-30]).count()
+        patients_years_birthday_Senior_Adult=Patient.objects.filter(used=True,Date_de_naissance__year__range=[todays_date.year-200,todays_date.year-60]).count()
+        nbr_patient=Patient.objects.filter(used=True).count()
+
+        msg = ''
+        success = ''
+        context = {
+            "nbr_patient":nbr_patient,
+            "nb_patient_sexe_male":nb_patient_sexe_male ,
+            "nb_patient_sexe_female":nb_patient_sexe_female ,
+            "nb_patient_celibataire":nb_patient_celibataire,
+            "nb_patient_mariee":nb_patient_mariee,
+            "nb_patient_veuve":nb_patient_veuve,
+            "nb_patient_divorcee":nb_patient_divorcee,
+            "patients_years_birthday_babies":patients_years_birthday_babies,
+            "patients_years_birthday_childs":patients_years_birthday_childs,
+            "patients_years_birthday_teen":patients_years_birthday_teen,
+            "patients_years_birthday_Adult":patients_years_birthday_Adult,
+            "patients_years_birthday_adolescent_Middle_Age_Adult":patients_years_birthday_adolescent_Middle_Age_Adult,
+            "patients_years_birthday_Senior_Adult":patients_years_birthday_Senior_Adult,
+
+        }
+        context["employee"] = employee
+        context["patients"] = patients
+        return render(request, "./statestics/patient_stats.html", context)
+    except template.TemplateDoesNotExist:
+
+        html_template = loader.get_template('page-404.html')
+        return HttpResponse(html_template.render(context, request))
+
+    except:
+        html_template = loader.get_template('page-500.html')
+        return HttpResponse(html_template.render(context, request))
+@login_required(login_url="/login/")
 def Export_Patient_pdf(request,patient_id,):
     # Create a file-like buffer to receive PDF data.
+    if not Check_Permission(request):
+        html_template = loader.get_template('page-403.html')
+        return HttpResponse(html_template.render(context, request))
     buffer = io.BytesIO()
     patient=Patient.objects.get(Cin=patient_id)
 
@@ -174,6 +207,7 @@ def Export_Patient_pdf(request,patient_id,):
     # present the option to save the file.
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=True, filename='hello.pdf')
+@login_required(login_url="/login/")
 def write_item_in_pdf(p,x,y,fieldName,Fieldvalue):
     #get the length of the string
     length_of_string = len(str(Fieldvalue))
@@ -234,8 +268,14 @@ def write_item_in_pdf(p,x,y,fieldName,Fieldvalue):
 
     return p,x,y
 
+@login_required(login_url="/login/")
 def Export_Patient_consultation_pdf(request,patient_id,consultation_id):
     try:
+        employee = Employee.objects.get(Username=request.user.username)
+        context["employee"] = employee
+        if not Check_Permission(request):
+            html_template = loader.get_template('page-403.html')
+            return HttpResponse(html_template.render(context, request))
         # Create a file-like buffer to receive PDF data.
         buffer = io.BytesIO()
         patient=Patient.objects.get(Cin=patient_id)
@@ -317,8 +357,14 @@ class ContactListView(ListView):
     paginate_by = 2
     model = Patient
 
+@login_required(login_url="/login/")
 def Export_excel_single_patient_consultations(request,patient_id):
     try:
+        employee = Employee.objects.get(Username=request.user.username)
+        context["employee"] = employee
+        if not Check_Permission(request):
+            html_template = loader.get_template('page-403.html')
+            return HttpResponse(html_template.render(context, request))
         columns = ['Nom',
                'Prenom',
                'Date_de_naissance',
@@ -414,8 +460,14 @@ def Export_excel_single_patient_consultations(request,patient_id):
         html_template = loader.get_template('page-500.html')
         return HttpResponse(html_template.render(context, request))
 
+@login_required(login_url="/login/")
 def Export_excel_patient_consultations(request):
     try:
+        employee = Employee.objects.get(Username=request.user.username)
+        context["employee"] = employee
+        if not Check_Permission(request):
+            html_template = loader.get_template('page-403.html')
+            return HttpResponse(html_template.render(context, request))
         columns = ['Nom',
                'Prenom',
                'Date_de_naissance',
@@ -447,7 +499,7 @@ def Export_excel_patient_consultations(request):
                'Consultation_Prochaine_Rondez_vous']
         response = HttpResponse(content_type='application/ms-excel')
         response['Content-Disposition'] = 'attachment; filename=patients{}.xls'.format(str(datetime.datetime.now()))
-        patients = Patient.objects.all()
+        patients = Patient.objects.filter(used=True)
         wb = xlwt.Workbook(encoding='utf-8')
         sheet = wb.add_sheet('Patients')
         row_num = 0
@@ -511,12 +563,19 @@ def Export_excel_patient_consultations(request):
     except:
         html_template = loader.get_template('page-500.html')
         return HttpResponse(html_template.render(context, request))
+@login_required(login_url="/login/")
 def Export_excel_patient(request):
+
     try:
+        employee = Employee.objects.get(Username=request.user.username)
+        context["employee"] = employee
+        if not Check_Permission(request):
+            html_template = loader.get_template('page-403.html')
+            return HttpResponse(html_template.render(context, request))
         columns = ['Nom','Prenom','Date_de_naissance','Lieu_de_naissance','Profession','Adresse','Cin','Sexe','Statut_matrimonial','Telephone']
         response = HttpResponse(content_type='application/ms-excel')
         response['Content-Disposition'] = 'attachment; filename=patients{}.xls'.format(str(datetime.datetime.now()))
-        patients = Patient.objects.all()
+        patients = Patient.objects.filter(used=True)
         wb = xlwt.Workbook(encoding='utf-8')
         sheet = wb.add_sheet('Patients')
         row_num = 1
@@ -553,9 +612,12 @@ def Export_excel_patient(request):
     except:
         html_template = loader.get_template('page-500.html')
         return HttpResponse(html_template.render(context, request))
+@login_required(login_url="/login/")
 def index(request):
+    context={}
     try:
-        patients = Patient.objects.get_queryset().order_by('Nom')
+        employee = Employee.objects.get(Username=request.user.username)
+        patients = Patient.objects.filter(used=True).order_by('Nom')
         msg = ''
         success = ''
         MyFilter = PatientFilter(request.GET, queryset=patients)
@@ -563,8 +625,15 @@ def index(request):
         paginator = Paginator(patients, 20)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-        return render(request, "./index.html",
-                      {'page_obj': page_obj, "MyFilter": MyFilter, "patients": patients, "msg": msg, "success": success})
+        context["employee"] = employee
+        context["page_obj"] = page_obj
+        context["MyFilter"] = MyFilter
+        context["patients"] = patients
+        context["msg"] = msg
+        context["employee"] = employee
+        context["success"] = success
+
+        return render(request, "./index.html",context)
     except template.TemplateDoesNotExist:
 
         html_template = loader.get_template('page-404.html')
@@ -573,17 +642,23 @@ def index(request):
     except:
         html_template = loader.get_template('page-500.html')
         return HttpResponse(html_template.render(context, request))
+
+@login_required(login_url="/login/")
 def charts_patient(request):
     try:
-        context = {}
-        patients = Patient.objects.all()
+        employee = Employee.objects.get(Username=request.user.username)
+        context['employee'] = employee
+        if not Check_Permission(request):
+            html_template = loader.get_template('page-403.html')
+            return HttpResponse(html_template.render(context, request))
+        patients = Patient.objects.filter(used=True)
         msg = ''
         success = ''
         html_template = loader.get_template('statestics/consultation_stats.html')
-        T_Number = Patient.objects.filter(T=True).count()
-        PA_Number = Patient.objects.filter(PA=True).count()
-        SLO_Number = Patient.objects.filter(Slo=True).count()
-        RC_Number = Patient.objects.filter(RC=True).count()
+        T_Number = Patient.objects.filter(used=True,T=True).count()
+        PA_Number = Patient.objects.filter(used=True,PA=True).count()
+        SLO_Number = Patient.objects.filter(used=True,Slo=True).count()
+        RC_Number = Patient.objects.filter(used=True,RC=True).count()
         context['T_Number'] = T_Number
         context['PA_Number'] = PA_Number
         context['SLO_Number'] = SLO_Number
@@ -605,7 +680,11 @@ def charts_patient(request):
 
 @login_required(login_url="/login/")
 def pages(request):
+    Check_Permission(request)
     context = {}
+    employee = Employee.objects.get(Username=request.user.username)
+    context["employee"] = employee
+
     # All resource paths end in .html.
     # Pick out the html file name from the url. And load that template.
     try:
@@ -615,7 +694,7 @@ def pages(request):
         if load_template == 'admin':
             return HttpResponseRedirect(reverse('admin:index'))
         context['segment'] = load_template
-
+        context['employee'] = employee
         html_template = loader.get_template(load_template)
         return HttpResponse(html_template.render(context, request))
 
@@ -628,33 +707,56 @@ def pages(request):
         html_template = loader.get_template('page-500.html')
         return HttpResponse(html_template.render(context, request))
 
+@login_required(login_url="/login/")
 def delete_patient(request, patient_id):
     msg = None
     success = False
+    context={}
     html_template = loader.get_template('index.html')
-    patient = Patient.objects.get(Cin=patient_id)
+    employee = Employee.objects.get(Username=request.user.username)
 
     try:
-        patient.delete()
+        context["employee"] = employee
+        if not Check_Permission(request):
+            html_template = loader.get_template('page-403.html')
+            return HttpResponse(html_template.render(context, request))
+        patient = Patient.objects.get(Cin=patient_id)
+        patient.used=False
+        patient.save()
+        patient_consultations = Consultation.objects.filter(Patient__Cin=patient.Cin)
+        for consultation in patient_consultations:
+            consultation.archived=True
+            consultation.save()
         msg = "Le patient {} a été supprimé avec succès".format(patient.Nom)
         success = False
+        context["msg"] = msg
+        context["success"] = success
     except:
-        msg = "Le patient {} n'a pas été supprimé avec succès".format(patient.Nom)
+        msg = "Le patient n'a pas été supprimé ou n'existe pas déja!"
         success = False
-    context = {}
+        context["employee"] = employee
+        context["msg"] = msg
+        context["success"] = success
+
     return HttpResponseRedirect("/")
 
+@login_required(login_url="/login/")
 def view_patient(request, patient_id):
+    Check_Permission(request)
     try:
         msg = 'Success'
+        employee = Employee.objects.get(Username=request.user.username)
+        context["employee"] = employee
+
         try:
             patient = Patient.objects.get(Cin=patient_id)
         except:
             msg = "Le patient n'existe pas"
             success = False
             return HttpResponseRedirect("/")
-
-        return render(request, "./Patient_management/view_patient.html", {"msg": msg, "patient": patient})
+        context["msg"]= msg
+        context["patient"]= patient
+        return render(request, "./Patient_management/view_patient.html", context)
     except template.TemplateDoesNotExist:
 
         html_template = loader.get_template('page-404.html')
@@ -663,10 +765,17 @@ def view_patient(request, patient_id):
     except:
         html_template = loader.get_template('page-500.html')
         return HttpResponse(html_template.render(context, request))
+@login_required(login_url="/login/")
 def update_patient(request, patient_id):
     try:
         msg = ''
         success = False
+        employee = Employee.objects.get(Username=request.user.username)
+        context["employee"] = employee
+        if not Check_Permission(request):
+            html_template = loader.get_template('page-403.html')
+            return HttpResponse(html_template.render(context, request))
+
         try:
             patient = Patient.objects.get(Cin=patient_id)
             if request.method == "POST":
@@ -719,8 +828,11 @@ def update_patient(request, patient_id):
             success = False
             return HttpResponseRedirect("/")
         # return redirect("/login/")
-
-        return render(request, "./Patient_management/update_patient.html", {"success": success, "msg": msg, "form": form, "patient": patient})
+        context["success"] = success
+        context["msg"] = msg
+        context["form"] = form
+        context["patient"] = patient
+        return render(request, "./Patient_management/update_patient.html", context)
     except template.TemplateDoesNotExist:
 
         html_template = loader.get_template('page-404.html')
@@ -729,10 +841,17 @@ def update_patient(request, patient_id):
     except:
         html_template = loader.get_template('page-500.html')
         return HttpResponse(html_template.render(context, request))
+@login_required(login_url="/login/")
 def view_consultation_patient(request, patient_id,consultation_id=None):
+    context={}
     try:
         msg = ''
         success = True
+        employee = Employee.objects.get(Username=request.user.username)
+        context["employee"] = employee
+        if not Check_Permission(request):
+            html_template = loader.get_template('page-403.html')
+            return HttpResponse(html_template.render(context, request))
         try:
            patient = Patient.objects.get(Cin=patient_id)
            consultation = Consultation.objects.get(id=consultation_id)
@@ -744,16 +863,14 @@ def view_consultation_patient(request, patient_id,consultation_id=None):
            msg = "Le patient n'existe pas"
            success = False
            return HttpResponseRedirect("/consultation_patient/{}/".format(patient_id))
-        context = {
-            "success": success,
-            "msg": msg,
-            "Habitude": habitude,
-            "Antecedentes": antecedentes,
-            "Examen_phisique": examen_phisique,
-            "Examen_clinique": examen_clinique,
-            "Consultation": consultation,
-            "patient": patient,
-        }
+        context["success"] = success
+        context["msg"] = msg
+        context["Habitude"] = habitude
+        context["Antecedentes"] = antecedentes
+        context["Examen_phisique"] = examen_phisique
+        context["Examen_clinique"] = examen_clinique
+        context["Consultation"] = consultation
+        context["patient"] = patient
         return render(request, "./Consultations/view_patient_consultation.html", context)
     except template.TemplateDoesNotExist:
 
@@ -763,14 +880,19 @@ def view_consultation_patient(request, patient_id,consultation_id=None):
     except:
         html_template = loader.get_template('page-500.html')
         return HttpResponse(html_template.render(context, request))
+@login_required(login_url="/login/")
 def global_consultation_patient(request):
     try:
-
+        employee = Employee.objects.get(Username=request.user.username)
+        context["employee"] = employee
+        if not Check_Permission(request):
+            html_template = loader.get_template('page-403.html')
+            return HttpResponse(html_template.render(context, request))
         habitude = Habitude.objects.all()
         antecedentes = Antecedentes.objects.all()
         examen_phisique = Examen_phisique.objects.all()
         examen_clinique = Examen_clinique.objects.all()
-        patient_consultations = Consultation.objects.all().order_by('-Date_de_consultation')
+        patient_consultations = Consultation.objects.filter(archived=False).order_by('-Date_de_consultation')
         My_consultation_Filter = ConsultationFilter(request.GET, queryset=patient_consultations)
         Consultations = My_consultation_Filter.qs
         paginator = Paginator(Consultations, 10)
@@ -778,15 +900,13 @@ def global_consultation_patient(request):
         success=True
         msg="toutes les consultations des patients"
         consultations_page_obj = paginator.get_page(page_number)
-        context = {
-            "success": success,
-            "msg": msg,
-            "Habitude": habitude,
-            "Antecedentes": antecedentes,
-            "Examen_phisique": examen_phisique,
-            "Examen_clinique": examen_clinique,
-            "consultations_page_obj": consultations_page_obj,
-        }
+        context["success"] = success
+        context["msg"] = msg
+        context["Habitude"] = habitude
+        context["Antecedentes"] = antecedentes
+        context["Examen_phisique"] = examen_phisique
+        context["Examen_clinique"] = examen_clinique
+        context["consultations_page_obj"] = consultations_page_obj
 
         return render(request, "./Consultations/global_patient_consultation.html", context)
     except template.TemplateDoesNotExist:
@@ -797,8 +917,15 @@ def global_consultation_patient(request):
     except:
         html_template = loader.get_template('page-500.html')
         return HttpResponse(html_template.render(context, request))
+@login_required(login_url="/login/")
 def delete_consultation_patient(request, patient_id, consultation_id=None,source=None):
+    context={}
     try:
+        employee = Employee.objects.get(Username=request.user.username)
+        context['employee'] = employee
+        if not Check_Permission(request):
+            html_template = loader.get_template('page-403.html')
+            return HttpResponse(html_template.render(context, request))
         msg = None
         success = False
         html_template = loader.get_template('index.html')
@@ -823,10 +950,14 @@ def delete_consultation_patient(request, patient_id, consultation_id=None,source
             examen_clinique.delete()
             msg = "la consultation {} de l'utilisateur {} a été supprimée avec succès".format(consultation.Date_de_consultation,patient.Nom)
             success = False
+
+            context["msg"] = msg
+            context["success"] = success
         except:
             msg = "le patient {} n'a pas été supprimé ".format(patient.Nom)
             success = False
-        context = {}
+            context["msg"] = msg
+            context["success"] = success
         if source == "global" :
             return HttpResponseRedirect("/global_consultation_patient/".format(patient_id),context)
         else:
@@ -839,9 +970,15 @@ def delete_consultation_patient(request, patient_id, consultation_id=None,source
     except:
         html_template = loader.get_template('page-500.html')
         return HttpResponse(html_template.render(context, request))
-
+@login_required(login_url="/login/")
 def consultation_patient(request, patient_id, action=None, consultation_id=None):
+    context={}
     try:
+        employee = Employee.objects.get(Username=request.user.username)
+        context['employee'] = employee
+        if not Check_Permission(request):
+            html_template = loader.get_template('page-403.html')
+            return HttpResponse(html_template.render(context, request))
         msg = None
         success = False
         consultations_page_obj = None
@@ -1028,11 +1165,16 @@ def consultation_patient(request, patient_id, action=None, consultation_id=None)
             ConsultationForm = AddConsultationForm()
             msg = "Le patient n'existe pas"
             success = False
-            return render(request, "./Consultations/patient_consultation.html",
-                          {"consultations_page_obj": consultations_page_obj, "success": success, "msg": msg,
-                           "HabitudeForm": HabitudeForm, "AntecedentesForm": AntecedentesForm,
-                           "Examen_phisiqueForm": Examen_phisiqueForm, "Examen_cliniqueForm": Examen_cliniqueForm,
-                           "ConsultationForm": ConsultationForm, "patient": selectedPatient})
+            context["consultations_page_obj"]= consultations_page_obj
+            context["success"]= success
+            context["msg"]=msg
+            context["HabitudeForm"]= HabitudeForm
+            context["AntecedentesForm"]= AntecedentesForm
+            context["Examen_phisiqueForm"]= Examen_phisiqueForm
+            context["Examen_cliniqueForm"]= Examen_cliniqueForm
+            context["ConsultationForm"]= ConsultationForm
+            context["patient"]= selectedPatient
+            return render(request, "./Consultations/patient_consultation.html",context)
 
         # Consultation history
         patient_consultations = Consultation.objects.filter(Patient__Cin=selectedPatient.Cin).order_by(
@@ -1042,18 +1184,17 @@ def consultation_patient(request, patient_id, action=None, consultation_id=None)
         paginator = Paginator(Consultations, 5)
         page_number = request.GET.get('page')
         consultations_page_obj = paginator.get_page(page_number)
-        context = {
-            "action": action,
-            "consultations_page_obj": consultations_page_obj,
-            "success": success,
-            "msg": msg,
-            "HabitudeForm": HabitudeForm,
-            "AntecedentesForm": AntecedentesForm,
-            "Examen_phisiqueForm": Examen_phisiqueForm,
-            "Examen_cliniqueForm": Examen_cliniqueForm,
-            "ConsultationForm": ConsultationForm,
-            "patient": selectedPatient,
-        }
+        context["action"] = action
+        context["consultations_page_obj"] = consultations_page_obj
+        context["success"] = success
+        context["msg"] = msg
+        context["HabitudeForm"] = HabitudeForm
+        context["AntecedentesForm"] = AntecedentesForm
+        context["Examen_phisiqueForm"] = Examen_phisiqueForm
+        context["Examen_cliniqueForm"] = Examen_cliniqueForm
+        context["ConsultationForm"] = ConsultationForm
+        context["patient"] = selectedPatient
+
         if action == "update_consultation":
             context["consultation"]= consultation
 
@@ -1067,8 +1208,16 @@ def consultation_patient(request, patient_id, action=None, consultation_id=None)
     except:
         html_template = loader.get_template('page-500.html')
         return HttpResponse(html_template.render(context, request))
+@login_required(login_url="/login/")
 def add_patient(request):
+
+    context={}
     try:
+        employee = Employee.objects.get(Username=request.user.username)
+        context['employee'] = employee
+        if not Check_Permission(request):
+            html_template = loader.get_template('page-403.html')
+            return HttpResponse(html_template.render(context, request))
         msg = ''
         success = False
         if request.method == "POST":
@@ -1088,7 +1237,10 @@ def add_patient(request):
                     patient = Patient.objects.get(Cin=Cin)
                     msg = 'Le patient existe déjà!'
                     success = False
-                    return render(request, "./Patient_management/add_patient.html", {"form": form, "msg": msg, "success": success})
+                    context["form"] = form
+                    context["msg"] = msg
+                    context["success"] = success
+                    return render(request, "./Patient_management/add_patient.html", context)
 
                 except:
                     new_patient = Patient(Nom, Prenom, Date_de_naissance, Lieu_de_naissance, Profession, Adresse, Cin, Sexe,
@@ -1098,14 +1250,19 @@ def add_patient(request):
                     success = True
                     print("An exception occurred")
                     form = AddPatientForm()
-                    return render(request, "./Patient_management/add_patient.html", {"form": form, "msg": msg, "success": success})
+                    context["form"] = form
+                    context["msg"] = msg
+                    context["success"] = success
+                    return render(request, "./Patient_management/add_patient.html", context)
                 # return redirect("/login/")
             else:
                 msg = "Erreur lors de l'ajout d'un nouveau patient, veuillez contacter l'administrateur"
         else:
             form = AddPatientForm()
-
-        return render(request, "./Patient_management/add_patient.html", {"form": form, "msg": msg, "success": success})
+        context["form"] = form
+        context["msg"] = msg
+        context["success"] = success
+        return render(request, "./Patient_management/add_patient.html",context)
 
     except template.TemplateDoesNotExist:
 
