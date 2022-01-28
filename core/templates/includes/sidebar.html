@@ -16,7 +16,6 @@
 
                 <ul class="nav pcoded-inner-navbar">
                     <li class="pcoded-menu-caption"><span class="b-title">{{ user.username }} </span></li>
-                    <li class="pcoded-menu-caption"><span class="b-title">{{ employee.Role }} </span></li>
                     <li class="nav-item pcoded-menu-caption">
 
                     </li>
@@ -32,6 +31,7 @@
                         class="nav-item {% if 'add_patient' in segment %} active {% endif %}">
                         <a href="/add_patient" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Ajouter un patient</span></a>
                     </li>
+                    {% if employee.Role == "Administrateur" %}
                     <li class="nav-item pcoded-menu-caption">
                         <label>Gestion des consultations</label>
                     </li>
@@ -57,12 +57,13 @@
                   <li data-username="register"
                         class="nav-item {% if 'register' in segment %} active {% endif %}">
                         <a href="{% url 'register' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-user-plus"></i></span><span class="pcoded-mtext">Ajouter un profile</span></a></li>
-
+                {% endif %}
                     <li data-username="logout"
                         class="nav-item {% if 'logout' in segment %} active {% endif %}">
                         <a href="/logout" class="nav-link "><span class="pcoded-micon"><i class="feather icon-user-minus"></i></span><span class="pcoded-mtext">Déconnection</span></a></li>
 
                 </ul>
+
             </div>
 
         </div>

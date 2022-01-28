@@ -4,11 +4,12 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 # Create your views here.
-
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm, SignUpForm, AddEmployeeForm, Employee
-from datetime import datetime,timedelta
+from django.template import loader
+from ..app.views import Check_Permission,secretaire_access
 
 
 def login_view(request):
@@ -36,7 +37,9 @@ def login_view(request):
 def register_user(request):
     msg = None
     success = False
-
+    if not Check_Permission(request):
+        html_template = loader.get_template('page-403.html')
+        return HttpResponse(html_template.render({}, request))
     if request.method == "POST":
         form = SignUpForm(request.POST)
         employee_form = AddEmployeeForm(request.POST)

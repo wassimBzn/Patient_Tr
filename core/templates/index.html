@@ -46,7 +46,7 @@
                                                 <button type="submit" class="label theme-bg text-white f-12"
                                                         class="labe2 theme-bg2 text-white">Filtrer
                                                 </button>
-
+                                                    {{ msg }}
 
                                             </div>
 
@@ -117,9 +117,10 @@
                                                             data-toggle="modal"
                                                             data-target="#{{ patient.Cin }}"
                                                             class="label theme-bg2 text-white">Suppression</a>
+                                                        {% if employee.Role == "Administrateur" %}
                                                         <a href="/consultation_patient/{{ patient.Cin }}"
                                                            class="label theme-bg text-white f-12">Consultation</a>
-
+                                                        {% endif %}
 
                                                     </td>
                                                 </tr>
